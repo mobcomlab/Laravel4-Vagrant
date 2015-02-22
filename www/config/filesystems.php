@@ -28,7 +28,7 @@ return [
 	|
 	*/
 
-	'cloud' => 's3',
+	'cloud' => 'dropbox',
 
 	/*
 	|--------------------------------------------------------------------------
@@ -47,22 +47,11 @@ return [
 			'driver' => 'local',
 			'root'   => storage_path().'/app',
 		],
-
-		's3' => [
-			'driver' => 's3',
-			'key'    => 'your-key',
-			'secret' => 'your-secret',
-			'region' => 'your-region',
-			'bucket' => 'your-bucket',
-		],
-
-		'rackspace' => [
-			'driver'    => 'rackspace',
-			'username'  => 'your-username',
-			'key'       => 'your-key',
-			'container' => 'your-container',
-			'endpoint'  => 'https://identity.api.rackspacecloud.com/v2.0/',
-			'region'    => 'IAD',
+		
+		'dropbox' => [
+			'driver' => 'dropbox',
+			'token' => 'RDKq-FY9ZL0AAAAAAAAqDJKFvqxsvBMf_hUQKmtXh1t5vJoLldbuWAOdtOKMGZ-k',
+			'app' => 'ET Building'
 		],
 
 	],
