@@ -1,7 +1,7 @@
-# Laravel 4 w/ Vagrant
+# ET Building Project
 
-A basic Ubuntu 12.04 Vagrant setup with [Laravel4](http://laravel.com/docs) and PHP 5.5.
-PHP 5.4 w/ Apache 2.2 is available on the php54 branch.
+The data collection server for the energy monitoring system developed by Department of Physics
+at Naresuan University, together with [Mobile Computing Lab](http://www.mobcomlab.com).
 
 ## Requirements
 
@@ -11,8 +11,7 @@ PHP 5.4 w/ Apache 2.2 is available on the php54 branch.
 
 ## Setup
 
-
-* Clone this repository `git clone http://github.com/bryannielsen/Laravel4-Vagrant.git`
+* Clone this repository `git clone http://github.com/mobcomlab/etbuilding.git`
 * run `vagrant up` inside the newly created directory
 * (the first time you run vagrant it will need to fetch the virtual box image which is ~300mb so depending on your download speed this could take some time)
 * Vagrant will then use puppet to provision the base virtual box with our LAMP stack (this could take a few minutes) also note that composer will need to fetch all of the packages defined in the app's composer.json which will add some more time to the first provisioning run
@@ -30,38 +29,17 @@ Some basic information on interacting with the vagrant box
 
 * 8888 - Apache
 * 8889 - MySQL 
-* 5433 - PostgreSQL
 
 
-### Default MySQL/PostgreSQL Database
+### Default MySQL Database
 
 * User: root
 * Password: (blank)
 * DB Name: database
 
-
 ### PHPmyAdmin
 
 Accessible at http://localhost:8888/phpmyadmin using MySQL access credentials above.
-
-### PHP XDebug
-
-XDebug is included in the build but **disabled by default** because of the effect it can have on performance.  
-
-To enable XDebug:
-
-1. Set the variable `$use_xdebug = "1"` at the beginning of `puppet/manifests/phpbase.pp`
-2. Then you will need to provision the box either with `vagrant up` or by running the command `vagrant provision` if the box is already up
-3. Now you can connect to XDebug on **port 9001**
-
-**XDebug Tools**
-
-* [MacGDBP](http://www.bluestatic.org/software/macgdbp/) - Free, Mac OSX
-* [Codebug](http://www.codebugapp.com/) - Paid, Mac OSX
-
-
-_Note: All XDebug settings can be configured in the php.ini template at `puppet/modules/php/templates/php.ini.erb`_
-
 
 ### Vagrant
 
@@ -84,7 +62,6 @@ Easy deployment to the cloud (AWS), via `vagrant up --provider=aws`. The Vagrant
 * Apache - 2.4.6
 * PHP    - 5.5.4
 * MySQL  - 5.5.32
-* PostgreSQL - 9.1
 * Beanstalkd - 1.4.6
 * Redis - 2.2.12
 * Memcached - 1.4.13
