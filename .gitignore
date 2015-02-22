@@ -37,7 +37,4 @@ dwsync.xml
 .CVS
 .idea
 
-# ignore www directory
-/www/*
-!/www/.gitkeep
 
