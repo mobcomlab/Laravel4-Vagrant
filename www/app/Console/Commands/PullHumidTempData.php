@@ -46,6 +46,7 @@ class PullHumidTempData extends Command {
 		$url = 'http://www.etbuilding.sci.nu.ac.th/dir.html?id=2&file=database_2015_2_18.db&action=download';
 		$client = new HttpClient();
 		$response = $client->get($url, ['save_to' => storage_path().'/humidtemp.sqlite']);
+		$this->info('Downloaded latest database');
 		
 		// HUMIDITY
 		
@@ -67,6 +68,7 @@ class PullHumidTempData extends Command {
 			DB::table('humidity')->insert(
 			    ['recorded_at' => $row->date_time, 'sensor1' => $row->humid1, 'sensor2' => $row->humid2, 'sensor3' => $row->humid3, 'sensor4' => $row->humid4, 'sensor5' => $row->humid5, 'sensor6' => $row->humid6, 'sensor7' => $row->humid7, 'sensor8' => $row->humid8, 'sensor9' => $row->humid9, 'sensor10' => $row->humid10, 'sensor11' => $row->humid11, 'sensor12' => $row->humid12, 'sensor13' => $row->humid13, 'sensor14' => $row->humid14, 'sensor15' => $row->humid15]);
 		}
+		$this->info('Inserted '.count($humidityData).' new humidity records');
 		
 		// TEMPERATURE
 		
@@ -87,6 +89,7 @@ class PullHumidTempData extends Command {
 			DB::table('temperature')->insert(
 			    ['recorded_at' => $row->date_time, 'sensor1' => $row->tem1, 'sensor2' => $row->tem2, 'sensor3' => $row->tem3, 'sensor4' => $row->tem4, 'sensor5' => $row->tem5, 'sensor6' => $row->tem6, 'sensor7' => $row->tem7, 'sensor8' => $row->tem8, 'sensor9' => $row->tem9, 'sensor10' => $row->tem10, 'sensor11' => $row->tem11, 'sensor12' => $row->tem12, 'sensor13' => $row->tem13, 'sensor14' => $row->tem14, 'sensor15' => $row->tem15]);
 		}
+		$this->info('Inserted '.count($temperatureData).' new temperature records');
 		
 	}
 
