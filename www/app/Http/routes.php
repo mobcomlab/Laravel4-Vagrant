@@ -19,3 +19,6 @@ Route::controllers([
 	'auth' => 'Auth\AuthController',
 	'password' => 'Auth\PasswordController',
 ]);
+
+Route::get('api/now', 'APIController@now');
+Route::get('api/week', 'APIController@week');

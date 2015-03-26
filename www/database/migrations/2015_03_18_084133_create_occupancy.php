@@ -3,7 +3,7 @@
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Database\Migrations\Migration;
 
-class CreateTemperature extends Migration {
+class CreateOccupancy extends Migration {
 
 	/**
 	 * Run the migrations.
@@ -12,12 +12,10 @@ class CreateTemperature extends Migration {
 	 */
 	public function up()
 	{
-		Schema::create('temperature', function(Blueprint $table)
+		Schema::create('occupancy', function(Blueprint $table)
 		{
 			$table->increments('id');
-			$table->timestamp('recorded_at');
-			$table->string('sensor',32);
-			$table->float('value');
+			$table->timestamps();
 		});
 	}
 
@@ -28,7 +26,7 @@ class CreateTemperature extends Migration {
 	 */
 	public function down()
 	{
-		Schema::drop('temperature');
+		Schema::drop('occupancy');
 	}
 
 }

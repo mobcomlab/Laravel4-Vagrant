@@ -16,7 +16,7 @@ class CreatePower extends Migration {
 		{
 			$table->increments('id');
 			$table->timestamp('recorded_at');
-			$table->string('sensor');
+			$table->string('sensor',32);
 			$table->float('value');
 		});
 	}

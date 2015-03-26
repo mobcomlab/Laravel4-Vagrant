@@ -51,7 +51,7 @@ class PullPowerData extends Command {
 		
 		$this->info('Found Dropbox directory');
 		$files = Storage::disk('dropbox')->allFiles($directory); // All files (slower)
-		//$files = Storage::disk('dropbox')->files($directory.'/201502/19'); // For individual day
+		//$files = Storage::disk('dropbox')->files($directory.'/201503/07'); // For individual day
 		
 		$new_records_count = 0;
 		

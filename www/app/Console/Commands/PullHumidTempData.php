@@ -43,54 +43,100 @@ class PullHumidTempData extends Command {
 		DB::disconnect('humidtemp');
 
 		// Download the latest sqlite datafile (save to disk)
-		$url = 'http://www.etbuilding.sci.nu.ac.th/dir.html?id=2&file=database_2015_2_18.db&action=download';
+		$url = 'http://www.etbuilding.sci.nu.ac.th/dir.html?id=2&file=database_2015_3_7.db&action=download';
 		$client = new HttpClient();
 		$response = $client->get($url, ['save_to' => storage_path().'/humidtemp.sqlite']);
 		$this->info('Downloaded latest database');
 		
 		// HUMIDITY
+		$humiditySources = [
+			'Humid1_5' => [ 'humid1' => 'room1',
+							'humid2' => 'room2',
+							'humid3' => 'room3',
+							'humid4' => 'room4',
+							'humid5' => 'room5'],
+			'Humid6_10' => ['humid6' => 'room6',
+							'humid7' => 'room7',
+							'humid8' => 'room8',
+							'humid9' => 'room9',
+							'humid10' => 'room10'],
+			'Humid11_15' => ['humid11' => 'room11',
+							'humid12' => 'room12',
+							'humid13' => 'room13',
+							'humid14' => 'external',
+							'humid15' => 'corridor']];
 		
 		// Last updated date
 		$humidityMinDate = strtotime(DB::table('humidity')->max('recorded_at'));
 		
-		// Query only new records
-		$humidityQuery = DB::connection('humidtemp')->table('Humid_logging14')->select(DB::raw('*, (substr(date,7,4) || \'-\' || substr(date,4,2) || \'-\' || substr(date,1,2) || \' \' || time) date_time'));
+		foreach (array_keys($humiditySources) as $tableName) {
+		
+			// Query only new records
+			$humidityQuery = DB::connection('humidtemp')->table($tableName)->select(DB::raw('*, (substr(date,7,4) || \'-\' || substr(date,4,2) || \'-\' || substr(date,1,2) || \' \' || time) date_time'));
 	
-		if ($humidityMinDate) {
-			// time_since_min_date is time passed since $humidityMinDate
-			$humidityQuery->addSelect(DB::raw('julianday(substr(date,7,4) || \'-\' || substr(date,4,2) || \'-\' || substr(date,1,2) || \' \' || time) - julianday(\''.date('Y-m-d H:i:s', $humidityMinDate).'\') time_since_min_date'));
-			$humidityQuery->whereRaw('time_since_min_date > 0');
-		}
-		$humidityData = $humidityQuery->get();
+			if ($humidityMinDate) {
+				// time_since_min_date is time passed since $humidityMinDate
+				$humidityQuery->addSelect(DB::raw('julianday(substr(date,7,4) || \'-\' || substr(date,4,2) || \'-\' || substr(date,1,2) || \' \' || time) - julianday(\''.date('Y-m-d H:i:s', $humidityMinDate).'\') time_since_min_date'));
+				$humidityQuery->whereRaw('time_since_min_date > 0');
+			}
+			$humidityData = $humidityQuery->get();
 		
-		// Insert each new row into target db
-		foreach($humidityData as $row) {
-			DB::table('humidity')->insert(
-			    ['recorded_at' => $row->date_time, 'sensor1' => $row->humid1, 'sensor2' => $row->humid2, 'sensor3' => $row->humid3, 'sensor4' => $row->humid4, 'sensor5' => $row->humid5, 'sensor6' => $row->humid6, 'sensor7' => $row->humid7, 'sensor8' => $row->humid8, 'sensor9' => $row->humid9, 'sensor10' => $row->humid10, 'sensor11' => $row->humid11, 'sensor12' => $row->humid12, 'sensor13' => $row->humid13, 'sensor14' => $row->humid14, 'sensor15' => $row->humid15]);
+			// Insert each new row into target db
+			$records = [];
+			foreach ($humidityData as $row) {
+				// Create the records based on the source map
+				foreach (array_keys($humiditySources[$tableName]) as $columnName) {
+					$sensorName = $humiditySources[$tableName][$columnName];
+					$record = ['recorded_at' => $row->date_time, 'sensor' => $sensorName, 'value' => $row->{$columnName}];
+					$records[] = $record;
+				}
+			}
+			DB::table('humidity')->insert($records);
+			$this->info('Inserted '.count($records).' new humidity records from '.$tableName);
 		}
-		$this->info('Inserted '.count($humidityData).' new humidity records');
-		
+
 		// TEMPERATURE
-		
+		$temperatureSources = [
+			'Tem1_5' => [ 'tem1' => 'room1',
+							'tem2' => 'room2',
+							'tem3' => 'room3',
+							'tem4' => 'room4',
+							'tem5' => 'room5'],
+			'Tem6_10' => ['tem6' => 'room6',
+							'tem7' => 'room7',
+							'tem8' => 'room8',
+							'tem9' => 'room9',
+							'tem10' => 'room10'],
+			'Tem11_15' => ['tem11' => 'room11',
+							'tem12' => 'room12',
+							'tem13' => 'room13',
+							'tem14' => 'external',
+							'tem15' => 'corridor']];
 		// Last updated date
 		$temperatureMinDate = strtotime(DB::table('temperature')->max('recorded_at'));
 		
-		// Query only new records
-		$temperatureQuery = DB::connection('humidtemp')->table('Tem_logging14')->select(DB::raw('*, (substr(date,7,4) || \'-\' || substr(date,4,2) || \'-\' || substr(date,1,2) || \' \' || time) date_time'));
-		if ($temperatureMinDate) {
-			// time_since_min_date is time passed since $temperatureMinDate
-			$temperatureQuery->addSelect(DB::raw('julianday(substr(date,7,4) || \'-\' || substr(date,4,2) || \'-\' || substr(date,1,2) || \' \' || time) - julianday(\''.date('Y-m-d H:i:s', $temperatureMinDate).'\') time_since_min_date'));
-			$temperatureQuery->whereRaw('time_since_min_date > 0');
-		}
-		$temperatureData = $temperatureQuery->get();
+		foreach (array_keys($temperatureSources) as $tableName) {
+			// Query only new records
+			$temperatureQuery = DB::connection('humidtemp')->table($tableName)->select(DB::raw('*, (substr(date,7,4) || \'-\' || substr(date,4,2) || \'-\' || substr(date,1,2) || \' \' || time) date_time'));
+			if ($temperatureMinDate) {
+				// time_since_min_date is time passed since $temperatureMinDate
+				$temperatureQuery->addSelect(DB::raw('julianday(substr(date,7,4) || \'-\' || substr(date,4,2) || \'-\' || substr(date,1,2) || \' \' || time) - julianday(\''.date('Y-m-d H:i:s', $temperatureMinDate).'\') time_since_min_date'));
+				$temperatureQuery->whereRaw('time_since_min_date > 0');
+			}
+			$temperatureData = $temperatureQuery->get();
 		
-		// Insert each new row into target db
-		foreach($temperatureData as $row) {
-			DB::table('temperature')->insert(
-			    ['recorded_at' => $row->date_time, 'sensor1' => $row->tem1, 'sensor2' => $row->tem2, 'sensor3' => $row->tem3, 'sensor4' => $row->tem4, 'sensor5' => $row->tem5, 'sensor6' => $row->tem6, 'sensor7' => $row->tem7, 'sensor8' => $row->tem8, 'sensor9' => $row->tem9, 'sensor10' => $row->tem10, 'sensor11' => $row->tem11, 'sensor12' => $row->tem12, 'sensor13' => $row->tem13, 'sensor14' => $row->tem14, 'sensor15' => $row->tem15]);
+			// Insert each new row into target db
+			$records = [];
+			foreach($temperatureData as $row) {
+				foreach (array_keys($temperatureSources[$tableName]) as $columnName) {
+					$sensorName = $temperatureSources[$tableName][$columnName];
+					$record = ['recorded_at' => $row->date_time, 'sensor' => $sensorName, 'value' => $row->{$columnName}];
+					$records[] = $record;
+				}
+			}
+			DB::table('temperature')->insert($records);
+			$this->info('Inserted '.count($records).' new temperature records from '.$tableName);
 		}
-		$this->info('Inserted '.count($temperatureData).' new temperature records');
-		
 	}
 
 	/**

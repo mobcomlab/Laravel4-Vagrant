@@ -14,6 +14,7 @@ class Kernel extends ConsoleKernel {
 		'App\Console\Commands\Inspire',
 		'App\Console\Commands\PullHumidTempData',
 		'App\Console\Commands\PullPowerData',
+		'App\Console\Commands\PullOccupancy',
 	];
 
 	/**
