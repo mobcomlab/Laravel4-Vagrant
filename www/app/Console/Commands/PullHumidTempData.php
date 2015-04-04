@@ -5,6 +5,7 @@ use Symfony\Component\Console\Input\InputOption;
 use Symfony\Component\Console\Input\InputArgument;
 use Illuminate\Support\Facades\DB;
 use GuzzleHttp\Client as HttpClient;
+use DateTime;
 
 class PullHumidTempData extends Command {
 
@@ -43,7 +44,7 @@ class PullHumidTempData extends Command {
 		DB::disconnect('humidtemp');
 
 		// Download the latest sqlite datafile (save to disk)
-		$url = 'http://www.etbuilding.sci.nu.ac.th/dir.html?id=2&file=database_2015_3_7.db&action=download';
+		$url = 'http://www.etbuilding.sci.nu.ac.th/dir.html?id=2&file=database_2015_3_30.db&action=download';
 		$client = new HttpClient();
 		$response = $client->get($url, ['save_to' => storage_path().'/humidtemp.sqlite']);
 		$this->info('Downloaded latest database');
@@ -87,7 +88,9 @@ class PullHumidTempData extends Command {
 				// Create the records based on the source map
 				foreach (array_keys($humiditySources[$tableName]) as $columnName) {
 					$sensorName = $humiditySources[$tableName][$columnName];
-					$record = ['recorded_at' => $row->date_time, 'sensor' => $sensorName, 'value' => $row->{$columnName}];
+					$recorded_at = new DateTime($row->date_time);
+					$recorded_at->modify('-7 hour');
+					$record = ['recorded_at' => $recorded_at, 'sensor' => $sensorName, 'value' => $row->{$columnName}];
 					$records[] = $record;
 				}
 			}
@@ -130,7 +133,9 @@ class PullHumidTempData extends Command {
 			foreach($temperatureData as $row) {
 				foreach (array_keys($temperatureSources[$tableName]) as $columnName) {
 					$sensorName = $temperatureSources[$tableName][$columnName];
-					$record = ['recorded_at' => $row->date_time, 'sensor' => $sensorName, 'value' => $row->{$columnName}];
+					$recorded_at = new DateTime($row->date_time);
+					$recorded_at->modify('-7 hour');
+					$record = ['recorded_at' => $recorded_at, 'sensor' => $sensorName, 'value' => $row->{$columnName}];
 					$records[] = $record;
 				}
 			}

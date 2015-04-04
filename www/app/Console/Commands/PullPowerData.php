@@ -6,6 +6,7 @@ use Symfony\Component\Console\Input\InputArgument;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Facades\DB;
 use Maatwebsite\Excel\Facades\Excel;
+use DateTime;
 
 class PullPowerData extends Command {
 
@@ -82,7 +83,8 @@ class PullPowerData extends Command {
 						foreach ($results as $row) {
 							$time_str = $row[0];
 							$date_time_str = $match[1].'-'.$match[2].'-'.$match[3].' '.$time_str;
-							$date_time = strtotime($date_time_str);
+							$date_time = strtotime("-7 hours",strtotime($date_time_str)); // Convert GMT
+							$date_time_str = date("Y-m-d H:i",$date_time); // Back to string
 							if (!$powerMinDate || $powerMinDate < $date_time) {
 								foreach ($cols as $col) {
 									$val = $row[$col];

@@ -3,7 +3,7 @@
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Database\Migrations\Migration;
 
-class CreateOccupancy extends Migration {
+class CreateRoom extends Migration {
 
 	/**
 	 * Run the migrations.
@@ -12,14 +12,11 @@ class CreateOccupancy extends Migration {
 	 */
 	public function up()
 	{
-		Schema::create('occupancy', function(Blueprint $table)
+		Schema::create('room', function(Blueprint $table)
 		{
 			$table->increments('id');
-			$table->integer('room_id');
-			$table->string('description');
-			$table->timestamp('start');
-			$table->timestamp('end');
-			$table->integer('people');
+			$table->string('building');
+			$table->string('number');
 		});
 	}
 
@@ -30,7 +27,7 @@ class CreateOccupancy extends Migration {
 	 */
 	public function down()
 	{
-		Schema::drop('occupancy');
+		Schema::drop('room');
 	}
 
 }
