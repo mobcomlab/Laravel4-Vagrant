@@ -45,6 +45,27 @@ Vagrant.configure("2") do |config|
 			override.ssh.username = "ubuntu"
 			aws.tags = { 'Name' => 'My new server' }		
 		end
+    
+    lv4_config.vm.provider :google do |google|
+        override.vm.box = "gce"
+        #override.ssh.username = "USERNAME"
+        override.ssh.private_key_path = "~/.ssh/google_compute_engine"
+        google.google_project_id = "clicommon"
+        google.google_client_email = "566978081935-vefonu9a5f341bq2kqakanm41je63qfb@developer.gserviceaccount.com"
+        google.google_key_location = "~/.ssh/gce-clicommon.p12"
+
+        # Make sure to set this to trigger the zone_config
+        google.zone = "asia-east1-a"
+
+        google.zone_config "asia-east1-a" do |zone1f|
+            zone1f.name = "ccm-web"
+            zone1f.image = "ubuntu-1204-precise-v20150316"
+            zone1f.machine_type = "f1-micro"
+            zone1f.zone = "asia-east1-a"
+            zone1f.metadata = {'custom' => 'metadata', 'testing' => 'foobarbaz'}
+            zone1f.tags = ['web', 'app1']
+        end
+      end
 		
     end
 end
