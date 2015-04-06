@@ -20,9 +20,9 @@ Route::controllers([
 	'password' => 'Auth\PasswordController',
 ]);
 
-Route::get('api/now', 'APIController@now');
-Route::get('api/day', 'APIController@day');
-Route::get('api/week', 'APIController@week');
-Route::get('api/month', 'APIController@month');
+Route::get('api/now', 'ApiController@now');
+Route::get('api/day', 'ApiController@day');
+Route::get('api/week', 'ApiController@week');
+Route::get('api/month', 'ApiController@month');
 
 Route::get('export/download', 'ExportController@download');

@@ -134,5 +134,6 @@ function formatDateTime(dt) {
 }
 
 function formatTime(dt) {
-	return moment.utc(dt).format('HH:mm');
+	//return moment.utc(dt).tz('Asia/Bangkok').format('HH:mm');
+	return moment.utc(dt).add(7,'hours').format('HH:mm');
 }
