@@ -7,7 +7,7 @@
 	<title>Climate Comfort Monitoring</title>
 
 	<link href="/css/app.css" rel="stylesheet">
-
+	
 	<!-- Fonts -->
 	<link href='//fonts.googleapis.com/css?family=Roboto:400,300' rel='stylesheet' type='text/css'>
 
@@ -53,7 +53,7 @@
 					<li class="dropdown">
 						<a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">Download <span class="caret"></span></a>
 						<ul class="dropdown-menu" role="menu">
-							<li><a href="#">Last 24 hours</a></li>
+							<li><a href="/export/day">Last 24 hours</a></li>
 							<li><a href="#">Last 7 days</a></li>
 							<li><a href="#">Last 30 days</a></li>
 						</ul>

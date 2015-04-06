@@ -78,7 +78,7 @@
 	<div class="row">
 		<div class="col-md-12">
 			<div class="panel panel-default">
-				<div class="panel-heading text-center">Last 24 hours | Last 7 days | Last 30 days</div>
+				<div class="panel-heading text-center">Last 24 hours</div>
 				<div class="panel-body">
 					<script type="text/javascript" src="https://www.google.com/jsapi?autoload={'modules':[{'name':'visualization','version':'1.1','packages':['corechart']}]}"></script>
 					<div id="chart_div" style="width: 100%; height: 280px;"></div>

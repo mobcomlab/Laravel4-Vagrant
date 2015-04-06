@@ -24,3 +24,5 @@ Route::get('api/now', 'APIController@now');
 Route::get('api/day', 'APIController@day');
 Route::get('api/week', 'APIController@week');
 Route::get('api/month', 'APIController@month');
+
+Route::get('export/day', 'ExportController@day');
