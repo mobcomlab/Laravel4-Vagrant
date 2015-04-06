@@ -47,7 +47,7 @@ Vagrant.configure("2") do |config|
 		end
     
     # GCE specific config
-    lv4_config.vm.provider :google do |google|
+    lv4_config.vm.provider :google do |google, override|
         override.vm.box = "gce"
         #override.ssh.username = "USERNAME"
         override.ssh.private_key_path = "~/.ssh/google_compute_engine"
