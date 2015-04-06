@@ -49,8 +49,8 @@ Vagrant.configure("2") do |config|
     # GCE specific config
     lv4_config.vm.provider :google do |google, override|
         override.vm.box = "gce"
-        #override.ssh.username = "USERNAME"
-        override.ssh.private_key_path = "~/.ssh/google_compute_engine"
+        override.ssh.username = "ant"
+        override.ssh.private_key_path = "~/.ssh/gce_rsa"
         google.google_project_id = "clicommon"
         google.google_client_email = "566978081935-vefonu9a5f341bq2kqakanm41je63qfb@developer.gserviceaccount.com"
         google.google_key_location = "~/.ssh/gce-clicommon.p12"
