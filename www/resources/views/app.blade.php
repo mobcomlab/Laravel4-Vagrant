@@ -53,9 +53,9 @@
 					<li class="dropdown">
 						<a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">Download <span class="caret"></span></a>
 						<ul class="dropdown-menu" role="menu">
-							<li><a href="/export/day">Last 24 hours</a></li>
-							<li><a href="#">Last 7 days</a></li>
-							<li><a href="#">Last 30 days</a></li>
+							<li><a href="/export/download?period=day">Last 24 hours</a></li>
+							<li><a href="/export/download?period=week">Last 7 days</a></li>
+							<li><a href="/export/download?period=month">Last 30 days</a></li>
 						</ul>
 					</li>
 				</ul>

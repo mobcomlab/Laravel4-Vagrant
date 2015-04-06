@@ -46,6 +46,7 @@ Vagrant.configure("2") do |config|
 			aws.tags = { 'Name' => 'My new server' }		
 		end
     
+    # GCE specific config
     lv4_config.vm.provider :google do |google|
         override.vm.box = "gce"
         #override.ssh.username = "USERNAME"
