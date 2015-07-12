@@ -1,6 +1,6 @@
 #!/bin/bash
 
-sshhostname="myproject"
+sshhostname="ccm"
 
 # If this is first time then add ssh config
 ssh -q $sshhostname quit
@@ -16,3 +16,5 @@ rsync --verbose --delete --archive -z --exclude .vagrant/ --exclude vendor --exc
 # Run composer install
 ssh $sshhostname "sudo chmod -R 777 /var/www/storage ; cd /var/www ; sudo composer install"
 
+# Set up Laravel scheduler
+ssh $sshhostname "echo '* * * * * php /var/www/artisan schedule:run 1>> /dev/null 2>&1' | crontab -"
