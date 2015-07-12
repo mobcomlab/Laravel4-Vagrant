@@ -2,7 +2,9 @@
 
 use Illuminate\Support\Facades\Config;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Input;
 use DateTime;
+use App\Models\Room;
 
 class ApiController extends Controller {
 
@@ -27,34 +29,39 @@ class ApiController extends Controller {
 			DB::enableQueryLog();
 		}
 		
+		$room = Room::find(Input::get('room', 1));
+		if ($room == null) {
+			return response()->json(['success' => false, 'message' => 'Room not found']);
+		}
+		
 		// Humidity of sensor room1
-		$humiditySensors = ['room7','room10','room11','room12'];
+		$humiditySensors = explode(',', $room->humidity_sensor_names);
 		$humidityMaxDate = DB::table('humidity')->whereIn('sensor',$humiditySensors)->max('recorded_at');
 		$currentHumidity = DB::table('humidity')->whereIn('sensor',$humiditySensors)
 							->where('recorded_at',$humidityMaxDate)->avg('value');
 		
 		// Humidity of sensor external
-		$humidityExternalSensorName = 'external';
+		$humidityExternalSensorName = explode(',', $room->external_humidity_sensor_names);
 		$humidityExternalMaxDate = DB::table('humidity')->where('sensor',$humidityExternalSensorName)
 							->max('recorded_at');
 		$currentHumidityExternal = DB::table('humidity')->where('sensor',$humidityExternalSensorName)
 							->where('recorded_at',$humidityExternalMaxDate)->pluck('value');
 
 		// Temp of sensor room1
-		$temperatureSensors = ['room7','room10','room11','room12'];
+		$temperatureSensors = explode(',', $room->temperature_sensor_names);
 		$temperatureMaxDate = DB::table('temperature')->whereIn('sensor',$temperatureSensors)->max('recorded_at');
 		$currentTemperature = DB::table('temperature')->whereIn('sensor',$temperatureSensors)
 							->where('recorded_at',$temperatureMaxDate)->avg('value');
 		
 		// Temp of sensor external
-		$temperatureExternalSensorName = 'external';
+		$temperatureExternalSensorName = explode(',', $room->external_temperature_sensor_names);
 		$temperatureExternalMaxDate = DB::table('temperature')->where('sensor',$temperatureExternalSensorName)
 							->max('recorded_at');
 		$currentTemperatureExternal = DB::table('temperature')->where('sensor',$temperatureExternalSensorName)
 							->where('recorded_at',$temperatureExternalMaxDate)->pluck('value');
 	
 		// Power
-		$powerSensors = ['sc5_213_60a','sc5_213_25a'];
+		$powerSensors = explode(',', $room->power_sensor_names);
 		$powerMaxDate = DB::table('power')->whereIn('sensor',$powerSensors)->max('recorded_at');
 		$powerNow = DB::table('power')->whereIn('sensor',$powerSensors)
 							->where('recorded_at',$powerMaxDate)->sum('value');
@@ -76,6 +83,7 @@ class ApiController extends Controller {
 		$occupancy = DB::table('occupancy')->where('start','<=',new DateTime)->where('end','>=', new DateTime)->first();
 	
 		$result = [
+			'success' => true,
 			'humidity' => ['value' => $currentHumidity, 'recorded_at' => $humidityMaxDate, 'sensors' => $humiditySensors],
 			'external_humidity' => ['value' => $currentHumidityExternal, 'recorded_at' => $humidityExternalMaxDate, 'sensor' => $humidityExternalSensorName],
 			'temperature' => ['value' => $currentTemperature, 'recorded_at' => $temperatureMaxDate, 'sensors' => $temperatureSensors],
@@ -92,28 +100,24 @@ class ApiController extends Controller {
 	
 	public function day()
 	{
+		$room = Room::find(Input::get('room', 1));
+		if ($room == null) {
+			return response()->json(['success' => false, 'message' => 'Room not found']);
+		}
 		
-		/* SELECT CONCAT( DATE( recorded_at ) ,  ' ', MAKETIME( HOUR( recorded_at ) , 0, 0 ) ) recorded_at_hour, AVG( value ) value_avg
-FROM  `temperature` 
-WHERE sensor =  'room1'
-AND recorded_at >= DATE_SUB( NOW( ) , INTERVAL 23 HOUR ) 
-GROUP BY recorded_at_hour
-ORDER BY recorded_at_hour
-		*/
-		
-		$humiditySensors = ['room7','room10','room11','room12'];
+		$humiditySensors = explode(',', $room->humidity_sensor_names);
 		$humidities = DB::table('humidity')->whereIn('sensor',$humiditySensors)
 							->select(DB::raw('CONCAT(DATE(recorded_at),\' \',MAKETIME(HOUR(recorded_at),0,0)) recorded_at_hour, AVG(value) value'))
 							->where('recorded_at','>=',DB::raw('DATE_SUB(NOW(),INTERVAL 23 HOUR)'))
 							->groupBy('recorded_at_hour')->orderBy('recorded_at_hour')->get();
 
-		$temperatureSensors = ['room7','room10','room11','room12'];
+		$temperatureSensors = explode(',', $room->temperature_sensor_names);
 		$temperatures = DB::table('temperature')->whereIn('sensor',$temperatureSensors)
 							->select(DB::raw('CONCAT(DATE(recorded_at),\' \',MAKETIME(HOUR(recorded_at),0,0)) recorded_at_hour, AVG(value) value'))
 							->where('recorded_at','>=',DB::raw('DATE_SUB(NOW(),INTERVAL 23 HOUR)'))
 							->groupBy('recorded_at_hour')->orderBy('recorded_at_hour')->get();
 		
-		$powerSensors = ['sc5_213_60a','sc5_213_25a'];
+		$powerSensors = explode(',', $room->power_sensor_names);
 		$powers = DB::select('SELECT concat(date(recorded_at),\' \',maketime(hour(recorded_at),0,0)) recorded_at_hour, 
 			avg(value) value FROM (
    	 			SELECT recorded_at, sum(value) value FROM power

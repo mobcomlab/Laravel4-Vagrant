@@ -9,6 +9,9 @@ use Maatwebsite\Excel\Facades\Excel;
 use DateTime;
 
 class PullPowerData extends Command {
+	
+	const DIRECTORY = 'Naresuan Univ.2';
+	const TIME_COLUMN_NAME = 'time';
 
 	/**
 	 * The console command name.
@@ -40,10 +43,8 @@ class PullPowerData extends Command {
 	 * @return mixed
 	 */
 	public function fire()
-	{
-		$directory = 'Naresuan Univ';
-		
-		if (!Storage::disk('dropbox')->exists($directory)) {
+	{	
+		if (!Storage::disk('dropbox')->exists(self::DIRECTORY)) {
 			$this->error('Dropbox directory not found');
 			return;
 		}
@@ -51,8 +52,8 @@ class PullPowerData extends Command {
 		$powerMinDate = strtotime(DB::table('power')->max('recorded_at'));
 		
 		$this->info('Found Dropbox directory');
-		$files = Storage::disk('dropbox')->allFiles($directory); // All files (slower)
-		//$files = Storage::disk('dropbox')->files($directory.'/201503/07'); // For individual day
+		$files = Storage::disk('dropbox')->allFiles(self::DIRECTORY); // All files (slower)
+		//$files = Storage::disk('dropbox')->files(self::DIRECTORY.'/201507/01'); // For individual day
 		
 		$new_records_count = 0;
 		
@@ -74,14 +75,18 @@ class PullPowerData extends Command {
 
 					// Read contents
 					$this->info('Processing '.$file);
-					Excel::load(storage_path().'/app/'.$file_name, function($reader) use($match, $powerMinDate,&$new_records_count) {
+					Excel::load(storage_path().'/app/'.$file_name, function($reader) use ($match, $powerMinDate, &$new_records_count) {
 						$results = $reader->toArray();
+						
+						if (count($results) == 0) {
+							return;
+						}
 						
 						$cols = array_keys($results[0]);
 						unset($cols[0]);
 						
 						foreach ($results as $row) {
-							$time_str = $row[0];
+							$time_str = $row[self::TIME_COLUMN_NAME];
 							$date_time_str = $match[1].'-'.$match[2].'-'.$match[3].' '.$time_str;
 							$date_time = strtotime("-7 hours",strtotime($date_time_str)); // Convert GMT
 							$date_time_str = date("Y-m-d H:i",$date_time); // Back to string

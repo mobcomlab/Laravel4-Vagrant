@@ -5,6 +5,7 @@ use Illuminate\Support\Facades\Input;
 use Illuminate\Support\Facades\DB;
 use Maatwebsite\Excel\Facades\Excel;
 use DateTime;
+use App\Models\Room;
 
 class ExportController extends Controller {
 
@@ -25,6 +26,7 @@ class ExportController extends Controller {
 	 */
 	public function download()
 	{
+		$room = Room::findOrFail(Input::get('room', 1));
 		
 		$sqlForPeriod = 'DATE_SUB(NOW(),INTERVAL 24 HOUR)';
 		if (Input::get('period') == 'week') {
@@ -34,17 +36,17 @@ class ExportController extends Controller {
 			$sqlForPeriod = 'DATE_SUB(NOW(),INTERVAL 30 DAY)';
 		}
 		
-		Excel::create('ccm24h', function($excel) use ($sqlForPeriod) {
+		Excel::create('ccm24h', function($excel) use ($sqlForPeriod, $room) {
 
 			// Set the title
 			$excel->setTitle('Climate Comfort Monitoring (Last 24 hours)');
 			$excel->setCreator('Mobile Computing Lab')->setCompany('Mobile Computing Lab');
 			
-		    $excel->sheet('Humidity', function($sheet) use ($sqlForPeriod) {
+		    $excel->sheet('Humidity', function($sheet) use ($sqlForPeriod, $room) {
 
 		        $sheet->setOrientation('landscape');
 				
-				$humiditySensors = ['room7','room10','room11','room12','corridor','external'];
+				$humiditySensors = array_merge(explode(',', $room->humidity_sensor_names), explode(',', $room->external_humidity_sensor_names));
 				$humidities = DB::table('humidity')->whereIn('sensor',$humiditySensors)
 									->where('recorded_at','>=',DB::raw($sqlForPeriod))
 									->orderBy('recorded_at')->get();
@@ -70,11 +72,11 @@ class ExportController extends Controller {
 
 		    });
 			
-		    $excel->sheet('Temperature', function($sheet) use ($sqlForPeriod) {
+		    $excel->sheet('Temperature', function($sheet) use ($sqlForPeriod, $room) {
 
 		        $sheet->setOrientation('landscape');
 				
-				$temperatureSensors = ['room7','room10','room11','room12','corridor','external'];
+				$temperatureSensors = array_merge(explode(',', $room->temperature_sensor_names), explode(',', $room->external_temperature_sensor_names));
 				$temperatures = DB::table('temperature')->whereIn('sensor',$temperatureSensors)
 									->where('recorded_at','>=',DB::raw($sqlForPeriod))
 									->orderBy('recorded_at')->get();
@@ -100,11 +102,11 @@ class ExportController extends Controller {
 
 		    });
 			
-		    $excel->sheet('Power', function($sheet) use ($sqlForPeriod) {
+		    $excel->sheet('Power', function($sheet) use ($sqlForPeriod, $room) {
 
 		        $sheet->setOrientation('landscape');
 				
-				$powerSensors = ['sc5_213_60a','sc5_213_25a'];
+				$powerSensors = explode(',', $room->power_sensor_names);
 				$powers = DB::table('power')->whereIn('sensor',$powerSensors)
 									->where('recorded_at','>=',DB::raw($sqlForPeriod))
 									->orderBy('recorded_at')->get();
@@ -130,7 +132,7 @@ class ExportController extends Controller {
 
 		    });
 
-		})->download('xls');
+		})->download('xlsx');
 
 	}
 
