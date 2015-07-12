@@ -25,7 +25,7 @@ class Kernel extends ConsoleKernel {
 	 */
 	protected function schedule(Schedule $schedule)
 	{
-		$schedule->command('pull:humidtemp')->everyMinute();
+		$schedule->command('pull:humidtemp')->cron('* * * * *');
 		$schedule->command('pull:power')->everyFiveMinutes();
 	}
 
