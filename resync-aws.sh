@@ -1,6 +1,6 @@
 #!/bin/bash
 
-sshhostname="myproject"
+sshhostname="ccm"
 
 # If this is first time then add ssh config
 ssh -q $sshhostname quit
