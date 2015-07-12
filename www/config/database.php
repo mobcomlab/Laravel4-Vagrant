@@ -46,11 +46,13 @@ return [
 
 	'connections' => [
 
+		/*
 		'humidtemp' => [
 			'driver'   => 'sqlite',
 			'database' => storage_path().'/humidtemp.sqlite',
 			'prefix'   => '',
 		],
+		*/
 
 		'mysql' => [
 			'driver'    => 'mysql',
