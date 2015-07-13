@@ -62,7 +62,9 @@ class ExportController extends Controller {
 				set_time_limit(60);
 				$sheet->appendRow(array_merge(['date/time'],$humiditySensors));
 				foreach($results as $recorded_at => $sensorValues) {
-					$row = [$recorded_at];
+					$date = new DateTime($recorded_at);
+					$date->modify('+7 hour');
+					$row = [$date->format('Y-m-d H:i:s')];
 					foreach ($humiditySensors as $sensor) {
 						$row[] = $sensorValues[$sensor];
 					}
@@ -92,7 +94,9 @@ class ExportController extends Controller {
 				set_time_limit(60);
 				$sheet->appendRow(array_merge(['date/time'],$temperatureSensors));
 				foreach($results as $recorded_at => $sensorValues) {
-					$row = [$recorded_at];
+					$date = new DateTime($recorded_at);
+					$date->modify('+7 hour');
+					$row = [$date->format('Y-m-d H:i:s')];
 					foreach ($temperatureSensors as $sensor) {
 						$row[] = $sensorValues[$sensor];
 					}
@@ -122,7 +126,9 @@ class ExportController extends Controller {
 				set_time_limit(60);
 				$sheet->appendRow(array_merge(['date/time'],$powerSensors));
 				foreach($results as $recorded_at => $sensorValues) {
-					$row = [$recorded_at];
+					$date = new DateTime($recorded_at);
+					$date->modify('+7 hour');
+					$row = [$date->format('Y-m-d H:i:s')];
 					foreach ($powerSensors as $sensor) {
 						$row[] = $sensorValues[$sensor];
 					}
