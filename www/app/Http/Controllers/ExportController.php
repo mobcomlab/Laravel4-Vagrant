@@ -46,7 +46,7 @@ class ExportController extends Controller {
 
 		        $sheet->setOrientation('landscape');
 				
-				$humiditySensors = array_merge(explode(',', $room->humidity_sensor_names), explode(',', $room->external_humidity_sensor_names));
+				$humiditySensors = array_merge(explode(',', $room->humidity_sensor_names), explode(',', $room->external_humidity_sensor_names), ['humid15']);
 				$humidities = DB::table('humidity')->whereIn('sensor',$humiditySensors)
 									->where('recorded_at','>=',DB::raw($sqlForPeriod))
 									->orderBy('recorded_at')->get();
@@ -78,7 +78,7 @@ class ExportController extends Controller {
 
 		        $sheet->setOrientation('landscape');
 				
-				$temperatureSensors = array_merge(explode(',', $room->temperature_sensor_names), explode(',', $room->external_temperature_sensor_names));
+				$temperatureSensors = array_merge(explode(',', $room->temperature_sensor_names), explode(',', $room->external_temperature_sensor_names), ['tem15']);
 				$temperatures = DB::table('temperature')->whereIn('sensor',$temperatureSensors)
 									->where('recorded_at','>=',DB::raw($sqlForPeriod))
 									->orderBy('recorded_at')->get();
