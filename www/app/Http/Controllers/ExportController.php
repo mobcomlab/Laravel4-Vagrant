@@ -27,41 +27,78 @@ class ExportController extends Controller {
 	public function download()
 	{
 		$room = Room::findOrFail(Input::get('room', 1));
-		
+
+        $filename = 'ccm24h';
 		$sqlForPeriod = 'DATE_SUB(NOW(),INTERVAL 24 HOUR)';
 		if (Input::get('period') == 'week') {
+            $filename = 'ccm7days';
 			$sqlForPeriod = 'DATE_SUB(NOW(),INTERVAL 7 DAY)';
 		}
 		else if (Input::get('period') == 'month') {
-			$sqlForPeriod = 'DATE_SUB(NOW(),INTERVAL 30 DAY)';
+			$filename = 'ccm30days';
+            $sqlForPeriod = 'DATE_SUB(NOW(),INTERVAL 30 DAY)';
 		}
-		
-		Excel::create('ccm24h', function($excel) use ($sqlForPeriod, $room) {
+
+        // Humidity data
+        $humiditySensors = array_merge(explode(',', $room->humidity_sensor_names), explode(',', $room->external_humidity_sensor_names), ['humid15']);
+        $humidities = DB::table('humidity')->whereIn('sensor',$humiditySensors)
+            ->where('recorded_at','>=',DB::raw($sqlForPeriod))->orderBy('recorded_at')->get();
+        $humidityResults = [];
+        foreach($humidities as $row) {
+            if (!isset($humidityResults[$row->recorded_at])) {
+                $humidityResults[$row->recorded_at] = [];
+            }
+            $humidityResults[$row->recorded_at][$row->sensor] = $row->value;
+        }
+        $humidities = null; // Free mem
+
+        set_time_limit(30);
+
+        // Temperature data
+        $temperatureSensors = array_merge(explode(',', $room->temperature_sensor_names), explode(',', $room->external_temperature_sensor_names), ['tem15']);
+        $temperatures = DB::table('temperature')->whereIn('sensor',$temperatureSensors)
+            ->where('recorded_at','>=',DB::raw($sqlForPeriod))
+            ->orderBy('recorded_at')->get();
+        $temperatureResults = [];
+        foreach($temperatures as $row) {
+            if (!isset($temperatureResults[$row->recorded_at])) {
+                $temperatureResults[$row->recorded_at] = [];
+            }
+            $temperatureResults[$row->recorded_at][$row->sensor] = $row->value;
+        }
+        $temperatures = null;
+
+        set_time_limit(30);
+
+        // Power data
+        $powerSensors = explode(',', $room->power_sensor_names);
+        $powers = DB::table('power')->whereIn('sensor',$powerSensors)
+            ->where('recorded_at','>=',DB::raw($sqlForPeriod))
+            ->orderBy('recorded_at')->get();
+        $powerResults = [];
+        foreach($powers as $row) {
+            if (!isset($powerResults[$row->recorded_at])) {
+                $powerResults[$row->recorded_at] = [];
+            }
+            $powerResults[$row->recorded_at][$row->sensor] = $row->value;
+        }
+        $powers = null;
+
+        set_time_limit(30);
+
+        // Save as excel
+		Excel::create($filename, function($excel) use ($humiditySensors, $humidityResults,
+            $temperatureSensors, $temperatureResults, $powerSensors, $powerResults) {
 
 			// Set the title
-			$excel->setTitle('Climate Comfort Monitoring (Last 24 hours)');
-			$excel->setCreator('Mobile Computing Lab')->setCompany('Mobile Computing Lab');
+			$excel->setTitle('Climate Comfort Monitoring');
+			$excel->setCreator('Mobile Computing Lab');
 			
-		    $excel->sheet('Humidity', function($sheet) use ($sqlForPeriod, $room) {
+		    $excel->sheet('Humidity', function($sheet) use ($humiditySensors, $humidityResults) {
 
 		        $sheet->setOrientation('landscape');
-				
-				$humiditySensors = array_merge(explode(',', $room->humidity_sensor_names), explode(',', $room->external_humidity_sensor_names), ['humid15']);
-				$humidities = DB::table('humidity')->whereIn('sensor',$humiditySensors)
-									->where('recorded_at','>=',DB::raw($sqlForPeriod))
-									->orderBy('recorded_at')->get();
-				
-				$results = [];
-				foreach($humidities as $row) {
-					if (!isset($results[$row->recorded_at])) {
-						$results[$row->recorded_at] = [];
-					}
-					$results[$row->recorded_at][$row->sensor] = $row->value;
-				}
-				
-				set_time_limit(60);
 				$sheet->appendRow(array_merge(['date/time'],$humiditySensors));
-				foreach($results as $recorded_at => $sensorValues) {
+				foreach ($humidityResults as $recorded_at => $sensorValues) {
 					$date = new DateTime($recorded_at);
 					$date->modify('+7 hour');
 					$row = [$date->format('Y-m-d H:i:s')];
@@ -70,30 +107,13 @@ class ExportController extends Controller {
 					}
 					$sheet->appendRow($row);
 				}
-				set_time_limit(60);
-
 		    });
 			
-		    $excel->sheet('Temperature', function($sheet) use ($sqlForPeriod, $room) {
+		    $excel->sheet('Temperature', function($sheet) use ($temperatureSensors, $temperatureResults) {
 
 		        $sheet->setOrientation('landscape');
-				
-				$temperatureSensors = array_merge(explode(',', $room->temperature_sensor_names), explode(',', $room->external_temperature_sensor_names), ['tem15']);
-				$temperatures = DB::table('temperature')->whereIn('sensor',$temperatureSensors)
-									->where('recorded_at','>=',DB::raw($sqlForPeriod))
-									->orderBy('recorded_at')->get();
-				
-				$results = [];
-				foreach($temperatures as $row) {
-					if (!isset($results[$row->recorded_at])) {
-						$results[$row->recorded_at] = [];
-					}
-					$results[$row->recorded_at][$row->sensor] = $row->value;
-				}
-				
-				set_time_limit(60);
 				$sheet->appendRow(array_merge(['date/time'],$temperatureSensors));
-				foreach($results as $recorded_at => $sensorValues) {
+				foreach($temperatureResults as $recorded_at => $sensorValues) {
 					$date = new DateTime($recorded_at);
 					$date->modify('+7 hour');
 					$row = [$date->format('Y-m-d H:i:s')];
@@ -102,30 +122,13 @@ class ExportController extends Controller {
 					}
 					$sheet->appendRow($row);
 				}
-				set_time_limit(60);
-
 		    });
 			
-		    $excel->sheet('Power', function($sheet) use ($sqlForPeriod, $room) {
+		    $excel->sheet('Power', function($sheet) use ($powerSensors, $powerResults) {
 
 		        $sheet->setOrientation('landscape');
-				
-				$powerSensors = explode(',', $room->power_sensor_names);
-				$powers = DB::table('power')->whereIn('sensor',$powerSensors)
-									->where('recorded_at','>=',DB::raw($sqlForPeriod))
-									->orderBy('recorded_at')->get();
-				
-				$results = [];
-				foreach($powers as $row) {
-					if (!isset($results[$row->recorded_at])) {
-						$results[$row->recorded_at] = [];
-					}
-					$results[$row->recorded_at][$row->sensor] = $row->value;
-				}
-				
-				set_time_limit(60);
 				$sheet->appendRow(array_merge(['date/time'],$powerSensors));
-				foreach($results as $recorded_at => $sensorValues) {
+				foreach($powerResults as $recorded_at => $sensorValues) {
 					$date = new DateTime($recorded_at);
 					$date->modify('+7 hour');
 					$row = [$date->format('Y-m-d H:i:s')];
@@ -134,12 +137,9 @@ class ExportController extends Controller {
 					}
 					$sheet->appendRow($row);
 				}
-				set_time_limit(60);
-
 		    });
 
 		})->download('xlsx');
-
 	}
 
 }
