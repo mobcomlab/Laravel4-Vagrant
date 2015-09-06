@@ -88,3 +88,11 @@
 	</div>
 </div>
 @endsection
+
+@section('body-close')
+    <script>
+        $(document).ready(function() {
+            startUpdates();
+        });
+    </script>
+@endsection

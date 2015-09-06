@@ -1,5 +1,6 @@
 var isLoading = false;
 var intervalRefreshContent;
+var intervalRefreshGraph;
 
 function refreshContent() {
 	if (isLoading) {
@@ -92,14 +93,12 @@ function refreshGraph() {
 	});
 }
 
-
-$(document).ready(function() {
-	refreshContent();
-	refreshGraph();
-	intervalRefreshContent = setInterval(refreshContent, 15000);
-	intervalRefreshGraph = setInterval(refreshGraph, 29000);
-});
-
+function startUpdates() {
+    refreshContent();
+    refreshGraph();
+    intervalRefreshContent = setInterval(refreshContent, 15000);
+    intervalRefreshGraph = setInterval(refreshGraph, 29000);
+}
 function stopUpdates() {
 	window.clearInterval(intervalRefreshContent);
 	window.clearInterval(intervalRefreshGraph);
@@ -137,3 +136,4 @@ function formatTime(dt) {
 	//return moment.utc(dt).tz('Asia/Bangkok').format('HH:mm');
 	return moment.utc(dt).add(7,'hours').format('HH:mm');
 }
+

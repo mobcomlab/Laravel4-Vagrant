@@ -6,17 +6,20 @@
 	<meta name="viewport" content="width=device-width, initial-scale=1">
 	<title>Climate Comfort Monitoring</title>
 
-	<link href="/css/app.css" rel="stylesheet">
+    <link rel="stylesheet" href="//maxcdn.bootstrapcdn.com/bootstrap/3.3.5/css/bootstrap.min.css">
+    <link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/bootstrap-datepicker/1.4.0/css/bootstrap-datepicker3.min.css">
 	
 	<!-- Fonts -->
-	<link href='//fonts.googleapis.com/css?family=Roboto:400,300' rel='stylesheet' type='text/css'>
+	<link rel="stylesheet" href="//fonts.googleapis.com/css?family=Roboto:400,300">
 
 	<!-- HTML5 shim and Respond.js for IE8 support of HTML5 elements and media queries -->
 	<!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
 	<!--[if lt IE 9]>
-		<script src="https://oss.maxcdn.com/html5shiv/3.7.2/html5shiv.min.js"></script>
-		<script src="https://oss.maxcdn.com/respond/1.4.2/respond.min.js"></script>
+		<script src="//oss.maxcdn.com/html5shiv/3.7.2/html5shiv.min.js"></script>
+		<script src="//oss.maxcdn.com/respond/1.4.2/respond.min.js"></script>
 	<![endif]-->
+
+    @yield('head-close')
 </head>
 <body>
 	<nav class="navbar navbar-default">
@@ -37,27 +40,19 @@
 				</ul>
 
 				<ul class="nav navbar-nav navbar-right">
-					<!--
 					@if (Auth::guest())
 						<li><a href="/auth/login">Login</a></li>
-						<li><a href="/auth/register">Register</a></li>
+						<!--<li><a href="/auth/register">Register</a></li>-->
 					@else
 						<li class="dropdown">
 							<a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">{{ Auth::user()->name }} <span class="caret"></span></a>
 							<ul class="dropdown-menu" role="menu">
+                                <li><a href="{{ route('export') }}">Export</a></li>
+                                <li role="separator" class="divider"></li>
 								<li><a href="/auth/logout">Logout</a></li>
 							</ul>
 						</li>
 					@endif
-					-->
-					<li class="dropdown">
-						<a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">Download <span class="caret"></span></a>
-						<ul class="dropdown-menu" role="menu">
-							<li><a href="/export/download?period=day">Last 24 hours</a></li>
-							<li><a href="/export/download?period=week">Last 7 days</a></li>
-							<li><a href="/export/download?period=month">Last 30 days</a></li>
-						</ul>
-					</li>
 				</ul>
 			</div>
 		</div>
@@ -67,10 +62,13 @@
 
 	<!-- Scripts -->
 	<script src="//cdnjs.cloudflare.com/ajax/libs/jquery/2.1.3/jquery.min.js"></script>
-	<script src="//cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.3.1/js/bootstrap.min.js"></script>
+	<script src="//cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.3.5/js/bootstrap.min.js"></script>
 	<script src="//cdnjs.cloudflare.com/ajax/libs/moment.js/2.9.0/moment-with-locales.min.js"></script>
 	<script src="//cdnjs.cloudflare.com/ajax/libs/moment-timezone/0.3.1/moment-timezone.min.js"></script>
-	
+    <script src="//cdnjs.cloudflare.com/ajax/libs/bootstrap-datepicker/1.4.0/js/bootstrap-datepicker.min.js"></script>
+
 	<script src="/js/app.js"></script>
+
+    @yield('body-close')
 </body>
 </html>

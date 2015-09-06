@@ -13,8 +13,6 @@
 
 Route::get('/', 'WelcomeController@index');
 
-Route::get('home', 'HomeController@index');
-
 Route::controllers([
 	'auth' => 'Auth\AuthController',
 	'password' => 'Auth\PasswordController',
@@ -25,4 +23,5 @@ Route::get('api/day', 'ApiController@day');
 Route::get('api/week', 'ApiController@week');
 Route::get('api/month', 'ApiController@month');
 
-Route::get('export/download', 'ExportController@download');
+Route::get('export', ['as' => 'export', 'uses' => 'ExportController@index']);
+Route::post('export/download', ['as' => 'download', 'uses' => 'ExportController@download']);

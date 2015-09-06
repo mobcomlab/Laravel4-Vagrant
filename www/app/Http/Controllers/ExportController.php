@@ -3,8 +3,11 @@
 use Illuminate\Support\Facades\Config;
 use Illuminate\Support\Facades\Input;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Redirect;
+use Illuminate\Support\Facades\Response;
 use Maatwebsite\Excel\Facades\Excel;
 use DateTime;
+use Carbon\Carbon;
 use App\Models\Room;
 
 class ExportController extends Controller {
@@ -16,15 +19,168 @@ class ExportController extends Controller {
 	 */
 	public function __construct()
 	{
-		$this->middleware('guest');
+		$this->middleware('auth');
 	}
 
+
+    public function index()
+    {
+        return view('export');
+    }
+
+    /**
+     * Download the spreadsheet for any period.
+     *
+     * @return Response
+     */
+    public function download()
+    {
+        $room = Room::findOrFail(Input::get('room', 1));
+        $humiditySensors = array_merge(explode(',', $room->humidity_sensor_names), explode(',', $room->external_humidity_sensor_names), ['humid15']);
+        $temperatureSensors = array_merge(explode(',', $room->temperature_sensor_names), explode(',', $room->external_temperature_sensor_names), ['tem15']);
+        $powerSensors = explode(',', $room->power_sensor_names);
+
+
+        $startDate = Input::has('startDate') ? Carbon::createFromFormat('d/m/Y', Input::get('startDate')) : null;
+        $endDate = Input::has('endDate') ? Carbon::createFromFormat('d/m/Y', Input::get('endDate')) : null;
+
+        // Check we have 2 dates
+        if ($startDate == null) {
+            return back()->withInput()->withErrors(['startDate' => 'Start date is invalid']);
+        }
+        else if ($endDate == null) {
+            return back()->withInput()->withErrors(['endDate' => 'End date is invalid']);
+        }
+
+        // Check no. of days is less than 30
+        $noOfDays = $startDate->diffInDays($endDate);
+        if ($noOfDays > 30) {
+            return back()->withInput()->withErrors(['startDate' => 'Maximum period is 30 days']);
+        }
+
+        // Set time to make dates inclusive
+        $startDate->hour = 0;
+        $startDate->minute = 0;
+        $startDate->second = 0;
+        $endDate->hour = 23;
+        $endDate->minute = 59;
+        $endDate->second = 59;
+        $dateRange = [$startDate, $endDate];
+
+        $filename = 'ccm ';
+        if ($noOfDays == 0) {
+            $filename = $filename.$startDate->toDateString();
+        }
+        else {
+            $filename = $filename.$startDate->toDateString().' to '.$filename.$endDate->toDateString();
+        }
+
+        //
+        $groupBy = null;
+        if ($noOfDays > 7) {
+            $groupBy = 'ROUND((UNIX_TIMESTAMP(recorded_at)+900) / 1800)'; // 30 minute intervals
+        }
+        else if ($noOfDays > 0) {
+            $groupBy = 'ROUND((UNIX_TIMESTAMP(recorded_at)+900) / 600)'; // 10 minute intervals
+        }
+
+        // Save as excel
+        Excel::create($filename, function($excel) use ($dateRange, $groupBy, $humiditySensors, $temperatureSensors, $powerSensors) {
+
+            // Set the title
+            $excel->setTitle('Climate Comfort Monitoring');
+            $excel->setCreator('Mobile Computing Lab');
+
+            $excel->sheet('Humidity', function($sheet) use ($dateRange, $groupBy, $humiditySensors) {
+
+                $query = DB::table('humidity_pivot')->whereBetween('recorded_at',$dateRange)->orderBy('recorded_at');
+                if ($groupBy != null) {
+                    $select = 'MAX(recorded_at) recorded_at';
+                    foreach($humiditySensors as $sensor) {
+                        $select = $select.', AVG('.$sensor.') '.$sensor;
+                    }
+                    $query->groupBy(DB::raw($groupBy))->select(DB::raw($select));
+                }
+                $results = $query->get();
+
+                $sheet->setOrientation('landscape');
+
+                $sheet->appendRow(array_merge(['date/time'],$humiditySensors));
+                foreach ($results as $item) {
+                    $date = new DateTime($item->recorded_at);
+                    $date->modify('+7 hour');
+                    $row = [$date->format('Y-m-d H:i:s')];
+                    foreach ($humiditySensors as $sensor) {
+                        $row[] = $item->{$sensor};
+                    }
+                    $sheet->appendRow($row);
+                }
+            });
+
+            $excel->sheet('Temperature', function($sheet) use ($dateRange, $groupBy, $temperatureSensors) {
+
+                $query = DB::table('temperature_pivot')->whereBetween('recorded_at',$dateRange)->orderBy('recorded_at');
+                if ($groupBy != null) {
+                    $select = 'MAX(recorded_at) recorded_at';
+                    foreach($temperatureSensors as $sensor) {
+                        $select = $select.', AVG('.$sensor.') '.$sensor;
+                    }
+                    $query->groupBy(DB::raw($groupBy))->select(DB::raw($select));
+                }
+                $results = $query->get();
+
+                $sheet->setOrientation('landscape');
+
+                $sheet->appendRow(array_merge(['date/time'],$temperatureSensors));
+                foreach ($results as $item) {
+                    $date = new DateTime($item->recorded_at);
+                    $date->modify('+7 hour');
+                    $row = [$date->format('Y-m-d H:i:s')];
+                    foreach ($temperatureSensors as $sensor) {
+                        $row[] = $item->{$sensor};
+                    }
+                    $sheet->appendRow($row);
+                }
+
+            });
+
+            $excel->sheet('Power', function($sheet) use ($dateRange, $groupBy, $powerSensors) {
+
+                $sheet->setOrientation('landscape');
+
+                $query = DB::table('power_pivot')->whereBetween('recorded_at',$dateRange)->orderBy('recorded_at');
+                if ($groupBy != null) {
+                    $select = 'MAX(recorded_at) recorded_at';
+                    foreach($powerSensors as $sensor) {
+                        $select = $select.', SUM('.$sensor.') '.$sensor;
+                    }
+                    $query->groupBy(DB::raw($groupBy))->select(DB::raw($select));
+                }
+                $results = $query->get();
+
+                $sheet->setOrientation('landscape');
+
+                $sheet->appendRow(array_merge(['date/time'],$powerSensors));
+                foreach ($results as $item) {
+                    $date = new DateTime($item->recorded_at);
+                    $date->modify('+7 hour');
+                    $row = [$date->format('Y-m-d H:i:s')];
+                    foreach ($powerSensors as $sensor) {
+                        $row[] = $item->{$sensor};
+                    }
+                    $sheet->appendRow($row);
+                }
+            });
+
+        })->download('xlsx');
+    }
+
 	/**
-	 * Download the spreadsheet for the last 24 hours.
+	 * Download the spreadsheet for fixed period.
 	 *
 	 * @return Response
 	 */
-	public function download()
+	public function downloadFixed()
 	{
 		$room = Room::findOrFail(Input::get('room', 1));
 
