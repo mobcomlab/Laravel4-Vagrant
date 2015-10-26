@@ -54,42 +54,110 @@ function refreshContent() {
 }
 
 function refreshGraph() {
-	$.getJSON("/api/day").done(function(data) {
-		
-		var results = data.results;
-		$.each(results, function(index, value) {
+	// all
+	$.getJSON("/api/temperature").done(function(data) {
+
+		var temperature_results = data.results;
+		$.each(temperature_results, function(index, value) {
 			if (index == 0) {
 				return;
 			}
-			results[index][0] = formatTime(results[index][0]);
-			results[index][1] = parseInt(results[index][1]);
-			results[index][2] = parseFloat(results[index][2]);
-			results[index][3] = parseFloat(results[index][3]);
-			results[index][4] = parseFloat(results[index][4]);
+			temperature_results[index][0] = formatTime(temperature_results[index][0]);
+			temperature_results[index][1] = parseFloat(temperature_results[index][1]);
 		});
-		
-		console.log(results);
-		
-		var chartData = google.visualization.arrayToDataTable(results);
 
-  	  	var chartOptions = {
+		console.log(temperature_results);
+
+		var temperature_chartData = google.visualization.arrayToDataTable(temperature_results);
+
+		var temperature_chartOptions = {
 			height: "100%",
 			width: "100%",
-			vAxis: {title: "Humidity/Temp"},
+			vAxis: {title: "Temp"},
 			hAxis: {title: "Hour", gridlines: {count: 6}},
 			seriesType: "bars",
-			series: {0: {targetAxisIndex: 0}, 1: {type: "line"}, 2: {type: "line"}, 3: {type: "line", targetAxisIndex: 1}},
-			vAxes:{1:{title:'Power'}},
+			series: {0: {type: "line"}},
 			animation: {startup: true, duration: 500},
 			fontName: "Roboto"
-  	  	};
+		};
 
-  	  	var chart = new google.visualization.ComboChart(document.getElementById('chart_div'));
-  	  	chart.draw(chartData, chartOptions);
-		
+		var temperature_chart = new google.visualization.ComboChart(document.getElementById('chart_temperature_div'));
+		temperature_chart.draw(temperature_chartData, temperature_chartOptions);
+
+
 	}).fail(function(jqxhr, textStatus, error) {
-    	var err = textStatus + ", " + error;
-    	console.log("Request Failed: " + err);
+		var err = textStatus + ", " + error;
+		console.log("Request Failed: " + err);
+	});
+
+	$.getJSON("/api/humidity").done(function(data) {
+
+		var humidity_results = data.results;
+		$.each(humidity_results, function(index, value) {
+			if (index == 0) {
+				return;
+			}
+			humidity_results[index][0] = formatTime(humidity_results[index][0]);
+			humidity_results[index][1] = parseFloat(humidity_results[index][1]);
+		});
+
+		console.log(humidity_results);
+
+		var humidity_chartData = google.visualization.arrayToDataTable(humidity_results);
+
+		var humidity_chartOptions = {
+			height: "100%",
+			width: "100%",
+			vAxis: {title: "Humidity"},
+			hAxis: {title: "Hour", gridlines: {count: 6}},
+			seriesType: "bars",
+			series: {0: {type: "line"}},
+			animation: {startup: true, duration: 500},
+			fontName: "Roboto"
+		};
+
+		var humidity_chart = new google.visualization.ComboChart(document.getElementById('chart_humidity_div'));
+		humidity_chart.draw(humidity_chartData, humidity_chartOptions);
+
+
+	}).fail(function(jqxhr, textStatus, error) {
+		var err = textStatus + ", " + error;
+		console.log("Request Failed: " + err);
+	});
+
+	$.getJSON("/api/power").done(function(data) {
+
+		var power_results = data.results;
+		$.each(power_results, function(index, value) {
+			if (index == 0) {
+				return;
+			}
+			power_results[index][0] = formatTime(power_results[index][0]);
+			power_results[index][1] = parseFloat(power_results[index][1]);
+		});
+
+		console.log(power_results);
+
+		var power_chartData = google.visualization.arrayToDataTable(power_results);
+
+		var power_chartOptions = {
+			height: "100%",
+			width: "100%",
+			vAxis: {title: "Power"},
+			hAxis: {title: "Hour", gridlines: {count: 6}},
+			seriesType: "bars",
+			series: {0: {type: "line"}},
+			animation: {startup: true, duration: 500},
+			fontName: "Roboto"
+		};
+
+		var power_chart = new google.visualization.ComboChart(document.getElementById('chart_power_div'));
+		power_chart.draw(power_chartData, power_chartOptions);
+
+
+	}).fail(function(jqxhr, textStatus, error) {
+		var err = textStatus + ", " + error;
+		console.log("Request Failed: " + err);
 	});
 }
 

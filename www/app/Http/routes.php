@@ -20,6 +20,9 @@ Route::controllers([
 
 Route::get('api/now', 'ApiController@now');
 Route::get('api/day', 'ApiController@day');
+Route::get('api/temperature', 'ApiController@temperature');
+Route::get('api/humidity', 'ApiController@humidity');
+Route::get('api/power', 'ApiController@power');
 Route::get('api/week', 'ApiController@week');
 Route::get('api/month', 'ApiController@month');
 
