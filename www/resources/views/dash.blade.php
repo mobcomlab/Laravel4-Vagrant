@@ -15,16 +15,6 @@
 				</div>
 			</div>
 		</div>
-		<div class="col-md-10">
-			<div class="panel panel-default">
-				<div class="panel-heading text-center">Last 24 hours</div>
-				<div class="panel-body">
-					<div id="chart_temperature_div" style="width: 100%; height: 280px;"></div>
-				</div>
-			</div>
-		</div>
-	</div>
-	<div class="row">
 		<div class="col-md-2">
 			<div class="panel panel-default">
 				<div class="panel-heading text-center">Humidity</div>
@@ -37,16 +27,6 @@
 				</div>
 			</div>
 		</div>
-		<div class="col-md-10">
-			<div class="panel panel-default">
-				<div class="panel-heading text-center">Last 24 hours</div>
-				<div class="panel-body">
-					<div id="chart_humidity_div" style="width: 100%; height: 280px;"></div>
-				</div>
-			</div>
-		</div>
-	</div>
-	<div class="row">
 		<div class="col-md-2">
 			<div class="panel panel-default">
 				<div class="panel-heading text-center">Power</div>
@@ -59,16 +39,6 @@
 				</div>
 			</div>
 		</div>
-		<div class="col-md-10">
-			<div class="panel panel-default">
-				<div class="panel-heading text-center">Last 24 hours</div>
-				<div class="panel-body">
-					<div id="chart_power_div" style="width: 100%; height: 280px;"></div>
-				</div>
-			</div>
-		</div>
-	</div>
-	<div class="row">
 		<div class="col-md-2">
 			<div class="panel panel-default">
 				<div class="panel-heading text-center">Energy consumption</div>
@@ -92,6 +62,39 @@
 				</div>
 			</div>
 		</div>
+	</div>
+	<div class="row">
+		<div class="col-md-4">
+			<div class="panel panel-default">
+				<div class="panel-heading text-center">Last 24 hours</div>
+				<div class="panel-body">
+					<div id="chart_temperature_div" style="width: 100%; height: 280px;"></div>
+				</div>
+			</div>
+		</div>
+		<div class="col-md-4">
+			<div class="panel panel-default">
+				<div class="panel-heading text-center">Last 24 hours</div>
+				<div class="panel-body">
+					<div id="chart_humidity_div" style="width: 100%; height: 280px;"></div>
+				</div>
+			</div>
+		</div>
+		<div class="col-md-4">
+			<div class="panel panel-default">
+				<div class="panel-heading text-center">Last 24 hours</div>
+				<div class="panel-body">
+					<div id="chart_power_div" style="width: 100%; height: 280px;"></div>
+				</div>
+			</div>
+		</div>
+	</div>
+	<div class="row">
+		<div class="col-md-6"></div>
+
+	</div>
+	<div class="row">
+
 	</div>
 
 </div>

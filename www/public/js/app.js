@@ -76,7 +76,8 @@ function refreshGraph() {
 			vAxis: {title: "Temp"},
 			hAxis: {title: "Hour", gridlines: {count: 6}},
 			seriesType: "bars",
-			series: {0: {type: "line"}},
+			series: {0: {type: "line", color: '#ff0000'}},
+			legend: { position: 'top' },
 			animation: {startup: true, duration: 500},
 			fontName: "Roboto"
 		};
@@ -111,7 +112,8 @@ function refreshGraph() {
 			vAxis: {title: "Humidity"},
 			hAxis: {title: "Hour", gridlines: {count: 6}},
 			seriesType: "bars",
-			series: {0: {type: "line"}},
+			series: {0: {type: "line", color: '#1e90ff'}},
+			legend: { position: 'top' },
 			animation: {startup: true, duration: 500},
 			fontName: "Roboto"
 		};
@@ -146,7 +148,8 @@ function refreshGraph() {
 			vAxis: {title: "Power"},
 			hAxis: {title: "Hour", gridlines: {count: 6}},
 			seriesType: "bars",
-			series: {0: {type: "line"}},
+			series: {0: {type: "line", color: '#00ff00'}},
+			legend: { position: 'top' },
 			animation: {startup: true, duration: 500},
 			fontName: "Roboto"
 		};
