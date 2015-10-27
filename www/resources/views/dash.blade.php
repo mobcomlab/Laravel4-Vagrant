@@ -66,7 +66,7 @@
 	<div class="row">
 		<div class="col-md-4">
 			<div class="panel panel-default">
-				<div class="panel-heading text-center">Last 24 hours</div>
+				<div class="panel-heading text-center">{{ $date == 'today' ? 'Last 24 hours' : 'Last week' }}</div>
 				<div class="panel-body">
 					<div id="chart_temperature_div" style="width: 100%; height: 280px;"></div>
 				</div>
@@ -74,7 +74,7 @@
 		</div>
 		<div class="col-md-4">
 			<div class="panel panel-default">
-				<div class="panel-heading text-center">Last 24 hours</div>
+				<div class="panel-heading text-center">{{ $date == 'today' ? 'Last 24 hours' : 'Last week' }}</div>
 				<div class="panel-body">
 					<div id="chart_humidity_div" style="width: 100%; height: 280px;"></div>
 				</div>
@@ -82,29 +82,22 @@
 		</div>
 		<div class="col-md-4">
 			<div class="panel panel-default">
-				<div class="panel-heading text-center">Last 24 hours</div>
+				<div class="panel-heading text-center">{{ $date == 'today' ? 'Last 24 hours' : 'Last week' }}</div>
 				<div class="panel-body">
 					<div id="chart_power_div" style="width: 100%; height: 280px;"></div>
 				</div>
 			</div>
 		</div>
 	</div>
-	<div class="row">
-		<div class="col-md-6"></div>
-
-	</div>
-	<div class="row">
-
-	</div>
-
 </div>
+<input type="hidden" id="date" value="{{ $date }}">
 @endsection
 
 @section('body-close')
 	<script type="text/javascript" src="https://www.google.com/jsapi?autoload={'modules':[{'name':'visualization','version':'1.1','packages':['corechart']}]}"></script>
 	<script>
         $(document).ready(function() {
-            startUpdates();
+            startUpdates($('#date').val());
         });
     </script>
 @endsection

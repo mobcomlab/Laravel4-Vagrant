@@ -19,12 +19,15 @@ Route::controllers([
 ]);
 
 Route::get('api/now', 'ApiController@now');
-Route::get('api/day', 'ApiController@day');
-Route::get('api/temperature', 'ApiController@temperature');
-Route::get('api/humidity', 'ApiController@humidity');
-Route::get('api/power', 'ApiController@power');
-Route::get('api/week', 'ApiController@week');
+Route::get('api/day/temperature', 'ApiController@dayTemperature');
+Route::get('api/day/humidity', 'ApiController@dayHumidity');
+Route::get('api/day/power', 'ApiController@dayPower');
+Route::get('api/week/temperature', 'ApiController@weekTemperature');
+Route::get('api/week/humidity', 'ApiController@weekHumidity');
+Route::get('api/week/power', 'ApiController@weekPower');
 Route::get('api/month', 'ApiController@month');
 
 Route::get('export', ['as' => 'export', 'uses' => 'ExportController@index']);
 Route::post('export/download', ['as' => 'download', 'uses' => 'ExportController@download']);
+
+Route::get('/{date}', ['as' => 'date', 'uses' => 'WelcomeController@date']);

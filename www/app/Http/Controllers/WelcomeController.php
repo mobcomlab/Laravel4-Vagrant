@@ -30,7 +30,13 @@ class WelcomeController extends Controller {
 	 */
 	public function index()
 	{
-		return view('dash');
+		$date = 'today';
+		return view('dash',['date' => $date]);
+	}
+
+	public function date($date)
+	{
+		return view('dash',['date' => $date]);
 	}
 
 }
