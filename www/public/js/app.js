@@ -13,44 +13,75 @@ function refreshContent() {
 	
 	
 	// Start load data
-	$.getJSON("/api/now").done(function(data) {
-		
-		if (data.occupancy) {
-			$("#occupancy").text(formatPeople(data.occupancy.people));
-			$("#occupancyTime").text(formatTime(data.occupancy.start)+'-'+formatTime(data.occupancy.end));
-			$('#occupancyDesc').text(data.occupancy.description);
-		}
-		$("#tempNow").text(formatTemperature(data.temperature.value));
-		$("#tempNowUpdated").text(formatDateTime(data.temperature.recorded_at));
-		$("#extTempNow").text(formatTemperature(data.external_temperature.value));
-		$("#humidNow").text(formatHumidity(data.humidity.value));
-		$("#humidNowUpdated").text(formatDateTime(data.humidity.recorded_at));
-		$("#extHumidNow").text(formatHumidity(data.external_humidity.value));
-		$("#powerNow").text(formatPower(data.power.value));
-		$("#powerDayAverage").text(formatPower(data.power.day.average_kw));
-		$("#powerNowUpdated").text(formatDateTime(data.power.recorded_at));
-		$("#powerDayHoursUsed").text(formatHours(data.power.day.hours_used));
-		$("#powerDayEnergy").text(formatEnergy(data.power.day.energy_kwh));
-		
-		var powerToEmissionConstant = 0.56352;
-		var emissions = data.power.value * powerToEmissionConstant;
-		$("#emissions").text(parseFloat(emissions).toFixed(1)+"kg/h");
-		if (data.occupancy) {
-			var emissionsPerPerson = emissions / data.occupancy.people;
-			$("#emissionsPerPerson").text(parseFloat(emissionsPerPerson).toFixed(1)+"kg/h");
-		}
-		else {
-			$("#emissionsPerPerson").html("&infin;");
-		}
-		
-		
-	}).fail(function(jqxhr, textStatus, error) {
-    	var err = textStatus + ", " + error;
-    	console.log("Request Failed: " + err);
-	}).always(function() {
-		// Back to not loading ui
-		isLoading = false;
-	});
+	if ($('input:hidden[name=date]').val() == 'today') {
+
+		$.getJSON("/api/day/content").done(function (data) {
+
+			$("#tempNow").text(formatTemperature(data.temperature.value));
+			$("#tempNowUpdated").text(formatDateTime(data.temperature.recorded_at));
+			$("#extTempNow").text(formatTemperature(data.external_temperature.value));
+			$("#humidNow").text(formatHumidity(data.humidity.value));
+			$("#humidNowUpdated").text(formatDateTime(data.humidity.recorded_at));
+			$("#extHumidNow").text(formatHumidity(data.external_humidity.value));
+			$("#powerNow").text(formatPower(data.power.value));
+			$("#powerAverage").text(formatPower(data.power.day.average_kw));
+			$("#powerNowUpdated").text(formatDateTime(data.power.recorded_at));
+			$("#powerHoursUsed").text(formatHours(data.power.day.hours_used));
+			$("#powerEnergy").text(formatEnergy(data.power.day.energy_kwh));
+
+			var powerToEmissionConstant = 0.56352;
+			var emissions = data.power.value * powerToEmissionConstant;
+			$("#emissions").text(parseFloat(emissions).toFixed(1) + "kg/h");
+			if (data.occupancy) {
+				var emissionsPerPerson = emissions / data.occupancy.people;
+				$("#emissionsPerPerson").text(parseFloat(emissionsPerPerson).toFixed(1) + "kg/h");
+			}
+			else {
+				$("#emissionsPerPerson").html("&infin;");
+			}
+
+		}).fail(function (jqxhr, textStatus, error) {
+			var err = textStatus + ", " + error;
+			console.log("Request Failed: " + err);
+		}).always(function () {
+			// Back to not loading ui
+			isLoading = false;
+		});
+	} else {
+
+		$.getJSON("/api/week/content").done(function (data) {
+
+			$("#tempNow").text(formatTemperature(data.temperature.value));
+			$("#tempNowUpdated").text(formatDateTime(data.temperature.recorded_at));
+			$("#extTempNow").text(formatTemperature(data.external_temperature.value));
+			$("#humidNow").text(formatHumidity(data.humidity.value));
+			$("#humidNowUpdated").text(formatDateTime(data.humidity.recorded_at));
+			$("#extHumidNow").text(formatHumidity(data.external_humidity.value));
+			$("#powerNow").text(formatPower(data.power.value));
+			$("#powerAverage").text(formatPower(data.power.week.average_kw));
+			$("#powerNowUpdated").text(formatDateTime(data.power.recorded_at));
+			$("#powerHoursUsed").text(formatHours(data.power.week.hours_used));
+			$("#powerEnergy").text(formatEnergy(data.power.week.energy_kwh));
+
+			var powerToEmissionConstant = 0.56352;
+			var emissions = data.power.value * powerToEmissionConstant;
+			$("#emissions").text(parseFloat(emissions).toFixed(1) + "kg/h");
+			if (data.occupancy) {
+				var emissionsPerPerson = emissions / data.occupancy.people;
+				$("#emissionsPerPerson").text(parseFloat(emissionsPerPerson).toFixed(1) + "kg/h");
+			}
+			else {
+				$("#emissionsPerPerson").html("&infin;");
+			}
+
+		}).fail(function (jqxhr, textStatus, error) {
+			var err = textStatus + ", " + error;
+			console.log("Request Failed: " + err);
+		}).always(function () {
+			// Back to not loading ui
+			isLoading = false;
+		});
+	}
 }
 
 function refreshGraph() {

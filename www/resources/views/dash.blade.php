@@ -33,7 +33,7 @@
 				<div class="panel-body text-center">
 					<div id="powerNow" class="lead">-kW</div>
 					<hr>
-					<div class="">Today's avg <span id="powerDayAverage">-kW</span></div>
+					<div class="">{{ $date == 'today' ? "Today's avg" : "Week's avg" }} <span id="powerAverage">-kW</span></div>
 					<hr>
 					<div class="small">Updated <span id="powerNowUpdated">-</span></div>
 				</div>
@@ -43,11 +43,11 @@
 			<div class="panel panel-default">
 				<div class="panel-heading text-center">Energy consumption</div>
 				<div class="panel-body text-center">
-					<div class="small">Today's usage</div>
-					<div class="lead" id="powerDayHoursUsed"></div>
+					<div class="small">{{ $date == 'today' ? "Today's usage" : "Week's usage" }}</div>
+					<div class="lead" id="powerHoursUsed"></div>
 					<hr>
 					<div class="small">Total energy</div>
-					<div class="lead" id="powerDayEnergy">-kWh</div>
+					<div class="lead" id="powerEnergy">-kWh</div>
 				</div>
 			</div>
 		</div>

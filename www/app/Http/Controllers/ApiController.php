@@ -1,5 +1,6 @@
 <?php namespace App\Http\Controllers;
 
+use Carbon\Carbon;
 use Illuminate\Support\Facades\Config;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Input;
@@ -23,7 +24,7 @@ class ApiController extends Controller {
 	 *
 	 * @return Response
 	 */
-	public function now()
+	public function dayContent()
 	{
 		if (Config::get('app.debug')) {
 			DB::enableQueryLog();
@@ -61,15 +62,16 @@ class ApiController extends Controller {
 							->where('recorded_at',$temperatureExternalMaxDate)->pluck('value');
 	
 		// Power
+		$today = Carbon::today();
 		$powerSensors = explode(',', $room->power_sensor_names);
 		$powerMaxDate = DB::table('power')->whereIn('sensor',$powerSensors)->max('recorded_at');
 		$powerNow = DB::table('power')->whereIn('sensor',$powerSensors)
 							->where('recorded_at',$powerMaxDate)->sum('value');
 		$powerDayReadingCount = DB::table('power')->whereIn('sensor',$powerSensors)->where('value', '>', 0)
-							->where('recorded_at','>',new DateTime('today'))->count(DB::raw('DISTINCT recorded_at'));
+							->where('recorded_at','>',$today)->count(DB::raw('DISTINCT recorded_at'));
 		if ($powerDayReadingCount > 0) {
 			$powerDayAverage = DB::table('power')->whereIn('sensor',$powerSensors)->where('value', '>', 0)
-							->where('recorded_at','>',new DateTime('today'))->sum('value') / $powerDayReadingCount;
+							->where('recorded_at','>',$today)->sum('value') / $powerDayReadingCount;
 			$powerDayHoursUsed = $powerDayReadingCount / 60;
 			$powerDayEnergyKWH = $powerDayAverage * $powerDayHoursUsed;
 		}
@@ -92,6 +94,82 @@ class ApiController extends Controller {
 				'day' => ['average_kw' => $powerDayAverage, 'hours_used' => $powerDayHoursUsed, 'energy_kwh' => $powerDayEnergyKWH]],
 			'occupancy' => $occupancy];
 			
+		if (Config::get('app.debug')) {
+			$result['db_queries'] = DB::getQueryLog();
+		}
+		return response()->json($result);
+	}
+
+	public function weekContent()
+	{
+		if (Config::get('app.debug')) {
+			DB::enableQueryLog();
+		}
+
+		$room = Room::find(Input::get('room', 1));
+		if ($room == null) {
+			return response()->json(['success' => false, 'message' => 'Room not found']);
+		}
+
+		// Humidity of sensor room1
+		$humiditySensors = explode(',', $room->humidity_sensor_names);
+		$humidityMaxDate = DB::table('humidity')->whereIn('sensor',$humiditySensors)->max('recorded_at');
+		$currentHumidity = DB::table('humidity')->whereIn('sensor',$humiditySensors)
+			->where('recorded_at',$humidityMaxDate)->avg('value');
+
+		// Humidity of sensor external
+		$humidityExternalSensorName = explode(',', $room->external_humidity_sensor_names);
+		$humidityExternalMaxDate = DB::table('humidity')->where('sensor',$humidityExternalSensorName)
+			->max('recorded_at');
+		$currentHumidityExternal = DB::table('humidity')->where('sensor',$humidityExternalSensorName)
+			->where('recorded_at',$humidityExternalMaxDate)->pluck('value');
+
+		// Temp of sensor room1
+		$temperatureSensors = explode(',', $room->temperature_sensor_names);
+		$temperatureMaxDate = DB::table('temperature')->whereIn('sensor',$temperatureSensors)->max('recorded_at');
+		$currentTemperature = DB::table('temperature')->whereIn('sensor',$temperatureSensors)
+			->where('recorded_at',$temperatureMaxDate)->avg('value');
+
+		// Temp of sensor external
+		$temperatureExternalSensorName = explode(',', $room->external_temperature_sensor_names);
+		$temperatureExternalMaxDate = DB::table('temperature')->where('sensor',$temperatureExternalSensorName)
+			->max('recorded_at');
+		$currentTemperatureExternal = DB::table('temperature')->where('sensor',$temperatureExternalSensorName)
+			->where('recorded_at',$temperatureExternalMaxDate)->pluck('value');
+
+		// Power
+		$today = Carbon::today();
+		$powerSensors = explode(',', $room->power_sensor_names);
+		$powerMaxDate = DB::table('power')->whereIn('sensor',$powerSensors)->max('recorded_at');
+		$powerNow = DB::table('power')->whereIn('sensor',$powerSensors)
+			->where('recorded_at',$powerMaxDate)->sum('value');
+		$powerWeekReadingCount = DB::table('power')->whereIn('sensor',$powerSensors)->where('value', '>', 0)
+			->whereBetween('recorded_at',[$today->copy()->subDays(6),$today->copy()->addDay()])->count(DB::raw('DISTINCT recorded_at'));
+		if ($powerWeekReadingCount > 0) {
+			$powerWeekAverage = DB::table('power')->whereIn('sensor',$powerSensors)->where('value', '>', 0)
+					->whereBetween('recorded_at',[$today->copy()->subDays(6),$today->copy()->addDay()])->sum('value') / $powerWeekReadingCount;
+			$powerWeekHoursUsed = $powerWeekReadingCount / 60;
+			$powerWeekEnergyKWH = $powerWeekAverage * $powerWeekHoursUsed;
+		}
+		else {
+			$powerWeekAverage = 0;
+			$powerWeekHoursUsed = 0;
+			$powerWeekEnergyKWH = 0;
+		}
+
+		// Occupancy
+		$occupancy = DB::table('occupancy')->where('start','<=',new DateTime)->where('end','>=', new DateTime)->first();
+
+		$result = [
+			'success' => true,
+			'humidity' => ['value' => $currentHumidity, 'recorded_at' => $humidityMaxDate, 'sensors' => $humiditySensors],
+			'external_humidity' => ['value' => $currentHumidityExternal, 'recorded_at' => $humidityExternalMaxDate, 'sensor' => $humidityExternalSensorName],
+			'temperature' => ['value' => $currentTemperature, 'recorded_at' => $temperatureMaxDate, 'sensors' => $temperatureSensors],
+			'external_temperature' => ['value' => $currentTemperatureExternal, 'recorded_at' => $temperatureExternalMaxDate, 'sensor' => $temperatureExternalSensorName],
+			'power' => ['value' => $powerNow, 'recorded_at' => $powerMaxDate, 'sensors' => $powerSensors,
+				'week' => ['average_kw' => $powerWeekAverage, 'hours_used' => $powerWeekHoursUsed, 'energy_kwh' => $powerWeekEnergyKWH]],
+			'occupancy' => $occupancy];
+
 		if (Config::get('app.debug')) {
 			$result['db_queries'] = DB::getQueryLog();
 		}
