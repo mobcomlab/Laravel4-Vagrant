@@ -90,14 +90,14 @@
 		</div>
 	</div>
 </div>
-<input type="hidden" id="date" value="{{ $date }}">
+<input type="hidden" name="date" value="{{ old('date',$date) }}">
 @endsection
 
 @section('body-close')
 	<script type="text/javascript" src="https://www.google.com/jsapi?autoload={'modules':[{'name':'visualization','version':'1.1','packages':['corechart']}]}"></script>
 	<script>
         $(document).ready(function() {
-            startUpdates($('#date').val());
+            startUpdates();
         });
     </script>
 @endsection

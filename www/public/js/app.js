@@ -53,8 +53,8 @@ function refreshContent() {
 	});
 }
 
-function refreshGraph(date) {
-	if (date == 'today') {
+function refreshGraph() {
+	if ($('input:hidden[name=date]').val() == 'today') {
 		// today
 		$.getJSON("/api/day/temperature").done(function(data) {
 
@@ -275,9 +275,9 @@ function refreshGraph(date) {
 	}
 }
 
-function startUpdates(date) {
+function startUpdates() {
 	refreshContent();
-	refreshGraph(date);
+	refreshGraph();
     intervalRefreshContent = setInterval(refreshContent, 15000);
     intervalRefreshGraph = setInterval(refreshGraph, 29000);
 }
