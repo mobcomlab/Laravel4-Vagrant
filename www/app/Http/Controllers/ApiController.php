@@ -428,21 +428,7 @@ class ApiController extends Controller {
 			if ($day_count != 0) {
 				$temperature = $temperature / $day_count;
 			}
-			$recorded_at = Carbon::parse($occupancies[count($occupancies)-1]->recorded_at)->subDays($i);
-			$this_day = $recorded_at->day;
-			$start_of_week = $recorded_at->startOfWeek();
-			$monday = $start_of_week->day;
-
-			switch ($this_day - $monday) {
-				case 0: $recorded_at = 'Mon';break;
-				case 1: $recorded_at = 'Tue';break;
-				case 2: $recorded_at = 'Wed';break;
-				case 3: $recorded_at = 'Thu';break;
-				case 4: $recorded_at = 'Fri';break;
-				case 5: $recorded_at = 'Sat';break;
-				case 6: $recorded_at = 'Sun';break;
-			}
-
+			$recorded_at = self::dateName(Carbon::parse($occupancies[count($occupancies)-1]->recorded_at)->subDays($i));
 			$results[] = [$recorded_at,$temperature];
 		}
 
@@ -512,21 +498,7 @@ class ApiController extends Controller {
 			if ($day_count != 0) {
 				$humidity = $humidity / $day_count;
 			}
-			$recorded_at = Carbon::parse($occupancies[count($occupancies)-1]->recorded_at)->subDays($i);
-			$this_day = $recorded_at->day;
-			$start_of_week = $recorded_at->startOfWeek();
-			$monday = $start_of_week->day;
-
-			switch ($this_day - $monday) {
-				case 0: $recorded_at = 'Mon';break;
-				case 1: $recorded_at = 'Tue';break;
-				case 2: $recorded_at = 'Wed';break;
-				case 3: $recorded_at = 'Thu';break;
-				case 4: $recorded_at = 'Fri';break;
-				case 5: $recorded_at = 'Sat';break;
-				case 6: $recorded_at = 'Sun';break;
-			}
-
+			$recorded_at = self::dateName(Carbon::parse($occupancies[count($occupancies)-1]->recorded_at)->subDays($i));
 			$results[] = [$recorded_at,$humidity];
 		}
 
@@ -593,26 +565,29 @@ class ApiController extends Controller {
 					$powerIndex++;
 				}
 			}
-			$recorded_at = Carbon::parse($occupancies[count($occupancies)-1]->recorded_at)->subDays($i);
-			$this_day = $recorded_at->day;
-			$start_of_week = $recorded_at->startOfWeek();
-			$monday = $start_of_week->day;
-
-			switch ($this_day - $monday) {
-				case 0: $recorded_at = 'Mon';break;
-				case 1: $recorded_at = 'Tue';break;
-				case 2: $recorded_at = 'Wed';break;
-				case 3: $recorded_at = 'Thu';break;
-				case 4: $recorded_at = 'Fri';break;
-				case 5: $recorded_at = 'Sat';break;
-				case 6: $recorded_at = 'Sun';break;
-			}
-
+			$recorded_at = self::dateName(Carbon::parse($occupancies[count($occupancies)-1]->recorded_at)->subDays($i));
 			$results[] = [$recorded_at,$power];
 		}
 
 		return response()->json(['results' => $results]);
 
+	}
+
+	protected function dateName ($date) {
+		$this_day = $date->day;
+		$start_of_week = $date->startOfWeek();
+		$monday = $start_of_week->day;
+
+		switch ($this_day - $monday) {
+			case 0: $date = 'Mon';break;
+			case 1: $date = 'Tue';break;
+			case 2: $date = 'Wed';break;
+			case 3: $date = 'Thu';break;
+			case 4: $date = 'Fri';break;
+			case 5: $date = 'Sat';break;
+			case 6: $date = 'Sun';break;
+		}
+		return $date;
 	}
 
 }
