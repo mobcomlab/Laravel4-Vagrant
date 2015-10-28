@@ -287,7 +287,7 @@ function refreshGraph() {
 				height: "100%",
 				width: "100%",
 				vAxis: {title: "Power"},
-				hAxis: {title: "Day", gridlines: {count: 6}},
+				hAxis: {title: "Day", gridlines: {count: 7}},
 				seriesType: "bars",
 				series: {0: {type: "line", color: '#00ff00'}},
 				legend: { position: 'top' },

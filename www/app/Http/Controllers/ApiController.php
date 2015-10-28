@@ -68,10 +68,10 @@ class ApiController extends Controller {
 		$powerNow = DB::table('power')->whereIn('sensor',$powerSensors)
 							->where('recorded_at',$powerMaxDate)->sum('value');
 		$powerDayReadingCount = DB::table('power')->whereIn('sensor',$powerSensors)->where('value', '>', 0)
-							->where('recorded_at','>',$today)->count(DB::raw('DISTINCT recorded_at'));
+							->where('recorded_at','>=',$today->copy()->subHours(23))->count(DB::raw('DISTINCT recorded_at'));
 		if ($powerDayReadingCount > 0) {
 			$powerDayAverage = DB::table('power')->whereIn('sensor',$powerSensors)->where('value', '>', 0)
-							->where('recorded_at','>',$today)->sum('value') / $powerDayReadingCount;
+							->where('recorded_at','>=',$today->copy()->subHours(23))->sum('value') / $powerDayReadingCount;
 			$powerDayHoursUsed = $powerDayReadingCount / 60;
 			$powerDayEnergyKWH = $powerDayAverage * $powerDayHoursUsed;
 		}
@@ -138,16 +138,16 @@ class ApiController extends Controller {
 			->where('recorded_at',$temperatureExternalMaxDate)->pluck('value');
 
 		// Power
-		$today = Carbon::today();
+		$today = Carbon::now();
 		$powerSensors = explode(',', $room->power_sensor_names);
 		$powerMaxDate = DB::table('power')->whereIn('sensor',$powerSensors)->max('recorded_at');
 		$powerNow = DB::table('power')->whereIn('sensor',$powerSensors)
 			->where('recorded_at',$powerMaxDate)->sum('value');
 		$powerWeekReadingCount = DB::table('power')->whereIn('sensor',$powerSensors)->where('value', '>', 0)
-			->whereBetween('recorded_at',[$today->copy()->subDays(6),$today->copy()->addDay()])->count(DB::raw('DISTINCT recorded_at'));
+			->where('recorded_at','>=',$today->copy()->subDays(7))->count(DB::raw('DISTINCT recorded_at'));
 		if ($powerWeekReadingCount > 0) {
 			$powerWeekAverage = DB::table('power')->whereIn('sensor',$powerSensors)->where('value', '>', 0)
-					->whereBetween('recorded_at',[$today->copy()->subDays(6),$today->copy()->addDay()])->sum('value') / $powerWeekReadingCount;
+					->where('recorded_at','>=',$today->copy()->subDays(7))->sum('value') / $powerWeekReadingCount;
 			$powerWeekHoursUsed = $powerWeekReadingCount / 60;
 			$powerWeekEnergyKWH = $powerWeekAverage * $powerWeekHoursUsed;
 		}
@@ -536,7 +536,7 @@ class ApiController extends Controller {
 			LEFT JOIN occupancy o ON a.recorded_at between o.start and o.end ORDER BY recorded_at');
 
 		// Results as 2D array
-		$results = [['Hour','Power']];
+		$results = [['Day','Power']];
 
 		$powerIndex = 0;
 		for ($i = 0; $i < count($occupancies); $i++) {
