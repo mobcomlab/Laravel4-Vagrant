@@ -6,11 +6,11 @@ function refreshContent() {
 	if (isLoading) {
 		return;
 	}
-	
+
 	// Show loading ui
 	console.log('Loading');
 	isLoading = true;
-	
+
 	
 	// Start load data
 	if ($('input:hidden[name=date]').val() == 'today') {
@@ -317,10 +317,6 @@ function stopUpdates() {
 	window.clearInterval(intervalRefreshGraph);
 }
 
-function formatPeople(people) {
-	return people+' people';
-}
-
 function formatTemperature(temp) {
 	return parseFloat(temp).toFixed(1)+'°C';
 }
@@ -346,7 +342,6 @@ function formatDateTime(dt) {
 }
 
 function formatTime(dt) {
-	//return moment.utc(dt).tz('Asia/Bangkok').format('HH:mm');
 	return moment.utc(dt).add(7,'hours').format('HH:mm');
 }
 
