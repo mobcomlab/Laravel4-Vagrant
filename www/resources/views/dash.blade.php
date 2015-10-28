@@ -27,6 +27,15 @@
 				</div>
 			</div>
 		</div>
+		<div class="col-md-8">
+			<div class="panel panel-default">
+				<div class="panel-body">
+					<div id="chart_temperature_div" style="width: 100%; height: 220px;"></div>
+				</div>
+			</div>
+		</div>
+	</div>
+	<div class="row">
 		<div class="col-md-2">
 			<div class="panel panel-default">
 				<div class="panel-heading text-center">Power</div>
@@ -51,6 +60,15 @@
 				</div>
 			</div>
 		</div>
+		<div class="col-md-8">
+			<div class="panel panel-default">
+				<div class="panel-body">
+					<div id="chart_humidity_div" style="width: 100%; height: 220px;"></div>
+				</div>
+			</div>
+		</div>
+	</div>
+	<div class="row">
 		<div class="col-md-2">
 			<div class="panel panel-default">
 				<div class="panel-heading text-center">CO<sub>2</sub> emissions</div>
@@ -62,29 +80,11 @@
 				</div>
 			</div>
 		</div>
-	</div>
-	<div class="row">
-		<div class="col-md-4">
+		<div class="col-md-2"></div>
+		<div class="col-md-8">
 			<div class="panel panel-default">
-				<div class="panel-heading text-center">{{ $date == 'today' ? 'Last 24 hours' : 'Last week' }}</div>
 				<div class="panel-body">
-					<div id="chart_temperature_div" style="width: 100%; height: 280px;"></div>
-				</div>
-			</div>
-		</div>
-		<div class="col-md-4">
-			<div class="panel panel-default">
-				<div class="panel-heading text-center">{{ $date == 'today' ? 'Last 24 hours' : 'Last week' }}</div>
-				<div class="panel-body">
-					<div id="chart_humidity_div" style="width: 100%; height: 280px;"></div>
-				</div>
-			</div>
-		</div>
-		<div class="col-md-4">
-			<div class="panel panel-default">
-				<div class="panel-heading text-center">{{ $date == 'today' ? 'Last 24 hours' : 'Last week' }}</div>
-				<div class="panel-body">
-					<div id="chart_power_div" style="width: 100%; height: 280px;"></div>
+					<div id="chart_power_div" style="width: 100%; height: 220px;"></div>
 				</div>
 			</div>
 		</div>
