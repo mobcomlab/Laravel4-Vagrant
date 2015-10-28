@@ -27,8 +27,6 @@ Route::get('api/week/content', 'ApiController@weekContent');
 Route::get('api/week/temperature', 'ApiController@weekTemperature');
 Route::get('api/week/humidity', 'ApiController@weekHumidity');
 Route::get('api/week/power', 'ApiController@weekPower');
-//month
-Route::get('api/month', 'ApiController@month');
 
 Route::get('export', ['as' => 'export', 'uses' => 'ExportController@index']);
 Route::post('export/download', ['as' => 'download', 'uses' => 'ExportController@download']);
