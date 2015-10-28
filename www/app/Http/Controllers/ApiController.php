@@ -376,7 +376,7 @@ class ApiController extends Controller {
 		$temperatureSensors = explode(',', $room->temperature_sensor_names);
 		$temperatures = DB::table('temperature')->whereIn('sensor',$temperatureSensors)
 			->select(DB::raw('CONCAT(DATE(recorded_at),\' \',MAKETIME(HOUR(recorded_at),0,0)) recorded_at_hour, AVG(value) value'))
-			->where('recorded_at','>=',DB::raw('DATE_SUB(NOW(),INTERVAL 23 HOUR)'))
+			->where('recorded_at','>=',DB::raw('DATE_SUB(NOW(),INTERVAL 7 DAY)'))
 			->groupBy('recorded_at_hour')->orderBy('recorded_at_hour')->get();
 
 		$occupancies = DB::select('SELECT CONCAT(DATE(a.recorded_at),\' \',MAKETIME(HOUR(a.recorded_at),0,0)) recorded_at,
@@ -409,16 +409,38 @@ class ApiController extends Controller {
 			LEFT JOIN occupancy o ON a.recorded_at between o.start and o.end ORDER BY recorded_at');
 
 		// Results as 2D array
-		$results = [['Hour','Temperature']];
+		$results = [['Day','Temperature']];
 
 		$tempIndex = 0;
-		for ($i = 0; $i < count($occupancies); $i++) {
-			$recorded_at = $occupancies[$i]->recorded_at;
+		for ($i = 7; $i > 0; $i--) {
+			$recorded_at = null;
 			$temperature = null;
+			$day_count = 0;
+			for ($j = 0; $j < count($occupancies); $j++) {
+				$recorded_at = Carbon::parse($occupancies[$j]->recorded_at)->subDays($i);
 
-			if ($tempIndex < count($temperatures) && $temperatures[$tempIndex]->recorded_at_hour == $recorded_at) {
-				$temperature = $temperatures[$tempIndex]->value;
-				$tempIndex++;
+				if ($tempIndex < count($temperatures) && $temperatures[$tempIndex]->recorded_at_hour == $recorded_at) {
+					$temperature = $temperature + $temperatures[$tempIndex]->value;
+					$tempIndex++;
+					$day_count++;
+				}
+			}
+			if ($day_count != 0) {
+				$temperature = $temperature / $day_count;
+			}
+			$recorded_at = Carbon::parse($occupancies[count($occupancies)-1]->recorded_at)->subDays($i);
+			$this_day = $recorded_at->day;
+			$start_of_week = $recorded_at->startOfWeek();
+			$monday = $start_of_week->day;
+
+			switch ($this_day - $monday) {
+				case 0: $recorded_at = 'Mon';break;
+				case 1: $recorded_at = 'Tue';break;
+				case 2: $recorded_at = 'Wed';break;
+				case 3: $recorded_at = 'Thu';break;
+				case 4: $recorded_at = 'Fri';break;
+				case 5: $recorded_at = 'Sat';break;
+				case 6: $recorded_at = 'Sun';break;
 			}
 
 			$results[] = [$recorded_at,$temperature];
@@ -438,7 +460,7 @@ class ApiController extends Controller {
 		$humiditySensors = explode(',', $room->humidity_sensor_names);
 		$humidities = DB::table('humidity')->whereIn('sensor',$humiditySensors)
 			->select(DB::raw('CONCAT(DATE(recorded_at),\' \',MAKETIME(HOUR(recorded_at),0,0)) recorded_at_hour, AVG(value) value'))
-			->where('recorded_at','>=',DB::raw('DATE_SUB(NOW(),INTERVAL 23 HOUR)'))
+			->where('recorded_at','>=',DB::raw('DATE_SUB(NOW(),INTERVAL 7 DAY)'))
 			->groupBy('recorded_at_hour')->orderBy('recorded_at_hour')->get();
 
 		$occupancies = DB::select('SELECT CONCAT(DATE(a.recorded_at),\' \',MAKETIME(HOUR(a.recorded_at),0,0)) recorded_at,
@@ -471,17 +493,38 @@ class ApiController extends Controller {
 			LEFT JOIN occupancy o ON a.recorded_at between o.start and o.end ORDER BY recorded_at');
 
 		// Results as 2D array
-		$results = [['Hour','Humidity']];
+		$results = [['Day','Humidity']];
 
 		$humidIndex = 0;
-		for ($i = 0; $i < count($occupancies); $i++) {
-			$recorded_at = $occupancies[$i]->recorded_at;
-
+		for ($i = 7; $i > 0; $i--) {
+			$recorded_at = null;
 			$humidity = null;
+			$day_count = 0;
+			for ($j = 0; $j < count($occupancies); $j++) {
+				$recorded_at = Carbon::parse($occupancies[$j]->recorded_at)->subDays($i);
 
-			if ($humidIndex < count($humidities) && $humidities[$humidIndex]->recorded_at_hour == $recorded_at) {
-				$humidity = $humidities[$humidIndex]->value;
-				$humidIndex++;
+				if ($humidIndex < count($humidities) && $humidities[$humidIndex]->recorded_at_hour == $recorded_at) {
+					$humidity = $humidity + $humidities[$humidIndex]->value;
+					$humidIndex++;
+					$day_count++;
+				}
+			}
+			if ($day_count != 0) {
+				$humidity = $humidity / $day_count;
+			}
+			$recorded_at = Carbon::parse($occupancies[count($occupancies)-1]->recorded_at)->subDays($i);
+			$this_day = $recorded_at->day;
+			$start_of_week = $recorded_at->startOfWeek();
+			$monday = $start_of_week->day;
+
+			switch ($this_day - $monday) {
+				case 0: $recorded_at = 'Mon';break;
+				case 1: $recorded_at = 'Tue';break;
+				case 2: $recorded_at = 'Wed';break;
+				case 3: $recorded_at = 'Thu';break;
+				case 4: $recorded_at = 'Fri';break;
+				case 5: $recorded_at = 'Sat';break;
+				case 6: $recorded_at = 'Sun';break;
 			}
 
 			$results[] = [$recorded_at,$humidity];
@@ -502,7 +545,7 @@ class ApiController extends Controller {
 		$powers = DB::select('SELECT concat(date(recorded_at),\' \',maketime(hour(recorded_at),0,0)) recorded_at_hour,
 			avg(value) value FROM (
    	 			SELECT recorded_at, sum(value) value FROM power
-				WHERE sensor in (?,?) AND recorded_at >= date_sub(now(),interval 23 hour)
+				WHERE sensor in (?,?) AND recorded_at >= date_sub(now(),interval 7 day)
 				GROUP BY recorded_at) a
 			GROUP BY recorded_at_hour ORDER BY recorded_at_hour', $powerSensors);
 
@@ -539,14 +582,30 @@ class ApiController extends Controller {
 		$results = [['Day','Power']];
 
 		$powerIndex = 0;
-		for ($i = 0; $i < count($occupancies); $i++) {
-			$recorded_at = $occupancies[$i]->recorded_at;
-
+		for ($i = 7; $i > 0; $i--) {
+			$recorded_at = null;
 			$power = 0;
+			for ($j = 0; $j < count($occupancies); $j++) {
+				$recorded_at = Carbon::parse($occupancies[$j]->recorded_at)->subDays($i);
 
-			if ($powerIndex < count($powers) && $powers[$powerIndex]->recorded_at_hour == $recorded_at) {
-				$power = $powers[$powerIndex]->value;
-				$powerIndex++;
+				if ($powerIndex < count($powers) && $powers[$powerIndex]->recorded_at_hour == $recorded_at) {
+					$power = $power + $powers[$powerIndex]->value;
+					$powerIndex++;
+				}
+			}
+			$recorded_at = Carbon::parse($occupancies[count($occupancies)-1]->recorded_at)->subDays($i);
+			$this_day = $recorded_at->day;
+			$start_of_week = $recorded_at->startOfWeek();
+			$monday = $start_of_week->day;
+
+			switch ($this_day - $monday) {
+				case 0: $recorded_at = 'Mon';break;
+				case 1: $recorded_at = 'Tue';break;
+				case 2: $recorded_at = 'Wed';break;
+				case 3: $recorded_at = 'Thu';break;
+				case 4: $recorded_at = 'Fri';break;
+				case 5: $recorded_at = 'Sat';break;
+				case 6: $recorded_at = 'Sun';break;
 			}
 
 			$results[] = [$recorded_at,$power];

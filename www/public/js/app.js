@@ -203,7 +203,7 @@ function refreshGraph() {
 				if (index == 0) {
 					return;
 				}
-				temperature_results[index][0] = formatTime(temperature_results[index][0]);
+				temperature_results[index][0] = temperature_results[index][0];
 				temperature_results[index][1] = parseFloat(temperature_results[index][1]);
 			});
 
@@ -215,7 +215,7 @@ function refreshGraph() {
 				height: "100%",
 				width: "100%",
 				vAxis: {title: "Temp"},
-				hAxis: {title: "Day", gridlines: {count: 6}},
+				hAxis: {title: "Day", gridlines: {count: 7}},
 				seriesType: "bars",
 				series: {0: {type: "line", color: '#ff0000'}},
 				legend: { position: 'top' },
@@ -239,7 +239,7 @@ function refreshGraph() {
 				if (index == 0) {
 					return;
 				}
-				humidity_results[index][0] = formatTime(humidity_results[index][0]);
+				humidity_results[index][0] = humidity_results[index][0];
 				humidity_results[index][1] = parseFloat(humidity_results[index][1]);
 			});
 
@@ -251,7 +251,7 @@ function refreshGraph() {
 				height: "100%",
 				width: "100%",
 				vAxis: {title: "Humidity"},
-				hAxis: {title: "Day", gridlines: {count: 6}},
+				hAxis: {title: "Day", gridlines: {count: 7}},
 				seriesType: "bars",
 				series: {0: {type: "line", color: '#1e90ff'}},
 				legend: { position: 'top' },
@@ -275,7 +275,7 @@ function refreshGraph() {
 				if (index == 0) {
 					return;
 				}
-				power_results[index][0] = formatTime(power_results[index][0]);
+				power_results[index][0] = power_results[index][0];
 				power_results[index][1] = parseFloat(power_results[index][1]);
 			});
 
