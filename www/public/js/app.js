@@ -80,7 +80,7 @@ function refreshGraph() {
 			var temperature_chartOptions = {
 				height: "100%",
 				width: "100%",
-				vAxis: {title: "Temp"},
+				vAxis: {title: "Temperature (°C)"},
 				hAxis: {title: "Hour"},
 				seriesType: "bars",
 				series: {0: {type: "line", color: '#ff0000'}},
@@ -116,7 +116,7 @@ function refreshGraph() {
 			var humidity_chartOptions = {
 				height: "100%",
 				width: "100%",
-				vAxis: {title: "Humidity"},
+				vAxis: {title: "Humidity (%)"},
 				hAxis: {title: "Hour"},
 				seriesType: "bars",
 				series: {0: {type: "line", color: '#1e90ff'}},
@@ -152,7 +152,7 @@ function refreshGraph() {
 			var power_chartOptions = {
 				height: "100%",
 				width: "100%",
-				vAxis: {title: "Power"},
+				vAxis: {title: "Power (kW)"},
 				hAxis: {title: "Hour"},
 				seriesType: "bars",
 				series: {0: {type: "line", color: '#00ff00'}},
@@ -189,7 +189,7 @@ function refreshGraph() {
 			var temperature_chartOptions = {
 				height: "100%",
 				width: "100%",
-				vAxis: {title: "Temp"},
+				vAxis: {title: "Temperature (°C)"},
 				hAxis: {title: "Day", gridlines: {count: 7}},
 				seriesType: "bars",
 				series: {0: {type: "line", color: '#ff0000'}},
@@ -225,7 +225,7 @@ function refreshGraph() {
 			var humidity_chartOptions = {
 				height: "100%",
 				width: "100%",
-				vAxis: {title: "Humidity"},
+				vAxis: {title: "Humidity (%)"},
 				hAxis: {title: "Day", gridlines: {count: 7}},
 				seriesType: "bars",
 				series: {0: {type: "line", color: '#1e90ff'}},
@@ -261,7 +261,7 @@ function refreshGraph() {
 			var power_chartOptions = {
 				height: "100%",
 				width: "100%",
-				vAxis: {title: "Power"},
+				vAxis: {title: "Power (kW)"},
 				hAxis: {title: "Day", gridlines: {count: 7}},
 				seriesType: "bars",
 				series: {0: {type: "line", color: '#00ff00'}},

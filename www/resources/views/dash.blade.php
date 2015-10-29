@@ -72,7 +72,7 @@
 		<div class="col-md-8">
 			<div class="panel panel-default">
 				<div class="panel-body">
-					<div id="chart_temperature_div" style="width: 100%; height: 230px;"></div>
+					<div id="chart_temperature_div" style="width: 100%; height: 220px;"></div>
 				</div>
 			</div>
 		</div>
@@ -105,7 +105,7 @@
 		<div class="col-md-8">
 			<div class="panel panel-default">
 				<div class="panel-body">
-					<div id="chart_humidity_div" style="width: 100%; height: 230px;"></div>
+					<div id="chart_humidity_div" style="width: 100%; height: 220px;"></div>
 				</div>
 			</div>
 		</div>
@@ -126,7 +126,7 @@
 		<div class="col-md-8">
 			<div class="panel panel-default">
 				<div class="panel-body">
-					<div id="chart_power_div" style="width: 100%; height: 230px;"></div>
+					<div id="chart_power_div" style="width: 100%; height: 220px;"></div>
 				</div>
 			</div>
 		</div>
