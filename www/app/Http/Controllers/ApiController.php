@@ -310,7 +310,7 @@ class ApiController extends Controller {
 
 		$powerSensors = explode(',', $room->power_sensor_names);
 		$powers = DB::select('SELECT concat(date(recorded_at),\' \',maketime(hour(recorded_at),0,0)) recorded_at_hour,
-			avg(value) value FROM (
+			sum(value) value FROM (
    	 			SELECT recorded_at, sum(value) value FROM power
 				WHERE sensor in (?,?) AND recorded_at >= date_sub(now(),interval 23 hour)
 				GROUP BY recorded_at) a
@@ -515,7 +515,7 @@ class ApiController extends Controller {
 
 		$powerSensors = explode(',', $room->power_sensor_names);
 		$powers = DB::select('SELECT concat(date(recorded_at),\' \',maketime(hour(recorded_at),0,0)) recorded_at_hour,
-			avg(value) value FROM (
+			sum(value) value FROM (
    	 			SELECT recorded_at, sum(value) value FROM power
 				WHERE sensor in (?,?) AND recorded_at >= date_sub(now(),interval 7 day)
 				GROUP BY recorded_at) a
