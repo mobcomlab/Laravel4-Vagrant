@@ -84,7 +84,7 @@ function refreshGraph() {
 				hAxis: {title: "Hour"},
 				seriesType: "bars",
 				series: {0: {type: "line", color: '#ff0000'}},
-				legend: { position: 'top' },
+				legend: { position: 'none' },
 				animation: {startup: true, duration: 500},
 				fontName: "Roboto"
 			};
@@ -120,7 +120,7 @@ function refreshGraph() {
 				hAxis: {title: "Hour"},
 				seriesType: "bars",
 				series: {0: {type: "line", color: '#1e90ff'}},
-				legend: { position: 'top' },
+				legend: { position: 'none' },
 				animation: {startup: true, duration: 500},
 				fontName: "Roboto"
 			};
@@ -156,7 +156,7 @@ function refreshGraph() {
 				hAxis: {title: "Hour"},
 				seriesType: "bars",
 				series: {0: {type: "line", color: '#00ff00'}},
-				legend: { position: 'top' },
+				legend: { position: 'none' },
 				animation: {startup: true, duration: 500},
 				fontName: "Roboto"
 			};
@@ -193,7 +193,7 @@ function refreshGraph() {
 				hAxis: {title: "Day", gridlines: {count: 7}},
 				seriesType: "bars",
 				series: {0: {type: "line", color: '#ff0000'}},
-				legend: { position: 'top' },
+				legend: { position: 'none' },
 				animation: {startup: true, duration: 500},
 				fontName: "Roboto"
 			};
@@ -229,7 +229,7 @@ function refreshGraph() {
 				hAxis: {title: "Day", gridlines: {count: 7}},
 				seriesType: "bars",
 				series: {0: {type: "line", color: '#1e90ff'}},
-				legend: { position: 'top' },
+				legend: { position: 'none' },
 				animation: {startup: true, duration: 500},
 				fontName: "Roboto"
 			};
@@ -265,7 +265,7 @@ function refreshGraph() {
 				hAxis: {title: "Day", gridlines: {count: 7}},
 				seriesType: "bars",
 				series: {0: {type: "line", color: '#00ff00'}},
-				legend: { position: 'top' },
+				legend: { position: 'none' },
 				animation: {startup: true, duration: 500},
 				fontName: "Roboto"
 			};

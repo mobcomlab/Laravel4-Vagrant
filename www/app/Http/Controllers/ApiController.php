@@ -352,7 +352,7 @@ class ApiController extends Controller {
 		for ($i = 0; $i < count($occupancies); $i++) {
 			$recorded_at = $occupancies[$i]->recorded_at;
 
-			$power = 0;
+			$power = null;
 
 			if ($powerIndex < count($powers) && $powers[$powerIndex]->recorded_at_hour == $recorded_at) {
 				$power = $powers[$powerIndex]->value;

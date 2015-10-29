@@ -1,10 +1,11 @@
 {
     "_readme": [
         "This file locks the dependencies of your project to a known state",
-        "Read more about it at http://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file",
+        "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file",
         "This file is @generated automatically"
     ],
     "hash": "96d80898ded3dbfc77b279419dcd99ab",
+    "content-hash": "c0075435b8c1787259138afb94456b3d",
     "packages": [
         {
             "name": "classpreloader/classpreloader",
@@ -741,7 +742,7 @@
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/thephpleague/flysystem-dropbox/zipball/2f464a6a80c0dcc2113a8cc636ca9d4a0fc26617",
+                "url": "https://api.github.com/repos/thephpleague/flysystem-dropbox/zipball/96c37124590bef6277c0e68a12e2dc40e5f82baa",
                 "reference": "2f464a6a80c0dcc2113a8cc636ca9d4a0fc26617",
                 "shasum": ""
             },
