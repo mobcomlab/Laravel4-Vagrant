@@ -375,7 +375,7 @@ class ApiController extends Controller {
 
 		$temperatureSensors = explode(',', $room->temperature_sensor_names);
 		$temperatures = DB::table('temperature')->whereIn('sensor',$temperatureSensors)
-			->select(DB::raw('CONCAT(DATE(recorded_at),\' \',MAKETIME(HOUR(recorded_at),0,0)) recorded_at_hour, AVG(value) value'))
+			->select(DB::raw('CONCAT(DATE(recorded_at),\' \',MAKETIME(HOUR(DATE_ADD(recorded_at,INTERVAL 7 HOUR)),0,0)) recorded_at_hour, AVG(value) value'))
 			->where('recorded_at','>=',DB::raw('DATE_SUB(NOW(),INTERVAL 7 DAY)'))
 			->groupBy('recorded_at_hour')->orderBy('recorded_at_hour')->get();
 
@@ -419,7 +419,7 @@ class ApiController extends Controller {
 			for ($j = 0; $j < count($occupancies); $j++) {
 				$recorded_at = Carbon::parse($occupancies[$j]->recorded_at)->subDays($i);
 
-				if ($tempIndex < count($temperatures) && $temperatures[$tempIndex]->recorded_at_hour == $recorded_at) {
+				if ($tempIndex < count($temperatures) && ($temperatures[$tempIndex]->recorded_at_hour == $recorded_at)) {
 					$temperature = $temperature + $temperatures[$tempIndex]->value;
 					$tempIndex++;
 					$day_count++;
@@ -448,7 +448,7 @@ class ApiController extends Controller {
 
 		$humiditySensors = explode(',', $room->humidity_sensor_names);
 		$humidities = DB::table('humidity')->whereIn('sensor',$humiditySensors)
-			->select(DB::raw('CONCAT(DATE(recorded_at),\' \',MAKETIME(HOUR(recorded_at),0,0)) recorded_at_hour, AVG(value) value'))
+			->select(DB::raw('CONCAT(DATE(recorded_at),\' \',MAKETIME(HOUR(DATE_ADD(recorded_at,INTERVAL 7 HOUR)),0,0)) recorded_at_hour, AVG(value) value'))
 			->where('recorded_at','>=',DB::raw('DATE_SUB(NOW(),INTERVAL 7 DAY)'))
 			->groupBy('recorded_at_hour')->orderBy('recorded_at_hour')->get();
 
