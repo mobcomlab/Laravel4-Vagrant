@@ -412,7 +412,7 @@ class ApiController extends Controller {
 		$results = [['Day','Temperature']];
 
 		$tempIndex = 0;
-		for ($i = 7; $i > 0; $i--) {
+		for ($i = 6; $i >= 0; $i--) {
 			$recorded_at = null;
 			$temperature = null;
 			$day_count = 0;
@@ -485,7 +485,7 @@ class ApiController extends Controller {
 		$results = [['Day','Humidity']];
 
 		$humidIndex = 0;
-		for ($i = 7; $i > 0; $i--) {
+		for ($i = 6; $i >= 0; $i--) {
 			$recorded_at = null;
 			$humidity = null;
 			$day_count = 0;
@@ -523,14 +523,14 @@ class ApiController extends Controller {
 		// Results as 2D array
 		$results = [['Day','Power']];
 
-		for ($i = 7; $i > 0; $i--) {
-			$date = Carbon::now()->copy()->subDays($i);
+		for ($i = 6; $i >= 0; $i--) {
+			$date = Carbon::today()->copy()->subDays($i);
 			$powerDayAverage = null;
 			$powerDayReadingCount = DB::table('power')->whereIn('sensor',$powerSensors)->where('value', '>', 0)
-				->whereBetween('recorded_at',[$date->copy()->subHours(23),$date])->count(DB::raw('DISTINCT recorded_at'));
+				->whereBetween('recorded_at',[$date->copy()->subHours(7),$date->copy()->addHours(17)])->count(DB::raw('DISTINCT recorded_at'));
 			if ($powerDayReadingCount > 0) {
 				$powerDayAverage = round(DB::table('power')->whereIn('sensor',$powerSensors)->where('value', '>', 0)
-						->whereBetween('recorded_at',[$date->copy()->subHours(23),$date])->sum('value') / $powerDayReadingCount,1);
+						->whereBetween('recorded_at',[$date->copy()->subHours(7),$date->copy()->addHours(17)])->sum('value') / $powerDayReadingCount,1);
 			}
 			$recorded_at = self::dateName($date);
 			$results[] = [$recorded_at,$powerDayAverage];
@@ -546,13 +546,13 @@ class ApiController extends Controller {
 		$monday = $start_of_week->day;
 
 		switch ($this_day - $monday) {
-			case 0: $date = 'Tue';break;
-			case 1: $date = 'Wed';break;
-			case 2: $date = 'Thu';break;
-			case 3: $date = 'Fri';break;
-			case 4: $date = 'Sat';break;
-			case 5: $date = 'Sun';break;
-			case 6: $date = 'Mon';break;
+			case 0: $date = 'Mon';break;
+			case 1: $date = 'Tue';break;
+			case 2: $date = 'Wed';break;
+			case 3: $date = 'Thu';break;
+			case 4: $date = 'Fri';break;
+			case 5: $date = 'Sat';break;
+			case 6: $date = 'Sun';break;
 		}
 		return $date;
 	}
