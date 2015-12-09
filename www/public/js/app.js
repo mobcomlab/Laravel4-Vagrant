@@ -63,33 +63,35 @@ function refreshGraph() {
 		// today
 		$.getJSON("/api/day/temperature").done(function(data) {
 
-			var temperature_results = data.results;
-			$.each(temperature_results, function(index, value) {
+			var humidtemp_results = data.results;
+			$.each(humidtemp_results, function(index, value) {
 				if (index == 0) {
 					return;
 				}
-				temperature_results[index][0] = formatTime(temperature_results[index][0]);
-				temperature_results[index][1] = parseFloat(temperature_results[index][1]);
+				humidtemp_results[index][0] = formatTime(humidtemp_results[index][0]);
+				humidtemp_results[index][1] = parseFloat(humidtemp_results[index][1]);
+				humidtemp_results[index][2] = parseInt(humidtemp_results[index][2]);
 			});
 
-			console.log(temperature_results);
+			console.log(humidtemp_results);
 
-			var temperature_chartData = google.visualization.arrayToDataTable(temperature_results);
+			var humidtemp_chartData = google.visualization.arrayToDataTable(humidtemp_results);
 
-			var temperature_chartOptions = {
+			var humidtemp_chartOptions = {
 				height: "100%",
 				width: "100%",
 				vAxis: {title: "Temperature (°C)"},
 				hAxis: {title: "Hour"},
 				seriesType: "bars",
-				series: {0: {type: "line", color: '#ff0000'}},
-				legend: { position: 'none' },
+				series: {0: {type: "line"}, 1: {type: "line", targetAxisIndex: 1}, 2: {type: "line", targetAxisIndex: 2}},
+				vAxes:{1:{title:'Humidity (%)'}},
+				legend: { position: 'top' },
 				animation: {startup: true, duration: 500},
 				fontName: "Roboto"
 			};
 
-			var temperature_chart = new google.visualization.ComboChart(document.getElementById('chart_humid_temp_div'));
-			temperature_chart.draw(temperature_chartData, temperature_chartOptions);
+			var humidtemp_chart = new google.visualization.ComboChart(document.getElementById('chart_humid_temp_div'));
+			humidtemp_chart.draw(humidtemp_chartData, humidtemp_chartOptions);
 
 
 		}).fail(function(jqxhr, textStatus, error) {

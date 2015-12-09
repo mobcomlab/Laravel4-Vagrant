@@ -189,6 +189,12 @@ class ApiController extends Controller {
 			->where('recorded_at','>=',DB::raw('DATE_SUB(NOW(),INTERVAL 23 HOUR)'))
 			->groupBy('recorded_at_hour')->orderBy('recorded_at_hour')->get();
 
+		$humiditySensors = explode(',', $room->humidity_sensor_names);
+		$humidities = DB::table('humidity')->whereIn('sensor',$humiditySensors)
+				->select(DB::raw('CONCAT(DATE(recorded_at),\' \',MAKETIME(HOUR(recorded_at),0,0)) recorded_at_hour, AVG(value) value'))
+				->where('recorded_at','>=',DB::raw('DATE_SUB(NOW(),INTERVAL 23 HOUR)'))
+				->groupBy('recorded_at_hour')->orderBy('recorded_at_hour')->get();
+
 		$occupancies = DB::select('SELECT CONCAT(DATE(a.recorded_at),\' \',MAKETIME(HOUR(a.recorded_at),0,0)) recorded_at,
 			IFNULL(o.people,0) people FROM (
    			 	SELECT date_sub(now(),interval 23 hour) recorded_at UNION
@@ -219,19 +225,27 @@ class ApiController extends Controller {
 			LEFT JOIN occupancy o ON a.recorded_at between o.start and o.end ORDER BY recorded_at');
 
 		// Results as 2D array
-		$results = [['Hour','Temperature']];
+		$results = [['Hour','Temperature','Humidity']];
 
 		$tempIndex = 0;
+		$humidIndex = 0;
+
 		for ($i = 0; $i < count($occupancies); $i++) {
 			$recorded_at = $occupancies[$i]->recorded_at;
 			$temperature = null;
+			$humidity = null;
 
 			if ($tempIndex < count($temperatures) && $temperatures[$tempIndex]->recorded_at_hour == $recorded_at) {
 				$temperature = round($temperatures[$tempIndex]->value,1);
 				$tempIndex++;
 			}
 
-			$results[] = [$recorded_at,$temperature];
+			if ($humidIndex < count($humidities) && $humidities[$humidIndex]->recorded_at_hour == $recorded_at) {
+				$humidity = round($humidities[$humidIndex]->value,1);
+				$humidIndex++;
+			}
+
+			$results[] = [$recorded_at,$temperature,$humidity];
 		}
 
 		return response()->json(['results' => $results]);
