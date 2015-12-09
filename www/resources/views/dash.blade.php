@@ -43,7 +43,6 @@
 			</div>
 		</div>
 	</nav>
-<div class="container">
 	<div class="pull-left">
 		<div id="now" class="panel panel-default">
 			<div class="panel-heading text-center">Now</div>
@@ -78,9 +77,9 @@
 		<div id="graph" class="panel panel-default">
 			<div class="panel-heading text-center">Last 24 hours</div>
 			<div class="panel-body">
-				<div id="chart_humid_temp_div" style="width: 100%; height: 220px;"></div>
-				<div id="chart_power_div" style="width: 100%; height: 220px;"></div>
-				<div id="chart_energy_graph_div" style="width: 100%; height: 220px;"></div>
+				<div id="chart_humid_temp_div"></div>
+				<div id="chart_power_div"></div>
+				<div id="chart_energy_graph_div"></div>
 			</div>
 		</div>
 	</div>
@@ -88,7 +87,7 @@
 		<div id="energy" class="panel panel-default">
 			<div class="panel-heading text-center">Last 7 days</div>
 			<div class="panel-body">
-				<div id="chart_energy_div" style="width: 100%; height: 220px;"></div>
+				<div id="chart_energy_div"></div>
 			</div>
 		</div>
 	</div>
@@ -182,7 +181,6 @@
 			{{--</div>--}}
 		{{--</div>--}}
 	{{--</div>--}}
-</div>
 <input type="hidden" name="date" value="{{ old('date',$date) }}">
 @endsection
 
