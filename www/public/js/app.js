@@ -22,10 +22,9 @@ function refreshContent() {
 	$.getJSON(json).done(function (data) {
 
 		$("#tempNow").text(formatTemperature(data.temperature.value));
-		$("#tempNowUpdated").text(formatDateTime(data.temperature.recorded_at));
+		$("#humidtempNowUpdated").text(formatDateTime(data.temperature.recorded_at));
 		$("#extTempNow").text(formatTemperature(data.external_temperature.value));
 		$("#humidNow").text(formatHumidity(data.humidity.value));
-		$("#humidNowUpdated").text(formatDateTime(data.humidity.recorded_at));
 		$("#extHumidNow").text(formatHumidity(data.external_humidity.value));
 		$("#powerNow").text(formatPower(data.power.value));
 		if (date == 'today') {
@@ -89,7 +88,7 @@ function refreshGraph() {
 				fontName: "Roboto"
 			};
 
-			var temperature_chart = new google.visualization.ComboChart(document.getElementById('chart_temperature_div'));
+			var temperature_chart = new google.visualization.ComboChart(document.getElementById('chart_humid_temp_div'));
 			temperature_chart.draw(temperature_chartData, temperature_chartOptions);
 
 
@@ -125,7 +124,7 @@ function refreshGraph() {
 				fontName: "Roboto"
 			};
 
-			var humidity_chart = new google.visualization.ComboChart(document.getElementById('chart_humidity_div'));
+			var humidity_chart = new google.visualization.ComboChart(document.getElementById('chart_energy_graph_div'));
 			humidity_chart.draw(humidity_chartData, humidity_chartOptions);
 
 

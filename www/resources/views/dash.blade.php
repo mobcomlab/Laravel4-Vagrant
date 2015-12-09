@@ -44,93 +44,144 @@
 		</div>
 	</nav>
 <div class="container">
-	<div class="row">
-		<div class="col-md-2">
-			<div class="panel panel-default">
-				<div class="panel-heading text-center">Temperature</div>
-				<div class="panel-body text-center">
+	<div class="pull-left">
+		<div id="now" class="panel panel-default">
+			<div class="panel-heading text-center">Now</div>
+			<div class="panel-body text-center">
+				<div class="pull-left">
+					<div>Temperature</div>
 					<div id="tempNow" class="lead">-°C</div>
-					<hr>
-					<div class="">Outside <span id="extTempNow">-°C</span></div>
-					<hr>
-					<div class="small">Updated <span id="tempNowUpdated">-</span></div>
+					<div>Outside <span id="extTempNow">-°C</span></div>
 				</div>
-			</div>
-		</div>
-		<div class="col-md-2">
-			<div class="panel panel-default">
-				<div class="panel-heading text-center">Humidity</div>
-				<div class="panel-body text-center">
+				<div class="pull-right">
+					<div>Humidity</div>
 					<div id="humidNow" class="lead">-%</div>
-					<hr>
-					<div class="">Outside <span id="extHumidNow">-%</span></div>
-					<hr>
-					<div class="small">Updated <span id="humidNowUpdated">-</span></div>
+					<div>Outside <span id="extHumidNow">-%</span></div>
 				</div>
-			</div>
-		</div>
-		<div class="col-md-8">
-			<div class="panel panel-default">
-				<div class="panel-body">
-					<div id="chart_temperature_div" style="width: 100%; height: 220px;"></div>
-				</div>
-			</div>
-		</div>
-	</div>
-	<div class="row">
-		<div class="col-md-2">
-			<div class="panel panel-default">
-				<div class="panel-heading text-center">Power</div>
-				<div class="panel-body text-center">
+				<div id="humidtempUpdate" class="small">Updated <span id="humidtempNowUpdated">-</span></div>
+				<hr>
+				<div class="pull-left">
+					<div>Power</div>
 					<div id="powerNow" class="lead">-kW</div>
-					<hr>
-					<div class="">{{ $date == 'today' ? "Today's avg" : "Week's avg" }} <span id="powerAverage">-kW</span></div>
-					<hr>
-					<div class="small">Updated <span id="powerNowUpdated">-</span></div>
+					<div>Average <span id="powerAverage">-kW</span></div>
 				</div>
-			</div>
-		</div>
-		<div class="col-md-2">
-			<div class="panel panel-default">
-				<div class="panel-heading text-center">Energy consumption</div>
-				<div class="panel-body text-center">
-					<div class="small">{{ $date == 'today' ? "Today's usage" : "Week's usage" }}</div>
-					<div class="lead" id="powerHoursUsed"></div>
-					<hr>
-					<div class="small">Total energy</div>
+				<div class="pull-right">
+					<div>Consumption</div>
 					<div class="lead" id="powerEnergy">-kWh</div>
+					<div>Usage <span id="powerHoursUsed"></span></div>
 				</div>
-			</div>
-		</div>
-		<div class="col-md-8">
-			<div class="panel panel-default">
-				<div class="panel-body">
-					<div id="chart_humidity_div" style="width: 100%; height: 220px;"></div>
-				</div>
+				<div id="powerUpdate" class="small">Updated <span id="powerNowUpdated">-</span></div>
 			</div>
 		</div>
 	</div>
-	<div class="row">
-		<div class="col-md-2">
-			<div class="panel panel-default">
-				<div class="panel-heading text-center">CO<sub>2</sub> emissions</div>
-				<div class="panel-body text-center">
-					<div id="emissions" class="lead">-kg/h</div>
-					<hr>
-					<div id="emissionsPerPerson">-kg/h</div>
-					<div>per person</div>
-				</div>
-			</div>
-		</div>
-		<div class="col-md-2"></div>
-		<div class="col-md-8">
-			<div class="panel panel-default">
-				<div class="panel-body">
-					<div id="chart_power_div" style="width: 100%; height: 220px;"></div>
-				</div>
+	<div class="pull-right">
+		<div id="graph" class="panel panel-default">
+			<div class="panel-heading text-center">Last 24 hours</div>
+			<div class="panel-body">
+				<div id="chart_humid_temp_div" style="width: 100%; height: 220px;"></div>
+				<div id="chart_power_div" style="width: 100%; height: 220px;"></div>
+				<div id="chart_energy_graph_div" style="width: 100%; height: 220px;"></div>
 			</div>
 		</div>
 	</div>
+	<div class="pull-left">
+		<div id="energy" class="panel panel-default">
+			<div class="panel-heading text-center">Last 7 days</div>
+			<div class="panel-body">
+				<div id="chart_energy_div" style="width: 100%; height: 220px;"></div>
+			</div>
+		</div>
+	</div>
+
+
+
+	{{--<div class="row">--}}
+		{{--<div class="col-md-2">--}}
+			{{--<div class="panel panel-default">--}}
+				{{--<div class="panel-heading text-center">Temperature</div>--}}
+				{{--<div class="panel-body text-center">--}}
+					{{--<div id="tempNow" class="lead">-°C</div>--}}
+					{{--<hr>--}}
+					{{--<div class="">Outside <span id="extTempNow">-°C</span></div>--}}
+					{{--<hr>--}}
+					{{--<div class="small">Updated <span id="tempNowUpdated">-</span></div>--}}
+				{{--</div>--}}
+			{{--</div>--}}
+		{{--</div>--}}
+		{{--<div class="col-md-2">--}}
+			{{--<div class="panel panel-default">--}}
+				{{--<div class="panel-heading text-center">Humidity</div>--}}
+				{{--<div class="panel-body text-center">--}}
+					{{--<div id="humidNow" class="lead">-%</div>--}}
+					{{--<hr>--}}
+					{{--<div class="">Outside <span id="extHumidNow">-%</span></div>--}}
+					{{--<hr>--}}
+					{{--<div class="small">Updated <span id="humidNowUpdated">-</span></div>--}}
+				{{--</div>--}}
+			{{--</div>--}}
+		{{--</div>--}}
+		{{--<div class="col-md-8">--}}
+			{{--<div class="panel panel-default">--}}
+				{{--<div class="panel-body">--}}
+					{{--<div id="chart_temperature_div" style="width: 100%; height: 220px;"></div>--}}
+				{{--</div>--}}
+			{{--</div>--}}
+		{{--</div>--}}
+	{{--</div>--}}
+	{{--<div class="row">--}}
+		{{--<div class="col-md-2">--}}
+			{{--<div class="panel panel-default">--}}
+				{{--<div class="panel-heading text-center">Power</div>--}}
+				{{--<div class="panel-body text-center">--}}
+					{{--<div id="powerNow" class="lead">-kW</div>--}}
+					{{--<hr>--}}
+					{{--<div class="">{{ $date == 'today' ? "Today's avg" : "Week's avg" }} <span id="powerAverage">-kW</span></div>--}}
+					{{--<hr>--}}
+					{{--<div class="small">Updated <span id="powerNowUpdated">-</span></div>--}}
+				{{--</div>--}}
+			{{--</div>--}}
+		{{--</div>--}}
+		{{--<div class="col-md-2">--}}
+			{{--<div class="panel panel-default">--}}
+				{{--<div class="panel-heading text-center">Energy consumption</div>--}}
+				{{--<div class="panel-body text-center">--}}
+					{{--<div class="small">{{ $date == 'today' ? "Today's usage" : "Week's usage" }}</div>--}}
+					{{--<div class="lead" id="powerHoursUsed"></div>--}}
+					{{--<hr>--}}
+					{{--<div class="small">Total energy</div>--}}
+					{{--<div class="lead" id="powerEnergy">-kWh</div>--}}
+				{{--</div>--}}
+			{{--</div>--}}
+		{{--</div>--}}
+		{{--<div class="col-md-8">--}}
+			{{--<div class="panel panel-default">--}}
+				{{--<div class="panel-body">--}}
+					{{--<div id="chart_humidity_div" style="width: 100%; height: 220px;"></div>--}}
+				{{--</div>--}}
+			{{--</div>--}}
+		{{--</div>--}}
+	{{--</div>--}}
+	{{--<div class="row">--}}
+		{{--<div class="col-md-2">--}}
+			{{--<div class="panel panel-default">--}}
+				{{--<div class="panel-heading text-center">CO<sub>2</sub> emissions</div>--}}
+				{{--<div class="panel-body text-center">--}}
+					{{--<div id="emissions" class="lead">-kg/h</div>--}}
+					{{--<hr>--}}
+					{{--<div id="emissionsPerPerson">-kg/h</div>--}}
+					{{--<div>per person</div>--}}
+				{{--</div>--}}
+			{{--</div>--}}
+		{{--</div>--}}
+		{{--<div class="col-md-2"></div>--}}
+		{{--<div class="col-md-8">--}}
+			{{--<div class="panel panel-default">--}}
+				{{--<div class="panel-body">--}}
+					{{--<div id="chart_power_div" style="width: 100%; height: 220px;"></div>--}}
+				{{--</div>--}}
+			{{--</div>--}}
+		{{--</div>--}}
+	{{--</div>--}}
 </div>
 <input type="hidden" name="date" value="{{ old('date',$date) }}">
 @endsection

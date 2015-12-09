@@ -8,7 +8,8 @@
 
     <link rel="stylesheet" href="//maxcdn.bootstrapcdn.com/bootstrap/3.3.5/css/bootstrap.min.css">
     <link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/bootstrap-datepicker/1.4.0/css/bootstrap-datepicker3.min.css">
-	
+    <link rel="stylesheet" href="{{ asset('css/app.css') }}">
+
 	<!-- Fonts -->
 	<link rel="stylesheet" href="//fonts.googleapis.com/css?family=Roboto:400,300">
 
