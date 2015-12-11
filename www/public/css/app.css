@@ -1,7 +1,36 @@
+.navbar-default.navbar {
+    background-color: #1237FF;
+}
+
+.navbar-default.navbar a {
+    color: #fff;
+}
+
+#bs-example-navbar-collapse-1 a{
+    color: #fff;
+}
+
+body {
+    background: #ccc;
+}
+
+.panel-body.panel-login {
+    padding: 10px;
+}
+
+div.panel-heading.text-center {
+    background-color: #0024E5;
+    color: #fff;
+}
+
+div.panel-heading.text-center:hover {
+    color: #ccc;
+    cursor: default;
+}
+
 .panel-body {
     padding: 0;
 }
-
 
 #now .panel-body {
     padding: 10px;
@@ -33,6 +62,12 @@
 
 .dropdown a {
   text-decoration: none;
+  color: #fff;
+}
+
+.dropdown a:hover {
+    color: #ccc;
+    cursor: default;
 }
 
 ul.dropdown-menu{

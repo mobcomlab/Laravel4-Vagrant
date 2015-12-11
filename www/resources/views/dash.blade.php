@@ -75,14 +75,15 @@
 	<div class="col-sm-12 col-md-8 col-lg-8">
 		<div id="graph" class="panel panel-default">
 			<div class="panel-heading text-center dropdown">
-				<a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">{{ $date == 'today' ? 'Last 24 hours' : 'Last week' }}<span class="caret"></span></a>
-				<ul class="dropdown-menu" role="menu">
-					<li><a href="{{ route('date',['date' => 'today']) }}">Last 24 hours</a></li>
-					<li><a href="{{ route('date',['date' => 'week']) }}">Last week</a></li>
-				</ul>
-			</div>
+					<a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">{{ $date == 'today' ? 'Last 24 hours' : 'Last week' }}<span class="caret"></span></a>
+					<ul class="dropdown-menu" role="menu">
+						<li><a href="{{ route('date',['date' => 'today']) }}">Last 24 hours</a></li>
+						<li><a href="{{ route('date',['date' => 'week']) }}">Last week</a></li>
+					</ul>
+				</li></div>
 			<div class="panel-body">
 				<div id="chart_humid_temp_div"></div>
+				<div id="chart_power_div"></div>
 				<div id="chart_energy_graph_div"></div>
 			</div>
 		</div>
