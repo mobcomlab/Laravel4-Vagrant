@@ -18,14 +18,11 @@ Route::controllers([
 	'password' => 'Auth\PasswordController',
 ]);
 //day
-Route::get('api/day/content', 'ApiController@dayContent');
-Route::get('api/day/temperature', 'ApiController@dayTemperature');
-Route::get('api/day/humidity', 'ApiController@dayHumidity');
+Route::get('api/now', 'ApiController@now');
+Route::get('api/day/humidtemp', 'ApiController@dayHumidTemp');
 Route::get('api/day/power', 'ApiController@dayPower');
 //week
-Route::get('api/week/content', 'ApiController@weekContent');
-Route::get('api/week/temperature', 'ApiController@weekTemperature');
-Route::get('api/week/humidity', 'ApiController@weekHumidity');
+Route::get('api/week/humidtemp', 'ApiController@weekHumidTemp');
 Route::get('api/week/power', 'ApiController@weekPower');
 
 Route::get('export', ['as' => 'export', 'uses' => 'ExportController@index']);

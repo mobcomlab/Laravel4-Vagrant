@@ -32,5 +32,13 @@
     height: 230px;
 }
 
+.dropdown a {
+  text-decoration: none;
+}
+
+ul.dropdown-menu{
+    margin-left: 45%;
+}
+
 
 
