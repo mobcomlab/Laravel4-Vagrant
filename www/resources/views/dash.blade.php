@@ -83,7 +83,6 @@
 			</div>
 			<div class="panel-body">
 				<div id="chart_humid_temp_div"></div>
-				<div id="chart_power_div"></div>
 				<div id="chart_energy_graph_div"></div>
 			</div>
 		</div>

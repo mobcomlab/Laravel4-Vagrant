@@ -67,7 +67,7 @@ class ApiController extends Controller {
 		$powerMaxDate = DB::table('power')->whereIn('sensor',$powerSensors)->max('recorded_at');
 		$powerNow = DB::table('power')->whereIn('sensor',$powerSensors)
 							->where('recorded_at',$powerMaxDate)->sum('value');
-		$powerDayReadingCount = DB::table('power')->whereIn('sensor',$powerSensors)->where('value', '>', 0)
+		$powerDayReadingCount = DB::table('power')->where('sensor',$powerSensors[0])->where('value', '>', 0)
 							->where('recorded_at','>=',$today->copy()->subHours(23))->count(DB::raw('DISTINCT recorded_at'));
 		if ($powerDayReadingCount > 0) {
 			$powerDayAverage = DB::table('power')->whereIn('sensor',$powerSensors)->where('value', '>', 0)

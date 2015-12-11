@@ -105,7 +105,7 @@ function refreshGraph() {
 			var power_chartOptions = {
 				height: "100%",
 				width: "100%",
-				vAxis: {title: "Power (kW)"},
+				vAxis: {title: "Energy consumption (kWh)"},
 				hAxis: {title: "Hour"},
 				seriesType: "bars",
 				series: {0: {type: "line", color: '#00ff00'}},
@@ -114,7 +114,7 @@ function refreshGraph() {
 				fontName: "Roboto"
 			};
 
-			var power_chart = new google.visualization.ComboChart(document.getElementById('chart_power_div'));
+			var power_chart = new google.visualization.ComboChart(document.getElementById('chart_energy_graph_div'));
 			power_chart.draw(power_chartData, power_chartOptions);
 
 
@@ -179,7 +179,7 @@ function refreshGraph() {
 			var power_chartOptions = {
 				height: "100%",
 				width: "100%",
-				vAxis: {title: "Power (kW)"},
+				vAxis: {title: "Energy consumption (kWh)"},
 				hAxis: {title: "Day", gridlines: {count: 7}},
 				seriesType: "bars",
 				series: {0: {type: "line", color: '#00ff00'}},
@@ -188,7 +188,7 @@ function refreshGraph() {
 				fontName: "Roboto"
 			};
 
-			var power_chart = new google.visualization.ComboChart(document.getElementById('chart_power_div'));
+			var power_chart = new google.visualization.ComboChart(document.getElementById('chart_energy_graph_div'));
 			power_chart.draw(power_chartData, power_chartOptions);
 
 
@@ -254,6 +254,8 @@ function dateName(subDay) {
 			case -6: date = end_of_month-5;break;
 			default: date = now.getDate()-subDay;
 		}
+	} else {
+		date = now.getDate()-subDay;
 	}
 	day = days[day];
 	return day+' '+date+extension;
