@@ -43,7 +43,7 @@
 			</div>
 		</div>
 	</nav>
-	<div class="pull-left">
+	<div class="col-sm-12 col-md-4 col-lg-4">
 		<div id="now" class="panel panel-default">
 			<div class="panel-heading text-center">Now</div>
 			<div class="panel-body text-center">
@@ -72,8 +72,14 @@
 				<div id="powerUpdate" class="small">Updated <span id="powerNowUpdated">-</span></div>
 			</div>
 		</div>
+			<div id="energy" class="panel panel-default">
+				<div class="panel-heading text-center">Last 7 days</div>
+				<div class="panel-body">
+					<div id="chart_energy_div"></div>
+				</div>
+			</div>
 	</div>
-	<div class="pull-right">
+	<div class="col-sm-12 col-md-8 col-lg-8">
 		<div id="graph" class="panel panel-default">
 			<div class="panel-heading text-center">Last 24 hours</div>
 			<div class="panel-body">
@@ -83,14 +89,7 @@
 			</div>
 		</div>
 	</div>
-	<div class="pull-left">
-		<div id="energy" class="panel panel-default">
-			<div class="panel-heading text-center">Last 7 days</div>
-			<div class="panel-body">
-				<div id="chart_energy_div"></div>
-			</div>
-		</div>
-	</div>
+
 <input type="hidden" name="date" value="{{ old('date',$date) }}">
 @endsection
 
