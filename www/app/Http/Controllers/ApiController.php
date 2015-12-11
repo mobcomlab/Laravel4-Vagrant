@@ -186,7 +186,7 @@ class ApiController extends Controller {
 
 		$powerSensors = explode(',', $room->power_sensor_names);
 		$powers = DB::select('SELECT concat(date(recorded_at),\' \',maketime(hour(recorded_at),0,0)) recorded_at_hour,
-			avg(value) value FROM (
+			sum(value) value FROM (
    	 			SELECT recorded_at, sum(value) value FROM power
 				WHERE sensor in (?,?) AND recorded_at >= date_sub(now(),interval 23 hour)
 				GROUP BY recorded_at) a
@@ -222,7 +222,7 @@ class ApiController extends Controller {
 			LEFT JOIN occupancy o ON a.recorded_at between o.start and o.end ORDER BY recorded_at');
 
 		// Results as 2D array
-		$results = [['Hour','Power']];
+		$results = [['Hour','Energy']];
 
 		$powerIndex = 0;
 		for ($i = 0; $i < count($occupancies); $i++) {
@@ -231,11 +231,11 @@ class ApiController extends Controller {
 			$power = null;
 
 			if ($powerIndex < count($powers) && $powers[$powerIndex]->recorded_at_hour == $recorded_at) {
-				$power = round($powers[$powerIndex]->value,1);
+				$powerHourEnergyKWH = round($powers[$powerIndex]->value/60,1);
 				$powerIndex++;
 			}
 
-			$results[] = [$recorded_at,$power];
+			$results[] = [$recorded_at,$powerHourEnergyKWH];
 		}
 
 		return response()->json(['results' => $results]);
@@ -345,18 +345,22 @@ class ApiController extends Controller {
 		$powerSensors = explode(',', $room->power_sensor_names);
 
 		// Results as 2D array
-		$results = [['Day','Power']];
+		$results = [['Day','Energy']];
 
 		for ($i = 6; $i >= 0; $i--) {
 			$date = Carbon::today()->copy()->subDays($i);
 			$powerDayAverage = null;
-			$powerDayReadingCount = DB::table('power')->whereIn('sensor',$powerSensors)->where('value', '>', 0)
+			$powerDayReadingCount = DB::table('power')->where('sensor',$powerSensors[0])->where('value', '>', 0)
 				->whereBetween('recorded_at',[$date->copy()->subHours(7),$date->copy()->addHours(17)])->count(DB::raw('DISTINCT recorded_at'));
 			if ($powerDayReadingCount > 0) {
 				$powerDayAverage = round(DB::table('power')->whereIn('sensor',$powerSensors)->where('value', '>', 0)
 						->whereBetween('recorded_at',[$date->copy()->subHours(7),$date->copy()->addHours(17)])->sum('value') / $powerDayReadingCount,1);
+				$powerDayHoursUsed = $powerDayReadingCount / 60;
+				$powerDayEnergyKWH = $powerDayAverage * $powerDayHoursUsed;
+			} else {
+				$powerDayEnergyKWH = 0;
 			}
-			$results[] = [$i,$powerDayAverage];
+			$results[] = [$i,$powerDayEnergyKWH];
 		}
 
 		return response()->json(['results' => $results]);

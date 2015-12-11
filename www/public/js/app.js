@@ -47,6 +47,41 @@ function refreshContent() {
 }
 
 function refreshGraph() {
+	$.getJSON("/api/week/power").done(function(data) {
+
+		var power_results = data.results;
+		$.each(power_results, function(index, value) {
+			if (index == 0) {
+				return;
+			}
+			power_results[index][0] = dateName(power_results[index][0]);
+			power_results[index][1] = parseFloat(power_results[index][1]);
+		});
+
+		console.log(power_results);
+
+		var power_chartData = google.visualization.arrayToDataTable(power_results);
+
+		var power_chartOptions = {
+			height: "100%",
+			width: "100%",
+			vAxis: {title: "Energy consumption (kWh)"},
+			hAxis: {title: "Day", gridlines: {count: 7}},
+			seriesType: "bars",
+			series: {0: { color: '#00ff00'}},
+			legend: { position: 'none' },
+			animation: {startup: true, duration: 500},
+			fontName: "Roboto"
+		};
+
+		var power_chart = new google.visualization.ComboChart(document.getElementById('chart_energy_div'));
+		power_chart.draw(power_chartData, power_chartOptions);
+
+
+	}).fail(function(jqxhr, textStatus, error) {
+		var err = textStatus + ", " + error;
+		console.log("Request Failed: " + err);
+	});
 	if ($('input:hidden[name=date]').val() == 'today') {
 		// today
 		$.getJSON("/api/day/humidtemp").done(function(data) {
