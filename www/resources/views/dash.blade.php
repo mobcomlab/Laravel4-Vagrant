@@ -40,29 +40,33 @@
 		<div id="now" class="panel panel-default">
 			<div class="panel-heading text-center">Now</div>
 			<div class="panel-body text-center">
-				<div class="pull-left">
+				<div class="col-xs-6 col-sm-6 col-md-6 col-lg-6">
 					<div>Temperature</div>
 					<div id="tempNow" class="lead">-°C</div>
 					<div>Outside <span id="extTempNow">-°C</span></div>
 				</div>
-				<div class="pull-right">
+				<div class="col-xs-6 col-sm-6 col-md-6 col-lg-6">
 					<div>Humidity</div>
 					<div id="humidNow" class="lead">-%</div>
 					<div>Outside <span id="extHumidNow">-%</span></div>
 				</div>
-				<div id="humidtempUpdate" class="small">Updated <span id="humidtempNowUpdated">-</span></div>
+				<div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
+					<div id="humidtempUpdate" class="small">Updated <span id="humidtempNowUpdated">-</span></div>
+				</div>
 				<hr>
-				<div class="pull-left">
+				<div class="col-xs-6 col-sm-6 col-md-6 col-lg-6">
 					<div>Power</div>
 					<div id="powerNow" class="lead">-kW</div>
 					<div>Average <span id="powerAverage">-kW</span></div>
 				</div>
-				<div class="pull-right">
+				<div class="col-xs-6 col-sm-6 col-md-6 col-lg-6">
 					<div>Consumption</div>
 					<div class="lead" id="powerEnergy">-kWh</div>
 					<div>Usage <span id="powerHoursUsed"></span></div>
 				</div>
-				<div id="powerUpdate" class="small">Updated <span id="powerNowUpdated">-</span></div>
+				<div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
+					<div id="powerUpdate" class="small">Updated <span id="powerNowUpdated">-</span></div>
+				</div>
 			</div>
 		</div>
 			<div id="energy" class="panel panel-default">

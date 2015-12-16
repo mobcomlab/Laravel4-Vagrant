@@ -37,11 +37,12 @@ div.panel-heading.text-center:hover {
 }
 
 #humidtempUpdate {
-    margin-top: 100px;
+    margin-top: 10px;
+    margin-bottom: 10px;
 }
 
 #powerUpdate {
-    margin-top: 120px;
+    margin-top: 10px;
 }
 
 .lead {
