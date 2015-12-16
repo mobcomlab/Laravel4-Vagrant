@@ -1,5 +1,5 @@
 .navbar-default.navbar {
-    background-color: #1237FF;
+    background-color: #2196F3;
 }
 
 .navbar-default.navbar a {
@@ -19,7 +19,12 @@ body {
 }
 
 div.panel-heading.text-center {
-    background-color: #0024E5;
+    background-color: #2196F3;
+    color: #fff;
+}
+
+div.panel-default > .panel-heading {
+    background-color: #2196F3;
     color: #fff;
 }
 
@@ -52,7 +57,7 @@ div.panel-heading.text-center:hover {
 
 #chart_energy_div {
     width: 100%;
-    height: 325px;
+    height: 350px;
 }
 
 #chart_humid_temp_div,
