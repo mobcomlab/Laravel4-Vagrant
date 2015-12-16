@@ -1,5 +1,5 @@
 .navbar-default.navbar {
-    background-color: #2196F3;
+    background-color: #2962FF;
 }
 
 .navbar-default.navbar a {
@@ -11,20 +11,119 @@
 }
 
 body {
-    background: #ccc;
+    background: #e5e5e5;
 }
 
 .panel-body.panel-login {
     padding: 10px;
 }
 
-div.panel-heading.text-center {
-    background-color: #2196F3;
+#temp {
+    background-color: #f44336;
     color: #fff;
 }
 
+#tempHead {
+    background-color: rgba(255, 255, 255, 0.20);
+    padding-top: 5px;
+    padding-bottom: 5px;
+}
+
+#tempBody {
+    margin-top: 15px;
+    font-size: 40px;
+}
+
+#tempOut {
+    margin-bottom: 15px;
+}
+
+#tempFoot {
+    background-color: rgba(0, 0, 0, 0.20);
+    padding-top: 5px;
+    padding-bottom: 5px;
+}
+
+#humid {
+    background-color: #2196f3;
+    color: #fff;
+}
+
+#humidHead {
+    background-color: rgba(255, 255, 255, 0.20);
+    padding-top: 5px;
+    padding-bottom: 5px;
+}
+
+#humidBody {
+    margin-top: 15px;
+    font-size: 40px;
+}
+
+#humidOut {
+    margin-bottom: 15px;
+}
+
+#humidFoot {
+    background-color: rgba(0, 0, 0, 0.20);
+    padding-top: 5px;
+    padding-bottom: 5px;
+}
+
+#power {
+    background-color: #ef6c00;
+    color: #fff;
+}
+
+#powerHead {
+    background-color: rgba(255, 255, 255, 0.20);
+    padding-top: 5px;
+    padding-bottom: 5px;
+}
+
+#powerBody {
+    margin-top: 15px;
+    font-size: 40px;
+}
+
+#powerAvg {
+    margin-bottom: 15px;
+}
+
+#powerFoot {
+    background-color: rgba(0, 0, 0, 0.20);
+    padding-top: 5px;
+    padding-bottom: 5px;
+}
+
+#energy {
+    background-color: #43a047;
+    color: #fff;
+}
+
+#energyHead {
+    background-color: rgba(255, 255, 255, 0.20);
+    padding-top: 5px;
+    padding-bottom: 5px;
+}
+
+#energyBody {
+    margin-top: 15px;
+    font-size: 40px;
+}
+
+#energyUsage {
+    margin-bottom: 15px;
+}
+
+#energyFoot {
+    background-color: rgba(0, 0, 0, 0.20);
+    padding-top: 5px;
+    padding-bottom: 5px;
+}
+
 div.panel-default > .panel-heading {
-    background-color: #2196F3;
+    background-color: #2962FF;
     color: #fff;
 }
 
@@ -37,33 +136,16 @@ div.panel-heading.text-center:hover {
     padding: 0;
 }
 
-#now .panel-body {
-    padding: 10px;
-}
-
-#humidtempUpdate {
-    margin-top: 10px;
-    margin-bottom: 10px;
-}
-
-#powerUpdate {
-    margin-top: 10px;
-}
 
 .lead {
     font-size: 35px;
-    margin-bottom: 5px;
-}
-
-#chart_energy_div {
-    width: 100%;
-    height: 350px;
 }
 
 #chart_humid_temp_div,
-#chart_energy_graph_div {
+#chart_energy_graph_div,
+#chart_energy_div {
     width: 100%;
-    height: 345px;
+    height: 315px;
 }
 
 .dropdown a {
@@ -74,10 +156,6 @@ div.panel-heading.text-center:hover {
 .dropdown a:hover {
     color: #ccc;
     cursor: default;
-}
-
-ul.dropdown-menu{
-    margin-left: 45%;
 }
 
 

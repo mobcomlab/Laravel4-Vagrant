@@ -17,15 +17,17 @@ function refreshContent() {
 	$.getJSON(json).done(function (data) {
 
 		$("#tempNow").text(formatTemperature(data.temperature.value));
-		$("#humidtempNowUpdated").text(formatDateTime(data.temperature.recorded_at));
+		$("#tempNowUpdated").text(formatDateTime(data.temperature.recorded_at));
 		$("#extTempNow").text(formatTemperature(data.external_temperature.value));
 		$("#humidNow").text(formatHumidity(data.humidity.value));
+		$("#humidNowUpdated").text(formatDateTime(data.humidity.recorded_at));
 		$("#extHumidNow").text(formatHumidity(data.external_humidity.value));
 		$("#powerNow").text(formatPower(data.power.value));
 		$("#powerAverage").text(formatPower(data.power.day.average_kw));
 		$("#powerNowUpdated").text(formatDateTime(data.power.recorded_at));
+		$("#energyNowUpdated").text(formatDateTime(data.power.recorded_at));
 		$("#powerHoursUsed").text(formatHours(data.power.day.hours_used));
-		$("#powerEnergy").text(formatEnergy(data.power.day.energy_kwh));
+		$("#energyNow").text(formatEnergy(data.power.day.energy_kwh));
 		var powerToEmissionConstant = 0.56352;
 		var emissions = data.power.value * powerToEmissionConstant;
 		$("#emissions").text(parseFloat(emissions).toFixed(1) + "kg/h");
@@ -68,7 +70,7 @@ function refreshGraph() {
 			vAxis: {title: "Energy consumption (kWh)"},
 			hAxis: {title: "Day", gridlines: {count: 7}},
 			seriesType: "bars",
-			series: {0: { color: '#00ff00'}},
+			series: {0: { color: '#43a047'}},
 			legend: { position: 'none' },
 			animation: {startup: true, duration: 500},
 			fontName: "Roboto"
@@ -106,7 +108,7 @@ function refreshGraph() {
 				vAxis: {title: "Temperature (°C)"},
 				hAxis: {title: "Hour"},
 				seriesType: "bars",
-				series: {0: {type: "line", color: '#b22222'}, 1: {type: "line",color: '#1e90ff', targetAxisIndex: 1}, 2: {type: "line", targetAxisIndex: 2}},
+				series: {0: {type: "line", color: '#f44336'}, 1: {type: "line",color: '#2196F3', targetAxisIndex: 1}, 2: {type: "line", targetAxisIndex: 2}},
 				vAxes:{1:{title:'Humidity (%)'}},
 				legend: { position: 'top' },
 				animation: {startup: true, duration: 500},
@@ -143,7 +145,7 @@ function refreshGraph() {
 				vAxis: {title: "Energy consumption (kWh)"},
 				hAxis: {title: "Hour"},
 				seriesType: "bars",
-				series: {0: {type: "line", color: '#00ff00'}},
+				series: {0: {type: "line", color: '#43a047'}},
 				legend: { position: 'none' },
 				animation: {startup: true, duration: 500},
 				fontName: "Roboto"
@@ -180,7 +182,7 @@ function refreshGraph() {
 				vAxis: {title: "Temperature (°C)"},
 				hAxis: {title: "Day", gridlines: {count: 7}},
 				seriesType: "bars",
-				series: {0: {type: "line", color: '#b22222'}, 1: {type: "line",color: '#1e90ff', targetAxisIndex: 1}, 2: {type: "line", targetAxisIndex: 2}},
+				series: {0: {type: "line", color: '#f44336'}, 1: {type: "line",color: '#2196F3', targetAxisIndex: 1}, 2: {type: "line", targetAxisIndex: 2}},
 				vAxes:{1:{title:'Humidity (%)'}},
 				legend: { position: 'top' },
 				animation: {startup: true, duration: 500},
@@ -217,7 +219,7 @@ function refreshGraph() {
 				vAxis: {title: "Energy consumption (kWh)"},
 				hAxis: {title: "Day", gridlines: {count: 7}},
 				seriesType: "bars",
-				series: {0: {type: "line", color: '#00ff00'}},
+				series: {0: {type: "line", color: '#43a047'}},
 				legend: { position: 'none' },
 				animation: {startup: true, duration: 500},
 				fontName: "Roboto"
@@ -322,6 +324,6 @@ function formatDateTime(dt) {
 }
 
 function formatTime(dt) {
-	return moment.utc(dt).add(7,'hours').format('HH:mm');
+	return moment.utc(dt).add(7,'hours').format('HH');
 }
 
