@@ -71,6 +71,9 @@ function refreshGraph(check) {
 				vAxis: {title: "Energy consumption (kWh)"},
 				hAxis: {title: "Day", gridlines: {count: 7}},
 				seriesType: "bars",
+				bar: {
+					groupWidth: '100%'
+				},
 				series: {0: { color: '#43a047'}},
 				legend: { position: 'none' },
 				animation: {startup: true, duration: 500},
