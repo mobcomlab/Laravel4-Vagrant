@@ -6,16 +6,32 @@
     color: #fff;
 }
 
-#bs-example-navbar-collapse-1 a{
+.navbar-default.navbar a:hover {
+    color: #ccc;
+}
+
+#btn-navbar{
     color: #fff;
+}
+
+#btn-navbar:hover{
+    color: #ccc;
+}
+
+a#btn-navbar.dropdown-toggle {
+    background-color: #000000;
+}
+
+#btn-menu{
+    color: #000000;
+}
+
+#btn-menu:hover{
+    color: #808080;
 }
 
 body {
     background: #e5e5e5;
-}
-
-.panel-body.panel-login {
-    padding: 10px;
 }
 
 #temp {
@@ -149,14 +165,21 @@ body {
     font-size: 18px;
 }
 
-#graph {
+#graph,
+#chart{
     width: 30px;
     height: 30px;
 }
 
-#chart {
-    width: 30px;
-    height: 30px;
+#base {
+    width: 25px;
+    height: 25px;
+}
+
+
+#baseHead > b{
+    color: #2962ff;
+    font-size: 18px;
 }
 
 .btn-group > .btn {
@@ -186,14 +209,15 @@ hr {
     border-width: 1px;
 }
 
-div.panel-default > .panel-heading {
-    background-color: #2962ff;
-    color: #fff;
-}
-
-div.panel-heading.text-center:hover {
-    color: #ccc;
-    cursor: default;
+.panel-base > hr {
+    display: block;
+    width: 98%;
+    margin-top: 0;
+    margin-bottom: 10px;
+    margin-left: auto;
+    margin-right: auto;
+    border-color: #cccccc;
+    border-width: 1px;
 }
 
 .panel-body {
@@ -208,15 +232,27 @@ div.panel-heading.text-center:hover {
     height: 305px;
 }
 
-.dropdown a {
-  text-decoration: none;
-  color: #fff;
+.panel-body.panel-base {
+    padding: 25px;
 }
 
-.dropdown a:hover {
-    color: #ccc;
-    cursor: default;
+.btn-base {
+    border-color: #2962ff;
+    color: #2962ff;
+    background-color: #ffffff;
 }
+
+.btn-base:focus,
+.btn-base.focus,
+.btn-base:active,
+.btn-base.active,
+.btn-base:hover{
+    border-color: #2962ff;
+    color: #ffffff;
+    background-color: #2962ff;
+}
+
+
 
 
 
