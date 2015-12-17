@@ -51,8 +51,8 @@
 					<img id="graph" src="{{ asset('images/graph-blue.png') }}">
 					<b>Temperature & Humidity</b>
 					<div class="btn-group pull-right" role="group" aria-label="...">
-						<button id="today" type="button" class="btn btn-default {{ $date == 'today' ? 'active' : '' }}" onclick="swapGraph('today')">Last 24 hours</button>
-						<button id="week" type="button" class="btn btn-default {{ $date == 'week' ? 'active' : '' }}" onclick="swapGraph('week')">Last 7 days</button>
+						<button id="today" type="button" class="btn btn-default {{ $date == 'today' ? 'active' : '' }}" onclick="swapGraph('today')"><span class="hidden-xs">Last </span>24 hours</button>
+						<button id="week" type="button" class="btn btn-default {{ $date == 'week' ? 'active' : '' }}" onclick="swapGraph('week')"><span class="hidden-xs">Last </span>7 days</button>
 					</div>
 				</div>
 				<hr>

@@ -191,7 +191,8 @@ function refreshGraph(check) {
 				vAxes:{1:{title:'Humidity (%)'}},
 				legend: { position: 'top' },
 				animation: {startup: true, duration: 500},
-				fontName: "Roboto"
+				fontName: "Roboto",
+				lineWidth: 4
 			};
 
 			var humidtemp_chart = new google.visualization.ComboChart(document.getElementById('chart_humid_temp_week_div'));
@@ -273,7 +274,8 @@ function refreshGraph(check) {
 				vAxes:{1:{title:'Humidity (%)'}},
 				legend: { position: 'top' },
 				animation: {startup: true, duration: 500},
-				fontName: "Roboto"
+				fontName: "Roboto",
+				lineWidth: 4
 			};
 
 			var humidtemp_chart = new google.visualization.ComboChart(document.getElementById('chart_humid_temp_week_div'));
