@@ -34,9 +34,4 @@ class WelcomeController extends Controller {
 		return view('dash',['date' => $date]);
 	}
 
-	public function date($date)
-	{
-		return view('dash',['date' => $date]);
-	}
-
 }

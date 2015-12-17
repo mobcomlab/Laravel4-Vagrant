@@ -80,33 +80,46 @@
 	</div>
 
 	<div class="col-xs-12 col-sm-12 col-md-7 col-lg-7">
-		<div id="graph" class="panel panel-default">
-			<div class="panel-heading dropdown">
-				<a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">Temperature & Humidity ( {{ $date == 'today' ? 'Last 24 hours' : 'Last 7 days' }} )<span class="caret"></span></a>
-				<ul class="dropdown-menu" role="menu">
-					<li><a href="{{ route('date',['date' => 'today']) }}">Last 24 hours</a></li>
-					<li><a href="{{ route('date',['date' => 'week']) }}">Last 7 days</a></li>
-				</ul>
-			</div>
+		<div id="humidTempGraph" class="panel panel-default">
 			<div class="panel-body">
-				<div id="chart_humid_temp_div"></div>
+				<div id="humidTempGraphHead">
+					<img id="graph" src="{{ asset('images/graph-blue.png') }}">
+					<b>Temperature & Humidity</b>
+					<div class="btn-group pull-right" role="group" aria-label="...">
+						<button id="today" type="button" class="btn btn-default {{ $date == 'today' ? 'active' : '' }}" onclick="swapGraph('today')">Last 24 hours</button>
+						<button id="week" type="button" class="btn btn-default {{ $date == 'week' ? 'active' : '' }}" onclick="swapGraph('week')">Last 7 days</button>
+					</div>
+				</div>
+				<hr>
+				<div id="chart_humid_temp_day_div"></div>
+				<div id="chart_humid_temp_week_div"></div>
 			</div>
 		</div>
 	</div>
 
 	<div class="col-xs-12 col-sm-12 col-md-8 col-lg-8">
-		<div id="graph" class="panel panel-default">
-			<div class="panel-heading">Energy Consumption ( Last 24 hours )</div>
+		<div id="energyGraph" class="panel panel-default">
 			<div class="panel-body">
+				<div id="energyGraphHead">
+					<img id="graph" src="{{ asset('images/graph-green.png') }}">
+					<b>Energy Consumption</b>
+					Last 24 hours
+				</div>
+				<hr>
 				<div id="chart_energy_graph_div"></div>
 			</div>
 		</div>
 	</div>
 
 	<div class="col-xs-12 col-sm-12 col-md-4 col-lg-4">
-		<div id="energy_graph" class="panel panel-default">
-			<div class="panel-heading">Energy Consumption ( Last 7 days )</div>
+		<div id="energyChart" class="panel panel-default">
 			<div class="panel-body">
+				<div id="energyChartHead">
+					<img id="chart" src="{{ asset('images/chart-green.png') }}">
+					<b>Energy Consumption</b>
+					Last 7 days
+				</div>
+				<hr>
 				<div id="chart_energy_div"></div>
 			</div>
 		</div>
@@ -119,7 +132,28 @@
 	<script type="text/javascript" src="https://www.google.com/jsapi?autoload={'modules':[{'name':'visualization','version':'1.0','packages':['corechart']}]}"></script>
 	<script>
         $(document).ready(function() {
-            startUpdates();
-        });
+			startUpdates();
+			$('#chart_humid_temp_week_div').hide();
+		});
+
+		function swapGraph(date) {
+			if (date != $('input:hidden[name=date]').val()) {
+				if (date == 'today') {
+					$('#chart_humid_temp_week_div').hide();
+					$('#chart_humid_temp_day_div').show();
+					refreshGraph('today');
+					$('#today').addClass("active");
+					$('#week').removeClass("active");
+					$('input:hidden[name=date]').val("today");
+				} else {
+					$('#chart_humid_temp_day_div').hide();
+					$('#chart_humid_temp_week_div').show();
+					refreshGraph('week');
+					$('#week').addClass("active");
+					$('#today').removeClass("active");
+					$('input:hidden[name=date]').val("week");
+				}
+			}
+		}
     </script>
 @endsection
