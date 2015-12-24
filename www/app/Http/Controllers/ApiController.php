@@ -228,7 +228,7 @@ class ApiController extends Controller {
 		for ($i = 0; $i < count($occupancies); $i++) {
 			$recorded_at = $occupancies[$i]->recorded_at;
 
-			$power = null;
+			$powerHourEnergyKWH = null;
 
 			if ($powerIndex < count($powers) && $powers[$powerIndex]->recorded_at_hour == $recorded_at) {
 				$powerHourEnergyKWH = round($powers[$powerIndex]->value/60,1);
