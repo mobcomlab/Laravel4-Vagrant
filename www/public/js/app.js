@@ -61,8 +61,6 @@ function refreshGraph(check) {
 				power_results[index][1] = parseFloat(power_results[index][1]);
 			});
 
-			console.log(power_results);
-
 			var power_chartData = google.visualization.arrayToDataTable(power_results);
 
 			var power_chartOptions = {
@@ -99,8 +97,6 @@ function refreshGraph(check) {
 				humidtemp_results[index][1] = parseFloat(humidtemp_results[index][1]);
 				humidtemp_results[index][2] = parseInt(humidtemp_results[index][2]);
 			});
-
-			console.log(humidtemp_results);
 
 			var humidtemp_chartData = google.visualization.arrayToDataTable(humidtemp_results);
 
@@ -144,8 +140,6 @@ function refreshGraph(check) {
 				power_results[index][1] = parseFloat(power_results[index][1]);
 			});
 
-			console.log(power_results);
-
 			var power_chartData = google.visualization.arrayToDataTable(power_results);
 
 			var power_chartOptions = {
@@ -180,7 +174,6 @@ function refreshGraph(check) {
 				humidtemp_results[index][1] = parseFloat(humidtemp_results[index][1]);
 				humidtemp_results[index][2] = parseInt(humidtemp_results[index][2]);
 			});
-			console.log(humidtemp_results);
 
 			var humidtemp_chartData = google.visualization.arrayToDataTable(humidtemp_results);
 
@@ -218,8 +211,6 @@ function refreshGraph(check) {
 				humidtemp_results[index][1] = parseFloat(humidtemp_results[index][1]);
 				humidtemp_results[index][2] = parseInt(humidtemp_results[index][2]);
 			});
-
-			console.log(humidtemp_results);
 
 			var humidtemp_chartData = google.visualization.arrayToDataTable(humidtemp_results);
 
@@ -263,7 +254,6 @@ function refreshGraph(check) {
 				humidtemp_results[index][1] = parseFloat(humidtemp_results[index][1]);
 				humidtemp_results[index][2] = parseInt(humidtemp_results[index][2]);
 			});
-			console.log(humidtemp_results);
 
 			var humidtemp_chartData = google.visualization.arrayToDataTable(humidtemp_results);
 
