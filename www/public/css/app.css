@@ -225,8 +225,7 @@ hr {
     margin-bottom: 0;
 }
 
-#chart_humid_temp_day_div,
-#chart_humid_temp_week_div,
+#chart_humid_temp_div,
 #chart_energy_graph_div,
 #chart_energy_div {
     width: 100%;

@@ -56,8 +56,7 @@
 					</div>
 				</div>
 				<hr>
-				<div id="chart_humid_temp_day_div"></div>
-				<div id="chart_humid_temp_week_div"></div>
+				<div id="chart_humid_temp_div"></div>
 			</div>
 		</div>
 	</div>
@@ -98,26 +97,19 @@
 	<script>
         $(document).ready(function() {
 			startUpdates();
-			$('#chart_humid_temp_week_div').hide();
 		});
 
 		function swapGraph(date) {
-			if (date != $('input:hidden[name=date]').val()) {
-				if (date == 'today') {
-					$('#chart_humid_temp_week_div').hide();
-					$('#chart_humid_temp_day_div').show();
-					refreshGraph('today');
-					$('#today').addClass("active");
-					$('#week').removeClass("active");
-					$('input:hidden[name=date]').val("today");
-				} else {
-					$('#chart_humid_temp_day_div').hide();
-					$('#chart_humid_temp_week_div').show();
-					refreshGraph('week');
-					$('#week').addClass("active");
-					$('#today').removeClass("active");
-					$('input:hidden[name=date]').val("week");
-				}
+			if (date == 'today') {
+				$('#today').addClass("active");
+				$('#week').removeClass("active");
+				$('input:hidden[name=date]').val("today");
+				refreshGraph(true);
+			} else {
+				$('#week').addClass("active");
+				$('#today').removeClass("active");
+				$('input:hidden[name=date]').val("week");
+				refreshGraph(true);
 			}
 		}
     </script>
