@@ -222,6 +222,7 @@ hr {
 
 .panel-body {
     padding: 0;
+    margin-bottom: 0;
 }
 
 #chart_humid_temp_day_div,
