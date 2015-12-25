@@ -69,7 +69,9 @@ function refreshGraph(check) {
 					height: "100%",
 					width: "100%",
 					vAxis: {
-						title: "Temperature (°C)"
+						title: "Temperature (°C)",
+						minValue: 0,
+						maxValue: 40
 					},
 					hAxis: {
 						title: "Hour"
@@ -77,7 +79,9 @@ function refreshGraph(check) {
 					seriesType: "bars",
 					series: {0: {type: "line", color: '#f44336'}, 1: {type: "line",color: '#2962ff', targetAxisIndex: 1}, 2: {type: "line", targetAxisIndex: 2}},
 					vAxes:{1:{
-						title:'Humidity (%)'
+						title:'Humidity (%)',
+						minValue: 30,
+						maxValue: 70
 					}},
 					legend: {position: 'top'},
 					animation: {startup: true, duration: 500},
@@ -111,11 +115,19 @@ function refreshGraph(check) {
 				var humidtemp_chartOptions = {
 					height: "100%",
 					width: "100%",
-					vAxis: {title: "Temperature (°C)"},
+					vAxis: {
+						title: "Temperature (°C)",
+						minValue: 0,
+						maxValue: 40
+					},
 					hAxis: {title: "Day", gridlines: {count: 7}},
 					seriesType: "bars",
 					series: {0: {type: "line", color: '#f44336'}, 1: {type: "line",color: '#2196F3', targetAxisIndex: 1}, 2: {type: "line", targetAxisIndex: 2}},
-					vAxes:{1:{title:'Humidity (%)'}},
+					vAxes:{1:{
+						title:'Humidity (%)',
+						minValue: 30,
+						maxValue: 70
+					}},
 					legend: { position: 'top' },
 					animation: {startup: true, duration: 500},
 					fontName: "Roboto",
@@ -151,7 +163,9 @@ function refreshGraph(check) {
 					height: "100%",
 					width: "100%",
 					vAxis: {
-						title: "Temperature (°C)"
+						title: "Temperature (°C)",
+						minValue: 0,
+						maxValue: 40
 					},
 					hAxis: {
 						title: "Hour"
@@ -159,7 +173,9 @@ function refreshGraph(check) {
 					seriesType: "bars",
 					series: {0: {type: "line", color: '#f44336'}, 1: {type: "line",color: '#2962ff', targetAxisIndex: 1}, 2: {type: "line", targetAxisIndex: 2}},
 					vAxes:{1:{
-						title:'Humidity (%)'
+						title:'Humidity (%)',
+						minValue: 30,
+						maxValue: 70
 					}},
 					legend: {position: 'top'},
 					animation: {startup: true, duration: 500},
@@ -194,11 +210,19 @@ function refreshGraph(check) {
 				var humidtemp_chartOptions = {
 					height: "100%",
 					width: "100%",
-					vAxis: {title: "Temperature (°C)"},
+					vAxis: {
+						title: "Temperature (°C)",
+						minValue: 0,
+						maxValue: 40
+					},
 					hAxis: {title: "Day", gridlines: {count: 7}},
 					seriesType: "bars",
 					series: {0: {type: "line", color: '#f44336'}, 1: {type: "line",color: '#2196F3', targetAxisIndex: 1}, 2: {type: "line", targetAxisIndex: 2}},
-					vAxes:{1:{title:'Humidity (%)'}},
+					vAxes:{1:{
+						title:'Humidity (%)',
+						minValue: 30,
+						maxValue: 70
+					}},
 					legend: { position: 'top' },
 					animation: {startup: true, duration: 500},
 					fontName: "Roboto",
