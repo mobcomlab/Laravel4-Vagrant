@@ -1,8 +1,13 @@
 @extends('app')
 
 @section('content')
-    <a class="btn btn-primary" id="castme">Cast Start</a>
-    <a class="btn btn-danger" id="stop">Cast Stop</a>
+    <div class="text-center">
+        <img id="cast" src="{{ asset('images/cast.png') }}">
+    </div>
+    <div class="text-center">
+        <a class="btn-lg btn-primary" id="castme" data-cast="{{ asset('images/cast.png') }}" data-loaded="{{ asset('images/cast_loaded.png') }}" data-connected="{{ asset('images/cast_connected.png') }}">Cast Start</a>
+    </div>
+
 @endsection
 
 @section('body-close')

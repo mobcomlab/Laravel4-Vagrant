@@ -32,7 +32,7 @@
 					<span class="icon-bar"></span>
 					<span class="icon-bar"></span>
 				</button>
-				<a class="navbar-brand" href="/">ET Building: Climate Comfort Monitoring</a>
+				<a class="navbar-brand" href="/"><span class="hidden-xs">ET Building: </span>Climate Comfort Monitoring</a>
 			</div>
 
 			<div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">

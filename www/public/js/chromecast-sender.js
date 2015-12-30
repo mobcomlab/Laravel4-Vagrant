@@ -46,36 +46,49 @@ function onInitError() {
 }
 
 $('#castme').click(function(){
-    launchApp();
+    if (document.getElementById('castme').innerHTML == 'Cast Start') {
+        launchApp();
+    } else {
+        stopApp();
+    }
+
 });
 
 function launchApp() {
+    $('#cast').attr('src', $('#castme').data('loaded'));
     console.log("Launching the Chromecast App...");
     chrome.cast.requestSession(onRequestSessionSuccess, onLaunchError);
 }
 
 function onLaunchError() {
+    $('#cast').attr('src', $('#castme').data('cast'));
     console.log("Error connecting to the Chromecast.");
 }
 
 
 function onRequestSessionSuccess(e) {
+    $('#cast').attr('src', $('#castme').data('connected'));
+    $(this).removeClass('btn-primary');
+    $(this).addClass('btn-danger');
+    document.getElementById('castme').innerHTML = 'Cast Stop';
     console.log("Successfully created session: " + e.sessionId);
     session = e;
 }
 
-$('#stop').click(function(){
-    stopApp();
-});
-
 function stopApp() {
+    $('#cast').attr('src', $('#castme').data('loaded'));
     session.stop(onStopAppSuccess, onStopAppError);
 }
 
 function onStopAppSuccess() {
+    $('#cast').attr('src', $('#castme').data('cast'));
+    $(this).removeClass('btn-danger');
+    $(this).addClass('btn-primary');
+    document.getElementById('castme').innerHTML = 'Cast Start';
     console.log('Successfully stopped app.');
 }
 
 function onStopAppError() {
+    $('#cast').attr('src', $('#castme').data('connected'));
     console.log('Error stopping app.');
 }

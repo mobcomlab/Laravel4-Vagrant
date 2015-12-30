@@ -22,16 +22,35 @@ a#btn-navbar.dropdown-toggle {
     background-color: #000000;
 }
 
-#btn-menu {
-    color: #000000;
+@media (max-width: 767px) {
+    #btn-menu {
+        color: #ffffff;
+    }
+
+    #btn-menu:hover {
+        color: #808080;
+    }
+
 }
 
-#btn-menu:hover {
-    color: #808080;
+@media (min-width: 767px) {
+    #btn-menu {
+        color: #000000;
+    }
+
+    #btn-menu:hover {
+        color: #808080;
+    }
+
 }
 
 body {
     background: #e5e5e5;
+}
+
+#cast {
+    margin-top: 50px;
+    margin-bottom: 50px;
 }
 
 #temp {
