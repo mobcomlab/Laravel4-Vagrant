@@ -95,6 +95,7 @@ function dayHumidTemp() {
 		var err = textStatus + ", " + error;
 		console.log("Request Failed: " + err);
 	});
+	return $.Deferred().resolve();
 }
 
 function weekHumidTemp() {
@@ -142,6 +143,7 @@ function weekHumidTemp() {
 		var err = textStatus + ", " + error;
 		console.log("Request Failed: " + err);
 	});
+	return $.Deferred().resolve();
 }
 
 function refreshGraph(check) {
@@ -153,11 +155,9 @@ function refreshGraph(check) {
 		}
 	} else {
 		if($('input:hidden[name=date]').val() == 'today') {
-			weekHumidTemp();
-			dayHumidTemp();
+			weekHumidTemp().done(dayHumidTemp());
 		} else {
-			dayHumidTemp();
-			weekHumidTemp();
+			dayHumidTemp().done(weekHumidTemp());
 		}
 		$.getJSON("/api/day/power").done(function(data) {
 
