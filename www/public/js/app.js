@@ -48,289 +48,117 @@ function refreshContent() {
 	});
 }
 
+function dayHumidTemp() {
+	$.getJSON("/api/day/humidtemp").done(function(data) {
+
+		var humidtemp_results = data.results;
+		$.each(humidtemp_results, function(index, value) {
+			if (index == 0) {
+				return;
+			}
+			humidtemp_results[index][0] = formatTime(humidtemp_results[index][0]);
+			humidtemp_results[index][1] = parseFloat(humidtemp_results[index][1]);
+			humidtemp_results[index][2] = parseInt(humidtemp_results[index][2]);
+		});
+
+		var humidtemp_chartData = google.visualization.arrayToDataTable(humidtemp_results);
+
+		var humidtemp_chartOptions = {
+			height: "100%",
+			width: "100%",
+			vAxis: {
+				title: "Temperature (°C)",
+				minValue: 0,
+				maxValue: 40
+			},
+			hAxis: {
+				title: "Hour"
+			},
+			seriesType: "bars",
+			series: {0: {type: "line", color: '#f44336'}, 1: {type: "line",color: '#2962ff', targetAxisIndex: 1}, 2: {type: "line", targetAxisIndex: 2}},
+			vAxes:{1:{
+				title:'Humidity (%)',
+				minValue: 30,
+				maxValue: 70
+			}},
+			legend: {position: 'top'},
+			animation: {startup: true, duration: 500},
+			fontName: 'Roboto',
+			lineWidth: 4
+		};
+
+		var humidtemp_chart = new google.visualization.ComboChart(document.getElementById('chart_humid_temp_div'));
+		humidtemp_chart.draw(humidtemp_chartData, humidtemp_chartOptions);
+
+
+	}).fail(function(jqxhr, textStatus, error) {
+		var err = textStatus + ", " + error;
+		console.log("Request Failed: " + err);
+	});
+}
+
+function weekHumidTemp() {
+	$.getJSON("/api/week/humidtemp").done(function(data) {
+
+		var humidtemp_results = data.results;
+		$.each(humidtemp_results, function(index, value) {
+			if (index == 0) {
+				return;
+			}
+			humidtemp_results[index][0] = dateName(humidtemp_results[index][0]);
+			humidtemp_results[index][1] = parseFloat(humidtemp_results[index][1]);
+			humidtemp_results[index][2] = parseInt(humidtemp_results[index][2]);
+		});
+
+		var humidtemp_chartData = google.visualization.arrayToDataTable(humidtemp_results);
+
+		var humidtemp_chartOptions = {
+			height: "100%",
+			width: "100%",
+			vAxis: {
+				title: "Temperature (°C)",
+				minValue: 0,
+				maxValue: 40
+			},
+			hAxis: {title: "Day", gridlines: {count: 7}},
+			seriesType: "bars",
+			series: {0: {type: "line", color: '#f44336'}, 1: {type: "line",color: '#2196F3', targetAxisIndex: 1}, 2: {type: "line", targetAxisIndex: 2}},
+			vAxes:{1:{
+				title:'Humidity (%)',
+				minValue: 30,
+				maxValue: 70
+			}},
+			legend: { position: 'top' },
+			animation: {startup: true, duration: 500},
+			fontName: "Roboto",
+			lineWidth: 4
+		};
+
+		var humidtemp_chart = new google.visualization.ComboChart(document.getElementById('chart_humid_temp_div'));
+		humidtemp_chart.draw(humidtemp_chartData, humidtemp_chartOptions);
+
+
+	}).fail(function(jqxhr, textStatus, error) {
+		var err = textStatus + ", " + error;
+		console.log("Request Failed: " + err);
+	});
+}
+
 function refreshGraph(check) {
 	if (check) {
 		if($('input:hidden[name=date]').val() == 'today') {
-			$.getJSON("/api/day/humidtemp").done(function(data) {
-
-				var humidtemp_results = data.results;
-				$.each(humidtemp_results, function(index, value) {
-					if (index == 0) {
-						return;
-					}
-					humidtemp_results[index][0] = formatTime(humidtemp_results[index][0]);
-					humidtemp_results[index][1] = parseFloat(humidtemp_results[index][1]);
-					humidtemp_results[index][2] = parseInt(humidtemp_results[index][2]);
-				});
-
-				var humidtemp_chartData = google.visualization.arrayToDataTable(humidtemp_results);
-
-				var humidtemp_chartOptions = {
-					height: "100%",
-					width: "100%",
-					vAxis: {
-						title: "Temperature (°C)",
-						minValue: 0,
-						maxValue: 40
-					},
-					hAxis: {
-						title: "Hour"
-					},
-					seriesType: "bars",
-					series: {0: {type: "line", color: '#f44336'}, 1: {type: "line",color: '#2962ff', targetAxisIndex: 1}, 2: {type: "line", targetAxisIndex: 2}},
-					vAxes:{1:{
-						title:'Humidity (%)',
-						minValue: 30,
-						maxValue: 70
-					}},
-					legend: {position: 'top'},
-					animation: {startup: true, duration: 500},
-					fontName: 'Roboto',
-					lineWidth: 4
-				};
-
-				var humidtemp_chart = new google.visualization.ComboChart(document.getElementById('chart_humid_temp_div'));
-				humidtemp_chart.draw(humidtemp_chartData, humidtemp_chartOptions);
-
-
-			}).fail(function(jqxhr, textStatus, error) {
-				var err = textStatus + ", " + error;
-				console.log("Request Failed: " + err);
-			});
+			dayHumidTemp();
 		} else {
-			$.getJSON("/api/week/humidtemp").done(function(data) {
-
-				var humidtemp_results = data.results;
-				$.each(humidtemp_results, function(index, value) {
-					if (index == 0) {
-						return;
-					}
-					humidtemp_results[index][0] = dateName(humidtemp_results[index][0]);
-					humidtemp_results[index][1] = parseFloat(humidtemp_results[index][1]);
-					humidtemp_results[index][2] = parseInt(humidtemp_results[index][2]);
-				});
-
-				var humidtemp_chartData = google.visualization.arrayToDataTable(humidtemp_results);
-
-				var humidtemp_chartOptions = {
-					height: "100%",
-					width: "100%",
-					vAxis: {
-						title: "Temperature (°C)",
-						minValue: 0,
-						maxValue: 40
-					},
-					hAxis: {title: "Day", gridlines: {count: 7}},
-					seriesType: "bars",
-					series: {0: {type: "line", color: '#f44336'}, 1: {type: "line",color: '#2196F3', targetAxisIndex: 1}, 2: {type: "line", targetAxisIndex: 2}},
-					vAxes:{1:{
-						title:'Humidity (%)',
-						minValue: 30,
-						maxValue: 70
-					}},
-					legend: { position: 'top' },
-					animation: {startup: true, duration: 500},
-					fontName: "Roboto",
-					lineWidth: 4
-				};
-
-				var humidtemp_chart = new google.visualization.ComboChart(document.getElementById('chart_humid_temp_div'));
-				humidtemp_chart.draw(humidtemp_chartData, humidtemp_chartOptions);
-
-
-			}).fail(function(jqxhr, textStatus, error) {
-				var err = textStatus + ", " + error;
-				console.log("Request Failed: " + err);
-			});
+			weekHumidTemp();
 		}
 	} else {
 		if($('input:hidden[name=date]').val() == 'today') {
-			$.getJSON("/api/week/humidtemp").done(function(data) {
-
-				var humidtemp_results = data.results;
-				$.each(humidtemp_results, function(index, value) {
-					if (index == 0) {
-						return;
-					}
-					humidtemp_results[index][0] = dateName(humidtemp_results[index][0]);
-					humidtemp_results[index][1] = parseFloat(humidtemp_results[index][1]);
-					humidtemp_results[index][2] = parseInt(humidtemp_results[index][2]);
-				});
-
-				var humidtemp_chartData = google.visualization.arrayToDataTable(humidtemp_results);
-
-				var humidtemp_chartOptions = {
-					height: "100%",
-					width: "100%",
-					vAxis: {
-						title: "Temperature (°C)",
-						minValue: 0,
-						maxValue: 40
-					},
-					hAxis: {title: "Day", gridlines: {count: 7}},
-					seriesType: "bars",
-					series: {0: {type: "line", color: '#f44336'}, 1: {type: "line",color: '#2196F3', targetAxisIndex: 1}, 2: {type: "line", targetAxisIndex: 2}},
-					vAxes:{1:{
-						title:'Humidity (%)',
-						minValue: 30,
-						maxValue: 70
-					}},
-					legend: { position: 'top' },
-					animation: {startup: true, duration: 500},
-					fontName: "Roboto",
-					lineWidth: 4
-				};
-
-				var humidtemp_chart = new google.visualization.ComboChart(document.getElementById('chart_humid_temp_div'));
-				humidtemp_chart.draw(humidtemp_chartData, humidtemp_chartOptions);
-
-
-			}).fail(function(jqxhr, textStatus, error) {
-				var err = textStatus + ", " + error;
-				console.log("Request Failed: " + err);
-			});
-
-			$.getJSON("/api/day/humidtemp").done(function(data) {
-
-				var humidtemp_results = data.results;
-				$.each(humidtemp_results, function(index, value) {
-					if (index == 0) {
-						return;
-					}
-					humidtemp_results[index][0] = formatTime(humidtemp_results[index][0]);
-					humidtemp_results[index][1] = parseFloat(humidtemp_results[index][1]);
-					humidtemp_results[index][2] = parseInt(humidtemp_results[index][2]);
-				});
-
-				var humidtemp_chartData = google.visualization.arrayToDataTable(humidtemp_results);
-
-				var humidtemp_chartOptions = {
-					height: "100%",
-					width: "100%",
-					vAxis: {
-						title: "Temperature (°C)",
-						minValue: 0,
-						maxValue: 40
-					},
-					hAxis: {
-						title: "Hour"
-					},
-					seriesType: "bars",
-					series: {0: {type: "line", color: '#f44336'}, 1: {type: "line",color: '#2962ff', targetAxisIndex: 1}, 2: {type: "line", targetAxisIndex: 2}},
-					vAxes:{1:{
-						title:'Humidity (%)',
-						minValue: 30,
-						maxValue: 70
-					}},
-					legend: {position: 'top'},
-					animation: {startup: true, duration: 500},
-					fontName: 'Roboto',
-					lineWidth: 4
-				};
-
-				var humidtemp_chart = new google.visualization.ComboChart(document.getElementById('chart_humid_temp_div'));
-				humidtemp_chart.draw(humidtemp_chartData, humidtemp_chartOptions);
-
-
-			}).fail(function(jqxhr, textStatus, error) {
-				var err = textStatus + ", " + error;
-				console.log("Request Failed: " + err);
-			});
-
+			weekHumidTemp();
+			dayHumidTemp();
 		} else {
-			$.getJSON("/api/day/humidtemp").done(function(data) {
-
-				var humidtemp_results = data.results;
-				$.each(humidtemp_results, function(index, value) {
-					if (index == 0) {
-						return;
-					}
-					humidtemp_results[index][0] = formatTime(humidtemp_results[index][0]);
-					humidtemp_results[index][1] = parseFloat(humidtemp_results[index][1]);
-					humidtemp_results[index][2] = parseInt(humidtemp_results[index][2]);
-				});
-
-				var humidtemp_chartData = google.visualization.arrayToDataTable(humidtemp_results);
-
-				var humidtemp_chartOptions = {
-					height: "100%",
-					width: "100%",
-					vAxis: {
-						title: "Temperature (°C)",
-						minValue: 0,
-						maxValue: 40
-					},
-					hAxis: {
-						title: "Hour"
-					},
-					seriesType: "bars",
-					series: {0: {type: "line", color: '#f44336'}, 1: {type: "line",color: '#2962ff', targetAxisIndex: 1}, 2: {type: "line", targetAxisIndex: 2}},
-					vAxes:{1:{
-						title:'Humidity (%)',
-						minValue: 30,
-						maxValue: 70
-					}},
-					legend: {position: 'top'},
-					animation: {startup: true, duration: 500},
-					fontName: 'Roboto',
-					lineWidth: 4
-				};
-
-				var humidtemp_chart = new google.visualization.ComboChart(document.getElementById('chart_humid_temp_div'));
-				humidtemp_chart.draw(humidtemp_chartData, humidtemp_chartOptions);
-
-
-			}).fail(function(jqxhr, textStatus, error) {
-				var err = textStatus + ", " + error;
-				console.log("Request Failed: " + err);
-			});
-
-			$.getJSON("/api/week/humidtemp").done(function(data) {
-
-				var humidtemp_results = data.results;
-				$.each(humidtemp_results, function(index, value) {
-					if (index == 0) {
-						return;
-					}
-					humidtemp_results[index][0] = dateName(humidtemp_results[index][0]);
-					humidtemp_results[index][1] = parseFloat(humidtemp_results[index][1]);
-					humidtemp_results[index][2] = parseInt(humidtemp_results[index][2]);
-				});
-
-				var humidtemp_chartData = google.visualization.arrayToDataTable(humidtemp_results);
-
-				var humidtemp_chartOptions = {
-					height: "100%",
-					width: "100%",
-					vAxis: {
-						title: "Temperature (°C)",
-						minValue: 0,
-						maxValue: 40
-					},
-					hAxis: {title: "Day", gridlines: {count: 7}},
-					seriesType: "bars",
-					series: {0: {type: "line", color: '#f44336'}, 1: {type: "line",color: '#2196F3', targetAxisIndex: 1}, 2: {type: "line", targetAxisIndex: 2}},
-					vAxes:{1:{
-						title:'Humidity (%)',
-						minValue: 30,
-						maxValue: 70
-					}},
-					legend: { position: 'top' },
-					animation: {startup: true, duration: 500},
-					fontName: "Roboto",
-					lineWidth: 4
-				};
-
-				var humidtemp_chart = new google.visualization.ComboChart(document.getElementById('chart_humid_temp_div'));
-				humidtemp_chart.draw(humidtemp_chartData, humidtemp_chartOptions);
-
-
-			}).fail(function(jqxhr, textStatus, error) {
-				var err = textStatus + ", " + error;
-				console.log("Request Failed: " + err);
-			});
+			dayHumidTemp();
+			weekHumidTemp();
 		}
-
 		$.getJSON("/api/day/power").done(function(data) {
 
 			var power_results = data.results;
@@ -408,8 +236,10 @@ function refreshGraph(check) {
 function startUpdates() {
 	refreshContent();
 	refreshGraph(false);
-    intervalRefreshContent = setInterval(refreshContent, 15000);
-    intervalRefreshGraph = setInterval(refreshGraph, 29000);
+    intervalRefreshContent = setInterval(refreshContent, 60000);
+	setTimeout(function() {
+		intervalRefreshGraph = setInterval(refreshGraph, 60000);
+	}, 30000);
 }
 function stopUpdates() {
 	window.clearInterval(intervalRefreshContent);
