@@ -48,6 +48,7 @@
 							<a id="btn-navbar" href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">{{ Auth::user()->name }} <span class="caret"></span></a>
 							<ul class="dropdown-menu" role="menu">
 								<li><a id="btn-menu" href="{{ route('export') }}">Export</a></li>
+								<li><a id="btn-menu" href="{{ route('cast') }}">Cast</a></li>
 								<li role="separator" class="divider"></li>
 								<li><a id="btn-menu" href="/auth/logout">Logout</a></li>
 							</ul>
@@ -65,6 +66,7 @@
 	<script src="//cdnjs.cloudflare.com/ajax/libs/moment.js/2.9.0/moment-with-locales.min.js"></script>
 	<script src="//cdnjs.cloudflare.com/ajax/libs/moment-timezone/0.3.1/moment-timezone.min.js"></script>
     <script src="//cdnjs.cloudflare.com/ajax/libs/bootstrap-datepicker/1.4.0/js/bootstrap-datepicker.min.js"></script>
+	<script type="text/javascript" src="//ajax.googleapis.com/ajax/libs/jquery/1.11.0/jquery.min.js"></script>
 
 	<script src="/js/app.js"></script>
 

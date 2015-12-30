@@ -27,3 +27,5 @@ Route::get('api/week/power', 'ApiController@weekPower');
 
 Route::get('export', ['as' => 'export', 'uses' => 'ExportController@index']);
 Route::post('export/download', ['as' => 'download', 'uses' => 'ExportController@download']);
+
+Route::get('cast', ['as' => 'cast', 'uses' => 'CastController@index']);

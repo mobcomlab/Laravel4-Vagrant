@@ -90,9 +90,12 @@
 	</div>
 
 <input type="hidden" name="date" value="{{ old('date',$date) }}">
+
 @endsection
 
 @section('body-close')
+	<script type="text/javascript" src="//www.gstatic.com/cast/sdk/libs/receiver/2.0.0/cast_receiver.js"></script>
+	<script type="text/javascript" src="/js/chromecast-receiver.js"></script>
 	<script type="text/javascript" src="https://www.google.com/jsapi?autoload={'modules':[{'name':'visualization','version':'1.0','packages':['corechart']}]}"></script>
 	<script>
         $(document).ready(function() {
