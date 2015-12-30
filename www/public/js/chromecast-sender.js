@@ -46,6 +46,7 @@ function onInitError() {
 }
 
 $('#castme').click(function(){
+    $('#error').hide();
     if (document.getElementById('castme').innerHTML == 'Cast Start') {
         launchApp();
     } else {
@@ -62,6 +63,8 @@ function launchApp() {
 
 function onLaunchError() {
     $('#cast').attr('src', $('#castme').data('cast'));
+    $('#error').show();
+    document.getElementById('error').innerHTML = 'Error connecting to the Chromecast.';
     console.log("Error connecting to the Chromecast.");
 }
 
@@ -90,5 +93,7 @@ function onStopAppSuccess() {
 
 function onStopAppError() {
     $('#cast').attr('src', $('#castme').data('connected'));
+    $('#error').show();
+    document.getElementById('error').innerHTML = 'Error stopping app.';
     console.log('Error stopping app.');
 }
