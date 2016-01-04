@@ -1,6 +1,10 @@
+$.fn.datepicker.defaults.format = "dd/mm/yyyy";
+$.fn.datepicker.defaults.autoclose = true;
+$.fn.datepicker.defaults.orientation = "top left";
 var isLoading = false;
 var intervalRefreshContent;
 var intervalRefreshGraph;
+
 
 function refreshContent() {
 	if (isLoading) {

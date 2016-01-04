@@ -15,12 +15,12 @@
                     <form action="{{ route('download') }}" method="post">
                         <input type="hidden" name="_token" value="{{ csrf_token() }}">
 
-                        <div class="form-group">
-                        <div class="input-daterange input-group" data-provide="datepicker" data-endDate="0d" data-orientation="bottom left">
-                            <input type="text" name="startDate" class="form-control" placeholder="Earliest date" value="{{ old('startDate', Carbon::now()->subDays(30)->format('d/m/Y')) }}" data-endDate="0d" data-orientation="bottom left" />
-                            <span class="input-group-addon">to</span>
-                            <input type="text" name="endDate" class="form-control" placeholder="Latest date" value="{{ old('endDate', Carbon::now()->format('d/m/Y')) }}" data-endDate="0d" data-orientation="bottom left"/>
-                        </div>
+                        <div class="form-group date-select">
+                            <div class="input-daterange input-group" id="datepicker" data-provide="datepicker" data-date-end-date="0d">
+                                <input type="text" class="form-control" name="startDate" placeholder="Earliest date" value="{{ Carbon::today()->subDays(30)->format('d/m/Y') }}"/>
+                                <span class="input-group-addon">to</span>
+                                <input type="text" class="form-control" name="endDate" placeholder="Latest date" value="{{ Carbon::today()->format('d/m/Y') }}"/>
+                            </div>
                         </div>
 
                         <?php
@@ -42,8 +42,7 @@
 
 @section('body-close')
     <script>
-        $.fn.datepicker.defaults.format = "dd/mm/yyyy";
-        $.fn.datepicker.defaults.endDate = "0d";
-        $.fn.datepicker.defaults.orientation = "bottom";
+        $(document).ready(function() {
+        };
     </script>
 @endsection

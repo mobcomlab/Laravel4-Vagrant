@@ -6,8 +6,8 @@
 	<meta name="viewport" content="width=device-width, initial-scale=1">
 	<title>Climate Comfort Monitoring</title>
 
-    <link rel="stylesheet" href="//maxcdn.bootstrapcdn.com/bootstrap/3.3.5/css/bootstrap.min.css">
-    <link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/bootstrap-datepicker/1.4.0/css/bootstrap-datepicker3.min.css">
+	<link href="{{ asset('packages/bootstrap-3.3.5/css/bootstrap.min.css') }}" rel="stylesheet">
+	<link href="{{ asset('packages/datepicker/css/bootstrap-datepicker3.min.css') }}" rel="stylesheet">
     <link rel="stylesheet" href="{{ asset('css/app.css') }}">
 
 	<!-- Fonts -->
@@ -62,11 +62,14 @@
 
 	<!-- Scripts -->
 	<script src="//cdnjs.cloudflare.com/ajax/libs/jquery/2.1.3/jquery.min.js"></script>
-	<script src="//cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.3.5/js/bootstrap.min.js"></script>
 	<script src="//cdnjs.cloudflare.com/ajax/libs/moment.js/2.9.0/moment-with-locales.min.js"></script>
 	<script src="//cdnjs.cloudflare.com/ajax/libs/moment-timezone/0.3.1/moment-timezone.min.js"></script>
-    <script src="//cdnjs.cloudflare.com/ajax/libs/bootstrap-datepicker/1.4.0/js/bootstrap-datepicker.min.js"></script>
 	<script type="text/javascript" src="//ajax.googleapis.com/ajax/libs/jquery/1.11.0/jquery.min.js"></script>
+	<script src="{{ asset('packages/bootstrap-3.3.5/js/bootstrap.min.js') }}"></script>
+	<script src="{{ asset('packages/datepicker/js/bootstrap-datepicker.min.js') }}"></script>
+	<script src="{{ asset('packages/datepicker/js/bootstrap-datepicker-thai.js') }}"></script>
+	<script src="{{ asset('packages/datepicker/locales/bootstrap-datepicker.th.js') }}"></script>
+
 
 	<script src="/js/app.js"></script>
 
