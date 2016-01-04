@@ -302,15 +302,15 @@ class ApiController extends Controller {
 			$temp_count = 0;
 			$humid_count = 0;
 			for ($j = 0; $j < count($occupancies); $j++) {
-				$recorded_at = Carbon::parse($occupancies[$j]->recorded_at)->subDays($i)->toDateTimeString();
+				$recorded_at = Carbon::parse($occupancies[$j]->recorded_at)->subDays($i);
 
-				if ($tempIndex < count($temperatures) && ($temperatures[$tempIndex]->recorded_at_hour == $recorded_at)) {
+				if ($tempIndex < count($temperatures) && (Carbon::parse($temperatures[$tempIndex]->recorded_at_hour)->addHour() == $recorded_at)) {
 					$temperature = $temperature + $temperatures[$tempIndex]->value;
 					$tempIndex++;
 					$temp_count++;
 				}
 
-				if ($humidIndex < count($humidities) && $humidities[$humidIndex]->recorded_at_hour == $recorded_at) {
+				if ($humidIndex < count($humidities) && (Carbon::parse($humidities[$humidIndex]->recorded_at_hour)->addHour() == $recorded_at)) {
 					$humidity = $humidity + $humidities[$humidIndex]->value;
 					$humidIndex++;
 					$humid_count++;

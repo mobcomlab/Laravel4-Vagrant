@@ -81,7 +81,7 @@ function dayHumidTemp() {
 			seriesType: "bars",
 			series: {
 				0: {type: "line", color: '#f44336'},
-				1: {type: "line", color: '#2962ff', targetAxisIndex: 1},
+				1: {type: "line", color: '#2196F3', targetAxisIndex: 1},
 				2: {type: "line", targetAxisIndex: 2}
 			},
 			vAxes: {
