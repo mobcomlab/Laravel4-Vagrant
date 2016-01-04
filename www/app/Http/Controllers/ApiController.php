@@ -248,20 +248,20 @@ class ApiController extends Controller {
 		if ($room == null) {
 			return response()->json(['success' => false, 'message' => 'Room not found']);
 		}
-
 		$temperatureSensors = explode(',', $room->temperature_sensor_names);
 		$temperatures = DB::table('temperature')->whereIn('sensor',$temperatureSensors)
-			->select(DB::raw('CONCAT(DATE(recorded_at),\' \',MAKETIME(HOUR(DATE_ADD(recorded_at,INTERVAL 7 HOUR)),0,0)) recorded_at_hour, AVG(value) value'))
-			->where('recorded_at','>=',DB::raw('DATE_SUB(NOW(),INTERVAL 7 DAY)'))
-			->groupBy('recorded_at_hour')->orderBy('recorded_at_hour')->get();
+				->select(DB::raw('CONCAT(DATE(recorded_at),\' \',MAKETIME(HOUR(recorded_at),0,0)) recorded_at_hour, AVG(value) value'))
+				->where('recorded_at','>=',DB::raw('DATE_SUB(NOW(),INTERVAL 7 DAY)'))
+				->groupBy('recorded_at_hour')->orderBy('recorded_at_hour')->get();
 
 		$humiditySensors = explode(',', $room->humidity_sensor_names);
 		$humidities = DB::table('humidity')->whereIn('sensor',$humiditySensors)
-			->select(DB::raw('CONCAT(DATE(recorded_at),\' \',MAKETIME(HOUR(DATE_ADD(recorded_at,INTERVAL 7 HOUR)),0,0)) recorded_at_hour, AVG(value) value'))
-			->where('recorded_at','>=',DB::raw('DATE_SUB(NOW(),INTERVAL 7 DAY)'))
-			->groupBy('recorded_at_hour')->orderBy('recorded_at_hour')->get();
+				->select(DB::raw('CONCAT(DATE(recorded_at),\' \',MAKETIME(HOUR(recorded_at),0,0)) recorded_at_hour, AVG(value) value'))
+				->where('recorded_at','>=',DB::raw('DATE_SUB(NOW(),INTERVAL 7 DAY)'))
+				->groupBy('recorded_at_hour')->orderBy('recorded_at_hour')->get();
 
-		$occupancies = DB::select('SELECT CONCAT(DATE(a.recorded_at),\' \',MAKETIME(HOUR(DATE_ADD(a.recorded_at,INTERVAL 7 HOUR)),0,0)) recorded_at,
+
+		$occupancies = DB::select('SELECT CONCAT(DATE(a.recorded_at),\' \',MAKETIME(HOUR(a.recorded_at),0,0)) recorded_at,
 			IFNULL(o.people,0) people FROM (
    			 	SELECT date_sub(now(),interval 23 hour) recorded_at UNION
    			 	SELECT date_sub(now(),interval 22 hour) UNION
@@ -302,7 +302,7 @@ class ApiController extends Controller {
 			$temp_count = 0;
 			$humid_count = 0;
 			for ($j = 0; $j < count($occupancies); $j++) {
-				$recorded_at = Carbon::parse($occupancies[$j]->recorded_at)->subDays($i);
+				$recorded_at = Carbon::parse($occupancies[$j]->recorded_at)->subDays($i)->toDateTimeString();
 
 				if ($tempIndex < count($temperatures) && ($temperatures[$tempIndex]->recorded_at_hour == $recorded_at)) {
 					$temperature = $temperature + $temperatures[$tempIndex]->value;
