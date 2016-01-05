@@ -100,6 +100,11 @@ function dayHumidTemp() {
 		var humidtemp_chart = new google.visualization.ComboChart(document.getElementById('chart_humid_temp_div'));
 		humidtemp_chart.draw(humidtemp_chartData, humidtemp_chartOptions);
 
+		google.visualization.events.addListener(humidtemp_chart, 'ready', readyHandler);
+
+		function readyHandler() {
+			$('#loading').hide();
+		}
 
 	}).fail(function (jqxhr, textStatus, error) {
 		var err = textStatus + ", " + error;
@@ -143,9 +148,15 @@ function weekHumidTemp() {
 			fontName: "Roboto",
 			lineWidth: 4
 		};
-
 		var humidtemp_chart = new google.visualization.ComboChart(document.getElementById('chart_humid_temp_div'));
 		humidtemp_chart.draw(humidtemp_chartData, humidtemp_chartOptions);
+
+		google.visualization.events.addListener(humidtemp_chart, 'ready', readyHandler);
+
+		function readyHandler() {
+			$('#loading').hide();
+		}
+
 
 	}).fail(function(jqxhr, textStatus, error) {
 		var err = textStatus + ", " + error;
