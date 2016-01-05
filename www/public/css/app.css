@@ -244,11 +244,15 @@ hr {
     margin-bottom: 0;
 }
 
-#chart_humid_temp_div,
+#chart_humid_temp_div {
+    width: 100%;
+    height: 270px;
+}
+
 #chart_energy_graph_div,
 #chart_energy_div {
     width: 100%;
-    height: 250px;
+    height: 245px;
 }
 
 .panel-body.panel-base {
