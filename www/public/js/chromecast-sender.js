@@ -71,8 +71,8 @@ function onLaunchError() {
 
 function onRequestSessionSuccess(e) {
     $('#cast').attr('src', $('#castme').data('connected'));
-    $(this).removeClass('btn-primary');
-    $(this).addClass('btn-danger');
+    $('#castme').removeClass('btn-primary');
+    $('#castme').addClass('btn-danger');
     document.getElementById('castme').innerHTML = 'Cast Stop';
     console.log("Successfully created session: " + e.sessionId);
     session = e;
@@ -85,8 +85,8 @@ function stopApp() {
 
 function onStopAppSuccess() {
     $('#cast').attr('src', $('#castme').data('cast'));
-    $(this).removeClass('btn-danger');
-    $(this).addClass('btn-primary');
+    $('#castme').removeClass('btn-danger');
+    $('#castme').addClass('btn-primary');
     document.getElementById('castme').innerHTML = 'Cast Start';
     console.log('Successfully stopped app.');
 }
