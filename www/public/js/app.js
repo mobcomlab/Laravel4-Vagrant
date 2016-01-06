@@ -353,7 +353,7 @@ function startTime() {
 	var date = addZero(today.getDate());
 	var month = checkMonth(today.getMonth());
 	var year = today.getFullYear();
-	document.getElementById('date').innerHTML = h+":"+m+":"+s+" "+day+" "+date+"/"+month+"/"+year;
+	document.getElementById('date').innerHTML = h+":"+m+":"+s+" "+day+" "+date+" "+month+" "+year;
 	var t = setTimeout(startTime, 500);
 }
 function addZero(i) {
