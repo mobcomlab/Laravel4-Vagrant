@@ -344,3 +344,68 @@ function formatTime(dt) {
 	return moment.utc(dt).add(7,'hours').format('HH');
 }
 
+function startTime() {
+	var today = new Date();
+	var h = addZero(today.getHours());
+	var m = addZero(today.getMinutes());
+	var s = addZero(today.getSeconds());
+	var day = checkDay(today.getDay());
+	var date = addZero(today.getDate());
+	var month = checkMonth(today.getMonth());
+	var year = today.getFullYear();
+	document.getElementById('date').innerHTML = h+":"+m+":"+s+" "+day+" "+date+"/"+month+"/"+year;
+	var t = setTimeout(startTime, 500);
+}
+function addZero(i) {
+	if (i < 10) {i = "0" + i}  // add zero in front of numbers < 10
+	return i;
+}
+function checkDay(day) {
+	switch (day) {
+		case 0 : day = "Sun";
+			break;
+		case 1 : day = "Mon";
+			break;
+		case 2 : day = "Tue";
+			break;
+		case 3 : day = "Wed";
+			break;
+		case 4 : day = "Thu";
+			break;
+		case 5 : day = "Fri";
+			break;
+		case 6 : day = "Sat";
+			break;
+	}
+	return day;
+}
+function checkMonth(month) {
+	switch (month) {
+		case 0 : month = "Jan";
+			break;
+		case 1 : month = "Feb";
+			break;
+		case 2 : month = "Mar";
+			break;
+		case 3 : month = "Apr";
+			break;
+		case 4 : month = "May";
+			break;
+		case 5 : month = "Jun";
+			break;
+		case 6 : month = "Jul";
+			break;
+		case 7 : month = "Aug";
+			break;
+		case 8 : month = "Sep";
+			break;
+		case 9 : month = "Oct";
+			break;
+		case 10 : month = "Nov";
+			break;
+		case 11 : month = "Dec";
+			break;
+	}
+	return month;
+}
+

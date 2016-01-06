@@ -34,13 +34,13 @@
 				</button>
 				<a class="navbar-brand" href="/"><span class="hidden-xs">ET Building: </span>Climate Comfort Monitoring</a>
 			</div>
-
+			<div class="navbar-time"><b id="date"></b></div>
 			<div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
 				<ul class="nav navbar-nav">
 					<li><a id="btn-navbar" href="/">SC5-214</a></li>
 				</ul>
 
-				<ul class="nav navbar-nav navbar-right">
+				<ul class="nav navbar-nav navbar-right" id="navbar-right">
 					@if (Auth::guest())
 						<li><a id="btn-navbar" href="/auth/login">Login</a></li>
 					@else

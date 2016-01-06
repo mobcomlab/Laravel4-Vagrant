@@ -15,6 +15,8 @@ window.onload = function() {
     castReceiverManager.onSenderConnected = function(event) {
         console.log('Received Sender Connected event: ' + event.data);
         console.log(window.castReceiverManager.getSender(event.data).userAgent);
+        console.log("YES");
+        $('#navbar-right').hide();
     };
 
     // handler for 'senderdisconnected' event
