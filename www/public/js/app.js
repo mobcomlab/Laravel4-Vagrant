@@ -348,13 +348,12 @@ function startTime() {
 	var today = new Date();
 	var h = addZero(today.getHours());
 	var m = addZero(today.getMinutes());
-	var s = addZero(today.getSeconds());
 	var day = checkDay(today.getDay());
 	var date = addZero(today.getDate());
 	var month = checkMonth(today.getMonth());
 	var year = today.getFullYear();
-	document.getElementById('date').innerHTML = h+":"+m+":"+s+" "+day+" "+date+" "+month+" "+year;
-	var t = setTimeout(startTime, 500);
+	document.getElementById('date').innerHTML = h+":"+m+" "+day+" "+date+" "+month+" "+year;
+	var t = setTimeout(startTime, 60000);
 }
 function addZero(i) {
 	if (i < 10) {i = "0" + i}  // add zero in front of numbers < 10
