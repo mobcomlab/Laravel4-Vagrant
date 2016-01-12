@@ -40,7 +40,7 @@
 				</ul>
 
 				<ul class="nav navbar-nav navbar-right" id="navbar-right">
-					<div class="navbar-time" style="display: none"><b id="date"></b></div>
+					<div class="navbar-time" id="navbar-time" style="display: none"><b id="date"></b></div>
 					@if (Auth::guest())
 						<li><a id="btn-navbar" href="/auth/login">Login</a></li>
 					@else

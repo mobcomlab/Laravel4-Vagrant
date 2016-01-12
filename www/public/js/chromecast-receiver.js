@@ -16,6 +16,7 @@ window.onload = function() {
         console.log('Received Sender Connected event: ' + event.data);
         console.log(window.castReceiverManager.getSender(event.data).userAgent);
         $('#navbar-right').hide();
+        $('#navbar-time').show();
     };
 
     // handler for 'senderdisconnected' event
