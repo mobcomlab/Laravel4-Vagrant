@@ -12,7 +12,6 @@ function refreshContent() {
 	}
 
 	// Show loading ui
-	console.log('Loading');
 	isLoading = true;
 
 	
