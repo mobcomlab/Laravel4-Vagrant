@@ -40,9 +40,9 @@
 				</ul>
 
 				<ul class="nav navbar-nav navbar-right" id="navbar-right">
-					<div class="navbar-time" id="navbar-time" style="display: none"><b id="date"></b></div>
+					<div class="navbar-time" id="clock" style="display: none"><b id="date"></b></div>
 					@if (Auth::guest())
-						<li><a id="btn-navbar" href="/auth/login">Login</a></li>
+						<li id="login"><a id="btn-navbar" href="/auth/login">Login</a></li>
 					@else
 						<li class="dropdown">
 							<a id="btn-navbar" href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">{{ Auth::user()->name }} <span class="caret"></span></a>
