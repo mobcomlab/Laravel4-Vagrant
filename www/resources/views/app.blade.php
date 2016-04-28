@@ -40,19 +40,22 @@
 				</ul>
 
 				<ul class="nav navbar-nav navbar-right" id="navbar-right">
-					<div class="navbar-time" id="clock" style="display: none"><b id="date"></b></div>
-					@if (Auth::guest())
-						<li id="login"><a id="btn-navbar" href="/auth/login">Login</a></li>
+					@if (Route::current()->getName() == 'tv')
+						<div class="navbar-time" id="clock"><b id="date"></b></div>
 					@else
-						<li class="dropdown">
-							<a id="btn-navbar" href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">{{ Auth::user()->name }} <span class="caret"></span></a>
-							<ul class="dropdown-menu" role="menu">
-								<li><a id="btn-menu" href="{{ route('export') }}">Export</a></li>
-								<li><a id="btn-menu" href="{{ route('cast') }}">Cast</a></li>
-								<li role="separator" class="divider"></li>
-								<li><a id="btn-menu" href="/auth/logout">Logout</a></li>
-							</ul>
-						</li>
+						@if (Auth::guest())
+							<li id="login"><a id="btn-navbar" href="/auth/login">Login</a></li>
+						@else
+							<li class="dropdown">
+								<a id="btn-navbar" href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">{{ Auth::user()->name }} <span class="caret"></span></a>
+								<ul class="dropdown-menu" role="menu">
+									<li><a id="btn-menu" href="{{ route('export') }}">Export</a></li>
+									{{--<li><a id="btn-menu" href="{{ route('cast') }}">Cast</a></li>--}}
+									<li role="separator" class="divider"></li>
+									<li><a id="btn-menu" href="/auth/logout">Logout</a></li>
+								</ul>
+							</li>
+						@endif
 					@endif
 				</ul>
 			</div>
