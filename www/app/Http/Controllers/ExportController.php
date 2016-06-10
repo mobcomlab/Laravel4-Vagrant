@@ -54,8 +54,8 @@ class ExportController extends Controller {
 
         // Check no. of days is less than 30
         $noOfDays = $startDate->diffInDays($endDate);
-        if ($noOfDays > 30) {
-            return back()->withInput()->withErrors(['startDate' => 'Maximum period is 30 days']);
+        if ($noOfDays > 20) {
+            return back()->withInput()->withErrors(['startDate' => 'Maximum period is 20 days']);
         }
 
         // Set time to make dates inclusive
