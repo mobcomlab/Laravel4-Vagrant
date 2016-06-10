@@ -67,12 +67,21 @@ class ApiController extends Controller {
 		$powerMaxDate = DB::table('power')->whereIn('sensor',$powerSensors)->max('recorded_at');
 		$powerNow = DB::table('power')->whereIn('sensor',$powerSensors)
 							->where('recorded_at',$powerMaxDate)->sum('value');
-		$powerDayReadingCount = DB::table('power')->where('sensor',$powerSensors[0])->where('value', '>', 0)
-							->where('recorded_at','>=',$today->copy()->subHours(23))->count(DB::raw('DISTINCT recorded_at'));
+		$powerDayReadingCount1 = DB::table('power')->where('sensor',$powerSensors[0])
+						->whereBetween('recorded_at',[$today->copy()->subHours(7),$today->copy()->addHours(17)])->get();
+		$powerDayReadingCount2 = DB::table('power')->where('sensor',$powerSensors[1])
+						->whereBetween('recorded_at',[$today->copy()->subHours(7),$today->copy()->addHours(17)])->get();
+		$powerDayReadingCount = 0;
+		for ($i = 0; $i < count($powerDayReadingCount1); $i++) {
+			$sum = $powerDayReadingCount1[$i]->value + $powerDayReadingCount2[$i]->value;
+			if ($sum > 0) {
+				$powerDayReadingCount++;
+			}
+		}
 		if ($powerDayReadingCount > 0) {
-			$powerDayAverage = DB::table('power')->whereIn('sensor',$powerSensors)->where('value', '>', 0)
-							->where('recorded_at','>=',$today->copy()->subHours(23))->sum('value') / $powerDayReadingCount;
-			$powerDayHoursUsed = $powerDayReadingCount / 60;
+			$powerDayAverage = DB::table('power')->whereIn('sensor',$powerSensors)
+							->whereBetween('recorded_at',[$today->copy()->subHours(7),$today->copy()->addHours(17)])->sum('value') / $powerDayReadingCount;
+			$powerDayHoursUsed = $powerDayReadingCount / 60 / 60;
 			$powerDayEnergyKWH = $powerDayAverage * $powerDayHoursUsed;
 		}
 		else {
@@ -350,12 +359,21 @@ class ApiController extends Controller {
 		for ($i = 6; $i >= 0; $i--) {
 			$date = Carbon::today()->copy()->subDays($i);
 			$powerDayAverage = null;
-			$powerDayReadingCount = DB::table('power')->where('sensor',$powerSensors[0])->where('value', '>', 0)
-				->whereBetween('recorded_at',[$date->copy()->subHours(7),$date->copy()->addHours(17)])->count(DB::raw('DISTINCT recorded_at'));
+			$powerDayReadingCount1 = DB::table('power')->where('sensor',$powerSensors[0])
+				->whereBetween('recorded_at',[$date->copy()->subHours(7),$date->copy()->addHours(17)])->get();
+			$powerDayReadingCount2 = DB::table('power')->where('sensor',$powerSensors[1])
+				->whereBetween('recorded_at',[$date->copy()->subHours(7),$date->copy()->addHours(17)])->get();
+			$powerDayReadingCount = 0;
+			for ($j = 0; $j < count($powerDayReadingCount1); $j++) {
+				$sum = $powerDayReadingCount1[$j]->value + $powerDayReadingCount2[$j]->value;
+				if ($sum > 0) {
+					$powerDayReadingCount++;
+				}
+			}
 			if ($powerDayReadingCount > 0) {
-				$powerDayAverage = round(DB::table('power')->whereIn('sensor',$powerSensors)->where('value', '>', 0)
+				$powerDayAverage = round(DB::table('power')->whereIn('sensor',$powerSensors)
 						->whereBetween('recorded_at',[$date->copy()->subHours(7),$date->copy()->addHours(17)])->sum('value') / $powerDayReadingCount,1);
-				$powerDayHoursUsed = $powerDayReadingCount / 60;
+				$powerDayHoursUsed = $powerDayReadingCount / 60 / 60;
 				$powerDayEnergyKWH = $powerDayAverage * $powerDayHoursUsed;
 			} else {
 				$powerDayEnergyKWH = 0;
