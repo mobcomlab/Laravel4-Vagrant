@@ -15,6 +15,7 @@ class Kernel extends ConsoleKernel {
 		'App\Console\Commands\PullHumidTempData',
 		'App\Console\Commands\PullPowerData',
 		'App\Console\Commands\PullOccupancy',
+        'App\Console\Commands\ExportData'
 	];
 
 	/**
@@ -27,6 +28,7 @@ class Kernel extends ConsoleKernel {
 	{
 		$schedule->command('pull:humidtemp')->cron('* * * * *');
 		$schedule->command('pull:power')->everyFiveMinutes();
+		$schedule->command('export:data')->daily();
 	}
 
 }
