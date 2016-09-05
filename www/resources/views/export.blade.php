@@ -14,22 +14,42 @@
                     <p>Choose a date range to export:</p>
                     <form action="{{ route('download') }}" method="post">
                         <input type="hidden" name="_token" value="{{ csrf_token() }}">
+                        <div class="download">
+                            <?php
+                            $errorFormat = '<div class="alert alert-danger">:message</div>';
+                            ?>
+                            {!! $errors->first('startDate', $errorFormat) !!}
+                            {!! $errors->first('endDate', $errorFormat) !!}
 
-                        <div class="form-group date-select">
-                            <div class="input-daterange input-group" id="datepicker" data-provide="datepicker" data-date-end-date="0d">
-                                <input type="text" class="form-control" name="startDate" placeholder="Earliest date" value="{{ Carbon::today()->subDays(30)->format('d/m/Y') }}"/>
-                                <span class="input-group-addon">to</span>
-                                <input type="text" class="form-control" name="endDate" placeholder="Latest date" value="{{ Carbon::today()->format('d/m/Y') }}"/>
-                            </div>
+                            <label class="checkbox">
+                                <div class="form-inline">
+                                    <input type="radio" name="download" checked="checked" value="excel">
+                                    Excel (Humidity + Temperature + Power) - maximum period 20 days<br>
+                                    <div class="form-group date-select">
+                                        <div class="input-daterange input-group" id="datepicker" data-provide="datepicker" data-date-end-date="0d">
+                                            <input type="text" class="form-control" name="startDate" placeholder="Earliest date" value="{{ Carbon::today()->subDays(20)->format('d/m/Y') }}"/>
+                                            <span class="input-group-addon">to</span>
+                                            <input type="text" class="form-control" name="endDate" placeholder="Latest date" value="{{ Carbon::today()->format('d/m/Y') }}"/>
+                                        </div>
+                                    </div>
+                                </div>
+                            </label>
+                            <label class="checkbox">
+                                <input type="radio" name="download" value="csv_humidity">
+                                CSV (Humidity)
+                            </label>
+                            <label class="checkbox">
+                                <input type="radio" name="download" value="csv_temperature">
+                                CSV (Temperature)
+                            </label>
+                            <label class="checkbox">
+                                <input type="radio" name="download" value="csv_power">
+                                CSV (Power)
+                            </label>
                         </div>
 
-                        <?php
-                        $errorFormat = '<div class="alert alert-danger">:message</div>';
-                        ?>
-                        {!! $errors->first('startDate', $errorFormat) !!}
-                        {!! $errors->first('endDate', $errorFormat) !!}
-
                         <button type="submit" class="btn btn-base">Download</button>
+
                     </form>
 				</div>
 			</div>
