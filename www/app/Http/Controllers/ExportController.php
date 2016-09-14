@@ -10,6 +10,9 @@ use Maatwebsite\Excel\Facades\Excel;
 use DateTime;
 use Carbon\Carbon;
 use App\Models\Room;
+use File;
+use ZipArchive;
+use Zipper;
 
 class ExportController extends Controller {
 
@@ -312,17 +315,51 @@ class ExportController extends Controller {
     }
 
     public function downloadHumidityCSV() {
-        $fileDownloadName = 'CCM Humidity Report '.Carbon::now()->format('Y-m-d').'.csv';
-        return response()->download(public_path('export/humidity.csv'), $fileDownloadName);
+        $fileDownloadName = 'CCM Humidity Report.zip';
+        $filePath = public_path('exportdata/humidity/'.$fileDownloadName);
+
+        if (File::exists($filePath)) {
+            File::delete($filePath);
+        }
+        $files = File::allFiles(public_path('exportdata/humidity'));
+        self::createZip($files, $fileDownloadName, 'CCM Humidity Report/');
+        File::move(public_path($fileDownloadName), $filePath);
+        return response()->download($filePath);
     }
 
     public function downloadTemperatureCSV() {
-        $fileDownloadName = 'CCM Temperature Report '.Carbon::now()->format('Y-m-d').'.csv';
-        return response()->download(public_path('export/temperature.csv'), $fileDownloadName);
+        $fileDownloadName = 'CCM Temperature Report.zip';
+        $filePath = public_path('exportdata/temperature/'.$fileDownloadName);
+
+        if (File::exists($filePath)) {
+            File::delete($filePath);
+        }
+        $files = File::allFiles(public_path('exportdata/temperature'));
+        self::createZip($files, $fileDownloadName, 'CCM Temperature Report/');
+        File::move(public_path($fileDownloadName), $filePath);
+        return response()->download($filePath);
     }
 
     public function downloadPowerCSV() {
-        $fileDownloadName = 'CCM Power Report '.Carbon::now()->format('Y-m-d').'.csv';
-        return response()->download(public_path('export/power.csv'), $fileDownloadName);
+        $fileDownloadName = 'CCM Power Report.zip';
+        $filePath = public_path('exportdata/power/'.$fileDownloadName);
+
+        if (File::exists($filePath)) {
+            File::delete($filePath);
+        }
+        $files = File::allFiles(public_path('exportdata/power'));
+        self::createZip($files, $fileDownloadName, 'CCM Power Report/');
+        File::move(public_path($fileDownloadName), $filePath);
+        return response()->download($filePath);
+    }
+
+    public function createZip($files, $zipName, $folderName) {
+        $zip = new ZipArchive();
+        $zip->open($zipName, ZipArchive::CREATE);
+        foreach ($files as $file) {
+            $new_filename = $folderName.substr($file,strrpos($file,'/') + 1);
+            $zip->addFile($file,$new_filename);
+        }
+        $zip->close();
     }
 }

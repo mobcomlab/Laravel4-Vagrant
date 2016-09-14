@@ -2,6 +2,7 @@
 
 namespace App\Console\Commands;
 
+use Carbon\Carbon;
 use Illuminate\Console\Command;
 use File;
 use DB;
@@ -39,6 +40,17 @@ class ExportData extends Command
      */
     public function handle()
     {
+        $today = Carbon::today();
+
+        $humidityFileName = 'humidity-'.$today->year.'-'.$today->month.'.csv';
+        $temperatureFileName = 'temperature-'.$today->year.'-'.$today->month.'.csv';
+        $powerFileName = 'power-'.$today->year.'-'.$today->month.'.csv';
+
+        $this->info('remove old data...');
+        DB::statement("DELETE FROM humidity WHERE recorded_at < '2016-".$today->month."-01 00:00:00'");
+        DB::statement("DELETE FROM temperature WHERE recorded_at < '2016-".$today->month."-01 00:00:00'");
+        DB::statement("DELETE FROM power WHERE recorded_at < '2016-".$today->month."-01 00:00:00'");
+
         if (File::exists('/tmp/humidity.csv')) {
             File::delete('/tmp/humidity.csv');
         }
@@ -50,7 +62,7 @@ class ExportData extends Command
         }
 
         $this->info('Export humidity data...');
-        $humidityFile = public_path('export/humidity.csv');
+        $humidityFile = public_path('exportdata/humidity/'.$humidityFileName);
         if (File::exists($humidityFile)) {
             File::delete($humidityFile);
         }
@@ -79,7 +91,7 @@ class ExportData extends Command
         File::move('/tmp/humidity.csv', $humidityFile);
 
         $this->info('Export temperature data...');
-        $temperatureFile = public_path('export/temperature.csv');
+        $temperatureFile = public_path('exportdata/temperature/'.$temperatureFileName);
         if (File::exists($temperatureFile)) {
             File::delete($temperatureFile);
         }
@@ -108,7 +120,7 @@ class ExportData extends Command
         File::move('/tmp/temperature.csv', $temperatureFile);
 
         $this->info('Export power data...');
-        $powerFile = public_path('export/power.csv');
+        $powerFile = public_path('exportdata/power/'.$powerFileName);
         if (File::exists($powerFile)) {
             File::delete($powerFile);
         }
