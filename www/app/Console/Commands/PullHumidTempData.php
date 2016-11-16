@@ -41,7 +41,7 @@ class PullHumidTempData extends Command {
 		
 		// Grab the data
 		$client = new HttpClient();
-		$response = $client->get(self::URL);
+		$response = $client->get(self::URL.'?cache='.str_random(40));
 		$data = explode("\n", $response->getBody());
 		
 		// Process lines
