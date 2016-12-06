@@ -46,11 +46,6 @@ class ExportData extends Command
         $temperatureFileName = 'temperature-'.$today->year.'-'.$today->month.'.csv';
         $powerFileName = 'power-'.$today->year.'-'.$today->month.'.csv';
 
-        $this->info('remove old data...');
-        DB::statement("DELETE FROM humidity WHERE recorded_at < '2016-".$today->month."-01 00:00:00'");
-        DB::statement("DELETE FROM temperature WHERE recorded_at < '2016-".$today->month."-01 00:00:00'");
-        DB::statement("DELETE FROM power WHERE recorded_at < '2016-".$today->month."-01 00:00:00'");
-
         if (File::exists('/tmp/humidity.csv')) {
             File::delete('/tmp/humidity.csv');
         }
@@ -134,5 +129,13 @@ class ExportData extends Command
           FROM power_pivot
          ");
         File::move('/tmp/power.csv', $powerFile);
+
+//        $this->info('remove data that is older than one month...');
+//        $lastMonth = $today->subMonth();
+//        $startOfLastMonth = $lastMonth->year."-".$lastMonth->month."-01 00:00:00";
+//        DB::statement("DELETE FROM humidity WHERE recorded_at < '".$startOfLastMonth."'");
+//        DB::statement("DELETE FROM temperature WHERE recorded_at < '".$startOfLastMonth."'");
+//        DB::statement("DELETE FROM power WHERE recorded_at < '".$startOfLastMonth."'");
+
     }
 }
