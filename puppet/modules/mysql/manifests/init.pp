@@ -41,4 +41,14 @@ class mysql
             command => "/usr/bin/mysql -uroot -p$mysqlPassword -e 'grant all on `database`.* to `root@localhost`;'",
             require => [Service["mysql"], Exec["create-default-db"]]
     }
+
+    file
+    {
+        "/etc/mysql/conf.d/secure_file_priv.cnf":
+            ensure  => present,
+            owner   => root, group => root,
+            notify  => Service['mysql'],
+            content => template('mysql/secure_file_priv.cnf'),
+            require => Package['mysql-server']
+    }
 }
