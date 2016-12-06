@@ -316,14 +316,13 @@ class ExportController extends Controller {
 
     public function downloadHumidityCSV() {
         $fileDownloadName = 'CCM Humidity Report.zip';
-        $filePath = public_path('exportdata/humidity/'.$fileDownloadName);
+        $filePath = public_path('exportdata/'.$fileDownloadName);
 
         if (File::exists($filePath)) {
             File::delete($filePath);
         }
         $files = File::allFiles(public_path('exportdata/humidity'));
-        self::createZip($files, $fileDownloadName, 'CCM Humidity Report/');
-        File::move(public_path($fileDownloadName), $filePath);
+        self::createZip($files, $filePath, 'CCM Humidity Report/');
         return response()->download($filePath);
     }
 
@@ -335,8 +334,7 @@ class ExportController extends Controller {
             File::delete($filePath);
         }
         $files = File::allFiles(public_path('exportdata/temperature'));
-        self::createZip($files, $fileDownloadName, 'CCM Temperature Report/');
-        File::move(public_path($fileDownloadName), $filePath);
+        self::createZip($files, $filePath, 'CCM Temperature Report/');
         return response()->download($filePath);
     }
 
@@ -348,8 +346,7 @@ class ExportController extends Controller {
             File::delete($filePath);
         }
         $files = File::allFiles(public_path('exportdata/power'));
-        self::createZip($files, $fileDownloadName, 'CCM Power Report/');
-        File::move(public_path($fileDownloadName), $filePath);
+        self::createZip($files, $filePath, 'CCM Power Report/');
         return response()->download($filePath);
     }
 
